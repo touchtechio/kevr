@@ -31,6 +31,8 @@ namespace UniOSC
 
         //public OSCDataMapper dataScript; // no longer using this
         public GameControllerVR GameVR;
+        public GloveController GloveController;
+        public FountainRSControllerVR FountainRSController;
 
         OscMessage msg;
 
@@ -38,6 +40,27 @@ namespace UniOSC
         private const string leftZone = "left/zone";
         private const string cursor = "cursor";
         private const string heartbeat = "heartbeat";
+
+        //OSC data variables
+        private const string gloveLeft1 = "Kevin/gloveLeft1";
+        private const string gloveLeft2 = "Kevin/gloveLeft2";
+        private const string gloveLeft3 = "Kevin/gloveLeft3";
+        private const string gloveLeft4 = "Kevin/gloveLeft4";
+        private const string gloveLeft5 = "Kevin/gloveLeft5";
+        private const string gloveRight1 = "Kevin/gloveRight1";
+        private const string gloveRight2 = "Kevin/gloveRight2";
+        private const string gloveRight3 = "Kevin/gloveRight3";
+        private const string gloveRight4 = "Kevin/gloveRight4";
+        private const string gloveRight5 = "Kevin/gloveRight5";
+        private const string rsZoneLeftXZ = "Kevin/zoneLeftXZ";
+        private const string rsZoneLeftY = "Kevin/zoneLeftY";
+        private const string rsZoneRightXZ = "Kevin/zoneRightXZ";
+        private const string rsZoneRightY = "Kevin/zoneRightY";
+
+        private string[] fingerBendLeft = { gloveLeft1, gloveLeft2, gloveLeft3, gloveLeft4, gloveLeft5 };
+        private string[] fingerBendRight = { gloveRight1, gloveRight2, gloveRight3 , gloveRight4, gloveRight5};
+
+        
 
         private int rightZoneData;
         private int leftZoneData;
@@ -65,7 +88,52 @@ namespace UniOSC
             // if no message, escape
             if (msg == null) return;
 
+            // handles OSC data simulating glove
+            for (int i = 0; i < 5; i++)
+            {
+                if (msg.Address.Contains(fingerBendLeft[i]))
+                {
+                    float fingerBendDataLeft = (float)msg.Data[0];
+                    GloveController.fingerBendLeft(i, fingerBendDataLeft);
+                    FountainRSController.fountainHeightLeft(i, fingerBendDataLeft);
 
+                }
+
+                if (msg.Address.Contains(fingerBendRight[i]))
+                {
+                    float fingerBendDataRight = (float)msg.Data[0];
+                    GloveController.fingerBendRight(i, fingerBendDataRight);
+                }
+            }
+
+            // handles osc data simulating hand position over realsense
+            if (msg.Address.Contains(rsZoneLeftXZ))
+            {
+                float rsZoneDataLeftX = (float)msg.Data[0];
+                float rsZoneDataLeftZ = (float)msg.Data[1];
+                GloveController.rsZoneLeftXZ(rsZoneDataLeftX, rsZoneDataLeftZ);
+            }
+
+            if (msg.Address.Contains(rsZoneLeftY))
+            {
+                float rsZoneDataLeftY = (float)msg.Data[0];
+                GloveController.rsZoneLeftY(rsZoneDataLeftY);
+            }
+
+            if (msg.Address.Contains(rsZoneRightXZ))
+            {
+                float rsZoneDataRightX = (float)msg.Data[0];
+                float rsZoneDataRightZ = (float)msg.Data[1];
+                GloveController.rsZoneRightXZ(rsZoneDataRightX, rsZoneDataRightZ);
+            }
+
+            if (msg.Address.Contains(rsZoneRightY))
+            {
+                float rsZoneDataRightY = (float)msg.Data[0];
+                GloveController.rsZoneRightY(rsZoneDataRightY);
+            }
+
+            // handles rs data from single camera
             if (msg.Address.Contains(cursor))
             {
                 if (!msg.Address.Contains(heartbeat))
@@ -104,6 +172,7 @@ namespace UniOSC
 
             }
 
+            // handles osc rs data from Max
             if (msg.Address.Contains(rightZone))
             {
                 rightZoneData = (int)msg.Data[0];
@@ -116,128 +185,10 @@ namespace UniOSC
                 leftZoneData = (int)msg.Data[0];
                 GameVR.leftZoneColor(leftZoneData);
             }
+
+
         }
     }
 }
 
-
-
-            /*
-
-            // handle gestures if sequence is new
-            else if (sequenceNo != (int)msg.Data[0])
-            {
-
-                sequenceNo = (int)msg.Data[0];
-
-
-                if (msg.Address.Contains(oscSideTap))
-                {
-                    if ((int)msg.Data[1] > 40)
-                    {
-                      //  if ((wristRot > 160) || (wristRot <-150)) // if left hand device
-                            if ((wristRot > 120) && (wristRot < 180)) // if right hand device, it's opposite direction to a side chop
-                            {
-                            Debug.Log("gesture-BACK (" + wristRot + "," + armVert + "):" + msg.Address + " " + msg.Data[1]);
-                            GCSL.gestureBack();
-                            // Debug.Log(msg.Data[0]);
-                        }
-                    }
-                    if ((int)msg.Data[1] > 500)
-                    {
-                        GCSL.gestureHome();
-                    }
-
-                }
-
-                if (msg.Address.Contains(oscTap))
-
-                {
-
-                    if ((int)msg.Data[1] > 10)
-                    {
-
-                        //  Debug.Log(msg.Data[0]);
-                        //if (armVert > 0 && armVert < 45)
-                        if (wristRot > 120 || (wristRot <-160)) // clamp velocity to prevent accidental hits by moving hand
-                        {
-                            Debug.Log("gesture-SCROLLDOWN (" + wristRot + "," + armVert + "):" + msg.Address + " vel: " + msg.Data[1] + " seq" + msg.Data[0]); // 0 is sequnce number, 1 is velocity
-                            GCSL.gestureScrollDown();
-                            GCSL.gestureToggle();
-                        }
-
-                        //  if (armVert > 120 && armVert < 150)
-                        else if ((wristRot > -20) && (wristRot < 40))
-                        {
-                            Debug.Log("gesture-SCROLLUP (" + wristRot + "," + armVert + "):" + msg.Address + " vel: " + msg.Data[1] + " seq" + msg.Data[0]); // 0 is sequnce number, 1 is velocity
-                            GCSL.gestureScrollUp();
-                            GCSL.gestureToggle();
-                        }
-
-                        //if (armVert > 75 && armVert < 120)
-                        else  if ((wristRot > 50) && (wristRot < 110))
-                        {
-                            Debug.Log("gesture-SELECT (" + wristRot + "," + armVert + "):" + msg.Address + " vel: " + msg.Data[1] + " seq" + msg.Data[0]); // 0 is sequnce number, 1 is velocity
-                            GCSL.gestureSelect();
-                        }
-                        else if (wristRot > 140)
-                        {
-                            //Debug.Log("toggle (" + wristRot + "," + armVert + "):" + msg.Address + " vel: " + msg.Data[1] + " seq" + msg.Data[0]); // 0 is sequnce number, 1 is velocity
-                            //GCSL.gestureToggle();
-                        }
-                        else
-                        {
-                            Debug.Log("tapRegistered (" + wristRot + "," + armVert + "):" + msg.Address + " vel: " + msg.Data[1] + " seq" + msg.Data[0]);
-                        }
-                    }
-                }
-
-                if (msg.Address.Contains(oscOmni))
-                {
-                    Debug.Log("gesture-omni (" + wristRot + "," + armVert + "):" + msg.Address + " vel: " + msg.Data[1] + " seq" + msg.Data[0]); // 0 is sequnce number, 1 is velocity
-                    // GCSL.gestureHome();
-                }
-
-            }
-
-
-            //this.noteVal = (int)msg.Data[0];
-            //Debug.Log (noteVal);
-
-            //Debug.Log(msg.Data);
-            //SetStartingSideWithDevice ();
-
-            //OSCDataMapper gestureMapper = GameObject.FindObjectOfType<OSCDataMapper>();
-
-            //GestureInterface ttt = GameObject.FindObjectOfType<OSC_TTT>();
-            //Debug.Log("interface: " + ttt);
-            //gestureMapper.buttonScript = ttt;
-
-            //GestureInterface button = GameObject.FindObjectOfType<ButtonTest>();
-            //Debug.Log("interface: " + button);
-            //dataScript.gestureScript = button;
-
-            ////   dataScript.MapOSCData(noteVal); // send oscdata to gamecontroller
-
-
-            /// Does same thing as above line
-            // ButtonTest test =  GameObject.FindObjectOfType<ButtonTest>();
-
-
-
-            //test.CallInOscData(this.noteVal);
-            
-           
-        }
-		void SetStartingSideWithDevice() {
-
-
-			if (this.noteVal == 55) {
-				
-				GameObject.FindObjectOfType<GameControllerTTT> ().SetStartingSide ("X");
-			} else if (this.noteVal == 53) {
-				GameObject.FindObjectOfType<GameControllerTTT> ().SetStartingSide ("O");
-			}
-		}
-        */
 
