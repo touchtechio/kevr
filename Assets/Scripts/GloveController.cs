@@ -37,8 +37,8 @@ public class GloveController : MonoBehaviour
 
 
         Vector3 pos;
-        pos = new Vector3(rsZoneDataLeftX, transformToMove.position.y, rsZoneDataLeftZ);
-        transformToMove.transform.position = pos;
+        pos = new Vector3(rsZoneDataLeftX, transformToMove.localPosition.y, rsZoneDataLeftZ);
+        transformToMove.localPosition = pos;
 
 
         //HandObject.GetComponent<Transform>() = new Vector3(rsZoneDataLeftX, 0, rsZoneDataLeftZ);
