@@ -47,10 +47,9 @@ public class GloveController : MonoBehaviour
 
     public void rsZoneLeftY(float rsZoneDataLeftY)
     {
-        Debug.Log("left hand is at y pos " + rsZoneDataLeftY);
+        // Debug.Log("left hand is at y pos " + rsZoneDataLeftY);
 
         Transform transformToMove = HandObject.GetComponent<Transform>();
-
 
         Vector3 pos;
         pos = new Vector3(transformToMove.position.x, rsZoneDataLeftY, transformToMove.position.z );
