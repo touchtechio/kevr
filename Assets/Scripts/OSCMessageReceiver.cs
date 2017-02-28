@@ -25,7 +25,7 @@ namespace UniOSC
         private int armVert;
         private int armHor;
         //private int sideTap;
-        //private int 
+        //private int
 
         // private ButtonTest test;
 
@@ -36,12 +36,9 @@ namespace UniOSC
 
         OscMessage msg;
 
-        private const string rightZone = "right/zone";
-        private const string leftZone = "left/zone";
-        private const string cursor = "cursor";
-        private const string heartbeat = "heartbeat";
 
-        //OSC data variables
+
+        //Touch OSC addresses
         private const string gloveLeft1 = "Kevin/gloveLeft1";
         private const string gloveLeft2 = "Kevin/gloveLeft2";
         private const string gloveLeft3 = "Kevin/gloveLeft3";
@@ -60,7 +57,14 @@ namespace UniOSC
         private string[] fingerBendLeft = { gloveLeft1, gloveLeft2, gloveLeft3, gloveLeft4, gloveLeft5 };
         private string[] fingerBendRight = { gloveRight1, gloveRight2, gloveRight3 , gloveRight4, gloveRight5};
 
-        
+        // Max OSC addresses
+        private const string rightZone = "right/zone";
+        private const string leftZone = "left/zone";
+
+        //REALSENSE DRAGONFLY OSC address
+        private const string cursor = "cursor";
+        private const string heartbeat = "heartbeat";
+
 
         private int rightZoneData;
         private int leftZoneData;
@@ -163,7 +167,7 @@ namespace UniOSC
                         GameVR.rightZoneColor(3);
                         GameVR.leftZoneColor(3);
                     }
-                    
+
                     Debug.Log(xPos);
                 }
 
@@ -190,5 +194,3 @@ namespace UniOSC
         }
     }
 }
-
-

@@ -38,8 +38,8 @@ public class GameControllerVR : MonoBehaviour {
 
     void Awake()
     {
-        
-      //  source = GetComponent<AudioSource>();  
+
+      //  source = GetComponent<AudioSource>();
     }
 
     enum Screen
@@ -64,9 +64,10 @@ public class GameControllerVR : MonoBehaviour {
         {
             rightZones[i].GetComponent<Renderer>().sharedMaterial.color = Color.white;
             //Debug.Log(rightZones.Length);
-           
-        }
 
+        }
+        rightZones[zoneNumber - 1].GetComponent<Renderer>().sharedMaterial.color = zoneColors[zoneNumber - 1];
+        Debug.Log(zoneNumber);
 
     }
 
