@@ -33,6 +33,7 @@ namespace UniOSC
         public GameControllerVR GameVR;
         public GloveController GloveController;
         public FountainRSControllerVR FountainRSController;
+        public DroneInstantiator DroneInstantiator;
 
         OscMessage msg;
 
