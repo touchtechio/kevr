@@ -33,7 +33,7 @@ namespace UniOSC
         public GameControllerVR GameVR;
         public GloveController GloveController;
         public FountainRSControllerVR FountainRSController;
-        public DroneInstantiator DroneInstantiator;
+        public DroneInstantiator DroneController;
 
         OscMessage msg;
 
@@ -101,6 +101,7 @@ namespace UniOSC
                     float fingerBendDataLeft = (float)msg.Data[0];
                     GloveController.fingerBendLeft(i, fingerBendDataLeft);
                     FountainRSController.fountainHeightLeft(i, fingerBendDataLeft);
+                    DroneController.FingerBend(4-i, fingerBendDataLeft);
 
                 }
 
@@ -108,6 +109,8 @@ namespace UniOSC
                 {
                     float fingerBendDataRight = (float)msg.Data[0];
                     GloveController.fingerBendRight(i, fingerBendDataRight);
+                    DroneController.FingerBend(i+5, fingerBendDataRight);
+
                 }
             }
 
