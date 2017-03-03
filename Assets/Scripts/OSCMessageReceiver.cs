@@ -107,8 +107,10 @@ namespace UniOSC
 
                 if (msg.Address.Contains(fingerBendRight[i]))
                 {
+                    Debug.Log("right data");
                     float fingerBendDataRight = (float)msg.Data[0];
                     GloveController.fingerBendRight(i, fingerBendDataRight);
+                    FountainRSController.fountainHeightRight(i, fingerBendDataRight);
                     DroneController.FingerBend(i+5, fingerBendDataRight);
 
                 }

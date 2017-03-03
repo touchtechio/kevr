@@ -27,7 +27,6 @@ public class FountainRSControllerVR : MonoBehaviour {
 
     public AudioSource source;
     private float volume = 0.6f;
-    */
 
     public GameObject[] rightZones;
     public GameObject[] leftZones;
@@ -35,8 +34,25 @@ public class FountainRSControllerVR : MonoBehaviour {
     public GameObject rightZone2;
     public GameObject rightZone3;
     Color[] zoneColors = {Color.green, Color.yellow, Color.red};
+    */
 
-    public GameObject[] fountainJetsLeft;
+    [SerializeField]
+    int _amount = 5;
+
+    [SerializeField]
+    GameObject _fountainJet;
+
+    [SerializeField]
+    GameObject[] fountainJetsLeft;
+
+    [SerializeField]
+    GameObject[] fountainJetsRight;
+
+    [SerializeField]
+    int displacementX = -3;
+
+    [SerializeField]
+    int displacementZ = -1;
 
     void Awake()
     {
@@ -48,27 +64,41 @@ public class FountainRSControllerVR : MonoBehaviour {
 
     void Start()
     {
+        fountainJetsLeft = new GameObject[_amount];
 
+        for (int i = 0; i < _amount; i++)
+        {
+            // instantiate fountains based on prefab and then assign to fountain jet array
+            GameObject leftFountainJet = Instantiate(_fountainJet, transform.position + new Vector3(-2.5f + i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            fountainJetsLeft[i] = leftFountainJet;
+        }
 
+        fountainJetsRight = new GameObject[_amount];
+
+        for (int i = 0; i < _amount; i++)
+        {
+            // instantiate fountains based on prefab and then assign to fountain jet array
+            GameObject rightFountainJet = Instantiate(_fountainJet, transform.position + new Vector3(2.5f + -i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            fountainJetsRight[i] = rightFountainJet;
+        }
     }
 
 
     public void fountainHeightLeft(int i, float fingerBendDataLeft)
     {
-        Debug.Log("finger" + i + "bend value" + fingerBendDataLeft);
+        //Debug.Log("finger" + i + "bend value" + fingerBendDataLeft);
         fountainJetsLeft[i].transform.localScale = new Vector3 (100,40 + 5000 *fingerBendDataLeft,100);
 
-        
-    
-
-
+      
     }
-
 
     public void fountainHeightRight(int i, float fingerBendDataRight)
     {
         Debug.Log("finger" + i + "bend value" + fingerBendDataRight);
+        fountainJetsRight[i].transform.localScale = new Vector3(100, 40 + 5000 * fingerBendDataRight, 100);
+
     }
+
     /*
     public void rsZoneLeftXZ(float rsZoneDataLeftX, float rsZoneDataLeftZ)
     {

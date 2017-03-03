@@ -20,7 +20,6 @@ public class DroneInstantiator : MonoBehaviour
     [SerializeField]
     int maxHeight = 50;
 
-
     [SerializeField]
     GameObject[] drones;
 

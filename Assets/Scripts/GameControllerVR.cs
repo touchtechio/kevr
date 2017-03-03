@@ -62,11 +62,12 @@ public class GameControllerVR : MonoBehaviour {
     {
         for (int i = 0; i < rightZones.Length; i++ )
         {
-            rightZones[i].GetComponent<Renderer>().sharedMaterial.color = Color.white;
+            rightZones[i].GetComponent<MeshRenderer>().material.color = Color.white;
+      
             //Debug.Log(rightZones.Length);
 
         }
-        rightZones[zoneNumber - 1].GetComponent<Renderer>().sharedMaterial.color = zoneColors[zoneNumber - 1];
+        rightZones[zoneNumber - 1].GetComponent<MeshRenderer>().material.color = zoneColors[zoneNumber - 1];
         Debug.Log(zoneNumber);
 
     }
@@ -75,11 +76,11 @@ public class GameControllerVR : MonoBehaviour {
     {
         for (int i = 0; i < leftZones.Length; i++)
         {
-            leftZones[i].GetComponent<Renderer>().sharedMaterial.color = Color.white;
+            leftZones[i].GetComponent<MeshRenderer>().material.color = Color.white;
             //Debug.Log(rightZones.Length);
 
         }
-        leftZones[zoneNumber - 1].GetComponent<Renderer>().sharedMaterial.color = zoneColors[zoneNumber - 1];
+        leftZones[zoneNumber - 1].GetComponent<MeshRenderer>().material.color = zoneColors[zoneNumber - 1];
         Debug.Log(zoneNumber);
 
 
