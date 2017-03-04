@@ -1,0 +1,117 @@
+fileFormatVersion: 2
+guid: e7c8c14a827279449b945eddaad13561
+timeCreated: 1488579702
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: GPiano_Body
+    100004: GPiano_KeyLid
+    100006: GPiano_KeysBlack
+    100008: GPiano_KeysWhite
+    100010: GPiano_Legs
+    100012: GPiano_MainLid
+    100014: GPiano_PedalConstruction
+    100016: GPiano_Pedals
+    400000: //RootNode
+    400002: GPiano_Body
+    400004: GPiano_KeyLid
+    400006: GPiano_KeysBlack
+    400008: GPiano_KeysWhite
+    400010: GPiano_Legs
+    400012: GPiano_MainLid
+    400014: GPiano_PedalConstruction
+    400016: GPiano_Pedals
+    2300000: GPiano_Body
+    2300002: GPiano_KeyLid
+    2300004: GPiano_KeysBlack
+    2300006: GPiano_KeysWhite
+    2300008: GPiano_Legs
+    2300010: GPiano_MainLid
+    2300012: GPiano_PedalConstruction
+    2300014: GPiano_Pedals
+    3300000: GPiano_Body
+    3300002: GPiano_KeyLid
+    3300004: GPiano_KeysBlack
+    3300006: GPiano_KeysWhite
+    3300008: GPiano_Legs
+    3300010: GPiano_MainLid
+    3300012: GPiano_PedalConstruction
+    3300014: GPiano_Pedals
+    4300000: GPiano_Body
+    4300002: GPiano_KeyLid
+    4300004: GPiano_KeysBlack
+    4300006: GPiano_KeysWhite
+    4300008: GPiano_Legs
+    4300010: GPiano_MainLid
+    4300012: GPiano_PedalConstruction
+    4300014: GPiano_Pedals
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
