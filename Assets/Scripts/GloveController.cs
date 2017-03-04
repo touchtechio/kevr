@@ -6,7 +6,8 @@ using UnityEngine;
 public class GloveController : MonoBehaviour
 {
 
-    public GameObject HandObject;
+    public GameObject LeftHandObject;
+    public GameObject RightHandObject;
     // Use this for initialization
     void Start()
     {
@@ -33,7 +34,7 @@ public class GloveController : MonoBehaviour
     public void rsZoneLeftXZ(float rsZoneDataLeftX, float rsZoneDataLeftZ)
     {
        // Debug.Log("left hand is at x pos " + rsZoneDataLeftX + " y pos " + rsZoneDataLeftZ);
-        Transform transformToMove = HandObject.GetComponent<Transform>();
+        Transform transformToMove = LeftHandObject.GetComponent<Transform>();
 
 
         Vector3 pos;
@@ -49,7 +50,7 @@ public class GloveController : MonoBehaviour
     {
         // Debug.Log("left hand is at y pos " + rsZoneDataLeftY);
 
-        Transform transformToMove = HandObject.GetComponent<Transform>();
+        Transform transformToMove = LeftHandObject.GetComponent<Transform>();
 
         Vector3 pos;
         pos = new Vector3(transformToMove.position.x, rsZoneDataLeftY, transformToMove.position.z );
@@ -60,13 +61,25 @@ public class GloveController : MonoBehaviour
 
     public void rsZoneRightXZ(float rsZoneDataRightX, float rsZoneDataRightZ)
     {
-       // Debug.Log("right hand is at x pos " + rsZoneDataRightX + " y pos " + rsZoneDataRightZ);
+        // Debug.Log("right hand is at x pos " + rsZoneDataRightX + " y pos " + rsZoneDataRightZ);
         //  HandObject.GetComponent<Transform> = new Vector3(rsZoneLeftX, rsZoneLeftY, rsZoneLeftZ);
+        Transform transformToMove = RightHandObject.GetComponent<Transform>();
+
+
+        Vector3 pos;
+        pos = new Vector3(rsZoneDataRightX, transformToMove.localPosition.y, rsZoneDataRightZ);
+        transformToMove.localPosition = pos;
     }
 
 
     public void rsZoneRightY(float rsZoneDataRightY)
     {
-       // Debug.Log("left hand is at y pos " + rsZoneDataRightY);
+        // Debug.Log("left hand is at y pos " + rsZoneDataRightY);
+        Transform transformToMove = RightHandObject.GetComponent<Transform>();
+
+        Vector3 pos;
+        pos = new Vector3(transformToMove.position.x, rsZoneDataRightY, transformToMove.position.z);
+        transformToMove.transform.position = pos;
+
     }
 }
