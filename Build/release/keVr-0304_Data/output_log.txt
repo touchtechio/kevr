@@ -1,0 +1,58 @@
+Initialize engine version: 5.5.0b9 (d73e98081237)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 980M (ID=0x1617)
+    Vendor:   NVIDIA
+    VRAM:     3072 MB
+    Driver:   21.21.13.7654
+Begin MonoManager ReloadAssembly
+Platform assembly: D:\git\kevr\Build\release\keVr-0304_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading D:\git\kevr\Build\release\keVr-0304_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: D:\git\kevr\Build\release\keVr-0304_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading D:\git\kevr\Build\release\keVr-0304_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: D:\git\kevr\Build\release\keVr-0304_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading D:\git\kevr\Build\release\keVr-0304_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: D:\git\kevr\Build\release\keVr-0304_Data\Managed\Assembly-UnityScript-firstpass.dll (this message is harmless)
+Loading D:\git\kevr\Build\release\keVr-0304_Data\Managed\Assembly-UnityScript-firstpass.dll into Unity Child Domain
+Platform assembly: D:\git\kevr\Build\release\keVr-0304_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading D:\git\kevr\Build\release\keVr-0304_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: D:\git\kevr\Build\release\keVr-0304_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading D:\git\kevr\Build\release\keVr-0304_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: D:\git\kevr\Build\release\keVr-0304_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
+Loading D:\git\kevr\Build\release\keVr-0304_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+Platform assembly: D:\git\kevr\Build\release\keVr-0304_Data\Managed\UnityEngine.VR.dll (this message is harmless)
+Loading D:\git\kevr\Build\release\keVr-0304_Data\Managed\UnityEngine.VR.dll into Unity Child Domain
+Platform assembly: D:\git\kevr\Build\release\keVr-0304_Data\Managed\ProBuilderCore-Unity5.dll (this message is harmless)
+Loading D:\git\kevr\Build\release\keVr-0304_Data\Managed\ProBuilderCore-Unity5.dll into Unity Child Domain
+Platform assembly: D:\git\kevr\Build\release\keVr-0304_Data\Managed\ProBuilderMeshOps-Unity5.dll (this message is harmless)
+Loading D:\git\kevr\Build\release\keVr-0304_Data\Managed\ProBuilderMeshOps-Unity5.dll into Unity Child Domain
+Platform assembly: D:\git\kevr\Build\release\keVr-0304_Data\Managed\KDTree.dll (this message is harmless)
+Loading D:\git\kevr\Build\release\keVr-0304_Data\Managed\KDTree.dll into Unity Child Domain
+Platform assembly: D:\git\kevr\Build\release\keVr-0304_Data\Managed\Triangle.dll (this message is harmless)
+Loading D:\git\kevr\Build\release\keVr-0304_Data\Managed\Triangle.dll into Unity Child Domain
+Platform assembly: D:\git\kevr\Build\release\keVr-0304_Data\Managed\OSCsharp.dll (this message is harmless)
+Loading D:\git\kevr\Build\release\keVr-0304_Data\Managed\OSCsharp.dll into Unity Child Domain
+- Completed reload, in  0.247 seconds
+Platform assembly: D:\git\kevr\Build\release\keVr-0304_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: D:\git\kevr\Build\release\keVr-0304_Data\Managed\System.dll (this message is harmless)
+<RI> Initializing input.
+<RI> Input initialized.
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initialized touch support.
+OpenVR initialized!
+ 
+(Filename:  Line: 350)
+
+UnloadTime: 0.404950 ms
+Connected to lighthouse:LHR-463E0C13
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 3a30 -> priority: 1 
+  Thread -> id: 2304 -> priority: 1 
+OpenVR Shutdown
+ 
+(Filename:  Line: 766)
+
