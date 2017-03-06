@@ -23,6 +23,9 @@ public class DroneInstantiator : MonoBehaviour
     [SerializeField]
     GameObject[] drones;
 
+    [SerializeField]
+    GameObject player;
+
 
     // Use this for initialization
     void Start()
@@ -39,16 +42,28 @@ public class DroneInstantiator : MonoBehaviour
         //Destroy(this);
     }
 
-    internal void FingerBend(int i, float fingerBendPercent)
+    internal void FingerBend(int group, float fingerBendPercent)
     {
-        GameObject drone = drones[i];
-        Transform transformToMove = drone.GetComponent<Transform>();
 
+        var dronesPerGroup = _amount / 10;
+        for (int i = 0; i < dronesPerGroup; i++)
+        {
+            var droneNumber = group * dronesPerGroup + i;
+            GameObject drone = drones[droneNumber];
+            Transform transformToMove = drone.GetComponent<Transform>();
 
-        Vector3 pos;
-        pos = new Vector3(transformToMove.localPosition.x, fingerBendPercent * (float)maxHeight, transformToMove.localPosition.z);
-        transformToMove.localPosition = pos;
+            float dist = Vector3.Distance(transformToMove.localPosition, player.transform.localPosition);
 
+            float modifier = 0f;
+            if (dist < 10.0)
+            {
+                modifier = 10f;
+            }
+
+            Vector3 pos = new Vector3(transformToMove.localPosition.x+modifier, fingerBendPercent * (float)maxHeight, transformToMove.localPosition.z+modifier);
+
+            transformToMove.localPosition = pos;
+        }
         return;
 
     }
