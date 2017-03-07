@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.11480309, g: 0.1197685, b: 0.10575666, a: 1}
+  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1167,7 +1167,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 20
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &21559100
 GameObject:
@@ -16808,6 +16808,68 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 424127280}
   m_Mesh: {fileID: 4300924, guid: 047887f5ab8fb44699d3f0e63fb9cee9, type: 3}
+--- !u!1 &427365809
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 427365811}
+  - component: {fileID: 427365810}
+  m_Layer: 0
+  m_Name: OSCConnection-Syncphony
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &427365810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 427365809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaad75f03bc9d2942a2a4dd8e734324f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transmissionTypeIn: 0
+  _transmissionTypeOut: 0
+  autoConnectOSCIn: 1
+  _oscPort: 8005
+  _isValidOscIPAddress: 1
+  _isValidOscMulticastIPAddress: 1
+  _oscMulticastIPAddress: 224.0.1.0
+  oscOut: 1
+  autoConnectOSCOut: 1
+  foldoutOSCOut: 1
+  foldoutOSCIn: 1
+  _isValidOscOutIPAddress: 1
+  _oscOutIPAddress: 192.168.1.9
+  _isValidOscOutMulticastIPAddress: 1
+  _oscOutMulticastIPAddress: 224.0.1.0
+  _oscOutPort: 9000
+  redrawFlag: 0
+  dispatchOSC: 0
+  dispatchOSCOut: 0
+  oscMappingFileObjList: []
+  oscSessionFileObjList: []
+  SendSessionDataOnStart: 0
+--- !u!4 &427365811
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 427365809}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &427567620
 GameObject:
   m_ObjectHideFlags: 0
@@ -17026,7 +17088,7 @@ Transform:
   - {fileID: 477106104}
   - {fileID: 1496115169}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: -93.380005, z: 0}
 --- !u!1 &430533665
 GameObject:
@@ -24185,7 +24247,7 @@ GameObject:
   - component: {fileID: 615981075}
   - component: {fileID: 615981074}
   m_Layer: 0
-  m_Name: OscConnection
+  m_Name: OscConnection-TouchOsc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24230,8 +24292,8 @@ MonoBehaviour:
   _isValidOscOutMulticastIPAddress: 1
   _oscOutMulticastIPAddress: 224.0.1.0
   _oscOutPort: 9000
-  redrawFlag: 1
-  dispatchOSC: 0
+  redrawFlag: 0
+  dispatchOSC: 1
   dispatchOSCOut: 0
   oscMappingFileObjList: []
   oscSessionFileObjList: []
@@ -25493,7 +25555,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &646243655
 GameObject:
@@ -31259,7 +31321,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400016, guid: 7c15ce85562d505498ce7c27b88f7a72, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 400016, guid: 7c15ce85562d505498ce7c27b88f7a72, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -45917,7 +45979,7 @@ Transform:
   - {fileID: 997317956}
   - {fileID: 1234412338}
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1135541201
 GameObject:
@@ -48835,7 +48897,7 @@ Transform:
   m_LocalScale: {x: 1, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1197936993
 GameObject:
@@ -51202,7 +51264,7 @@ MonoBehaviour:
   - /
   _receiveAllAddresses: 1
   _useExplicitConnection: 0
-  _explicitConnection: {fileID: 0}
+  _explicitConnection: {fileID: 615981075}
   _oscPort: 0
   _receiveAllPorts: 1
   _redrawFlag: 0
@@ -56915,7 +56977,7 @@ Transform:
   - {fileID: 468509703}
   - {fileID: 923486126}
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1428529020
 GameObject:
@@ -62602,7 +62664,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 473340, guid: 71ca5259ca9ec7947975936be41698a7, type: 2}
       propertyPath: m_RootOrder
-      value: 12
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 11455840, guid: 71ca5259ca9ec7947975936be41698a7, type: 2}
       propertyPath: _SelectableMesh
@@ -64975,7 +65037,7 @@ AudioListener:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1634876294}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!92 &1634876296
 Behaviour:
   m_ObjectHideFlags: 0
@@ -70630,7 +70692,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1775934733
 GameObject:
@@ -71688,7 +71750,7 @@ Transform:
   - {fileID: 897235434}
   - {fileID: 142723755}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1808220977
 GameObject:

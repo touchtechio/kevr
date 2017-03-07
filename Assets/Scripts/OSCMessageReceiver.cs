@@ -15,6 +15,12 @@ namespace UniOSC
         private const string oscTap = "gesture/ring-right-hand/tap";
         private const string oscOrientation = "motion/ring-right-hand/orientation";
         private const string oscOmni = "gesture/ring-right-hand/omni";
+        private const string oscRightHandFingers = "gesture/right-hand/fingers";
+        private const string oscLeftHandFingers = "gesture/left-hand/fingers";
+        private const string oscRightHandWrist = "gesture/right-hand/wrist";
+        private const string oscLeftHandWrist = "gesture/left-hand/wrist";
+        private const string oscLeftNote = "midi/1";
+        private const string oscRighttNote = "midi/2";
 
         // Use this for initialization
 
@@ -56,7 +62,24 @@ namespace UniOSC
         private const string rsZoneRightY = "Kevin/zoneRightY";
 
         private string[] fingerBendLeft = { gloveLeft1, gloveLeft2, gloveLeft3, gloveLeft4, gloveLeft5 };
-        private string[] fingerBendRight = { gloveRight1, gloveRight2, gloveRight3 , gloveRight4, gloveRight5};
+        private string[] fingerBendRight = { gloveRight1, gloveRight2, gloveRight3, gloveRight4, gloveRight5 };
+
+
+        private const string noteLeft1 = "Kevin/noteLeft1";
+        private const string noteLeft2 = "Kevin/noteLeft2";
+        private const string noteLeft3 = "Kevin/noteLeft3";
+        private const string noteLeft4 = "Kevin/noteLeft4";
+        private const string noteLeft5 = "Kevin/noteLeft5";
+        private const string noteRight1 = "Kevin/noteRight1";
+        private const string noteRight2 = "Kevin/noteRight2";
+        private const string noteRight3 = "Kevin/noteRight3";
+        private const string noteRight4 = "Kevin/noteRight4";
+        private const string noteRight5 = "Kevin/noteRight5";
+
+
+        private string[] NoteAddresses = { noteLeft5, noteLeft4, noteLeft3, noteLeft2, noteLeft1, noteRight1, noteRight2, noteRight3, noteRight4, noteRight5 };
+
+
 
         // Max OSC addresses
         private const string rightZone = "right/zone";
@@ -93,6 +116,9 @@ namespace UniOSC
             // if no message, escape
             if (msg == null) return;
 
+
+
+
             // handles OSC data simulating glove
             for (int i = 0; i < 5; i++)
             {
@@ -101,20 +127,73 @@ namespace UniOSC
                     float fingerBendDataLeft = (float)msg.Data[0];
                     GloveController.fingerBendLeft(i, fingerBendDataLeft);
                     FountainRSController.fountainHeightLeft(i, fingerBendDataLeft);
-                    DroneController.FingerBend(4-i, fingerBendDataLeft);
+                    DroneController.FingerBend(4 - i, fingerBendDataLeft);
 
                 }
 
                 if (msg.Address.Contains(fingerBendRight[i]))
                 {
-                    Debug.Log("right data");
+                    //Debug.Log("right data");
                     float fingerBendDataRight = (float)msg.Data[0];
                     GloveController.fingerBendRight(i, fingerBendDataRight);
                     FountainRSController.fountainHeightRight(i, fingerBendDataRight);
-                    DroneController.FingerBend(i+5, fingerBendDataRight);
+                    DroneController.FingerBend(i + 5, fingerBendDataRight);
 
                 }
             }
+
+
+            // handles Touch Osc data simulating notes
+            for (int i = 0; i < 10; i++)
+            {
+                if (msg.Address.Contains(NoteAddresses[i]))
+                {
+                    Debug.Log("note:" + i);
+                    DroneController.NoteHit(i);
+                }
+            }
+
+
+            //
+            // syncphony gloves
+            if (msg.Address.Contains(oscLeftHandFingers))
+            {
+                //   Debug.Log("left:" + msg.Data[1] + "," + msg.Data[2] + "," + msg.Data[3] + "," + msg.Data[4] + "," + msg.Data[5]);
+
+            }
+            if (msg.Address.Contains(oscRightHandFingers))
+            {
+                //   Debug.Log("right:" + msg.Data[1] + "," + msg.Data[2] + "," + msg.Data[3] + "," + msg.Data[4] + "," + msg.Data[5]);
+
+            }
+            if (msg.Address.Contains(oscLeftHandWrist))
+            {
+                int degrees = (int)msg.Data[1];
+                //  Debug.Log("left-wrist:" + degrees);
+                GloveController.SetLeftWristAngle(degrees);
+            }
+            if (msg.Address.Contains(oscRightHandWrist))
+            {
+                int degrees = (int)msg.Data[1];
+                // Debug.Log("right-wrist:" + degrees);
+                GloveController.SetRightWristAngle(degrees);
+            }
+            if (msg.Address.Contains(oscLeftNote))
+            {
+                int note = (int)msg.Data[1];
+                Debug.Log("left-note:" + note);
+                DroneController.NoteHit(note);
+            }
+
+            if (msg.Address.Contains(oscRighttNote))
+            {
+                int note = (int)msg.Data[1];
+                Debug.Log("right-note:" + note);
+                DroneController.NoteHit(note - 55);
+            }
+
+
+
 
             // handles osc data simulating hand position over realsense
             if (msg.Address.Contains(rsZoneLeftXZ))

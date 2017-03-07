@@ -67,4 +67,24 @@ public class DroneInstantiator : MonoBehaviour
         return;
 
     }
+
+    internal void NoteHit(int note)
+    {
+        var dronesPerGroup = _amount / 10;
+        for (int i = 0; i < dronesPerGroup; i++)
+        {
+            var droneNumber = note * dronesPerGroup + i;
+            GameObject drone = drones[droneNumber];
+            Transform transformToMove = drone.GetComponent<Transform>();
+
+            float dist = Vector3.Distance(transformToMove.localPosition, player.transform.localPosition);
+
+            float modifier = 30f;
+
+            Vector3 pos = new Vector3(transformToMove.localPosition.x + modifier, transformToMove.localPosition.y, transformToMove.localPosition.z + modifier);
+
+            transformToMove.localPosition = pos;
+        }
+        return;
+    }
 }
