@@ -159,12 +159,20 @@ namespace UniOSC
             if (msg.Address.Contains(oscLeftHandFingers))
             {
                 //   Debug.Log("left:" + msg.Data[1] + "," + msg.Data[2] + "," + msg.Data[3] + "," + msg.Data[4] + "," + msg.Data[5]);
-
+                for (int i = 0; i < 5; i++)
+                {
+                    float fingerBendData = GloveController.GetFingerBend(i, (int)msg.Data[i + 1]);
+                    FountainRSController.fountainHeightLeft(i, fingerBendData);
+                }
             }
             if (msg.Address.Contains(oscRightHandFingers))
             {
                 //   Debug.Log("right:" + msg.Data[1] + "," + msg.Data[2] + "," + msg.Data[3] + "," + msg.Data[4] + "," + msg.Data[5]);
-
+                for (int i = 0; i < 5; i++)
+                {
+                    float fingerBendData = GloveController.GetFingerBend(i+5, (int)msg.Data[i + 1]);
+                    FountainRSController.fountainHeightRight(i, fingerBendData);
+                }
             }
             if (msg.Address.Contains(oscLeftHandWrist))
             {
@@ -182,14 +190,14 @@ namespace UniOSC
             {
                 int note = (int)msg.Data[1];
                 Debug.Log("left-note:" + note);
-                DroneController.NoteHit(note);
+                DroneController.LeftNoteHit(note);
             }
 
             if (msg.Address.Contains(oscRighttNote))
             {
                 int note = (int)msg.Data[1];
                 Debug.Log("right-note:" + note);
-                DroneController.NoteHit(note - 55);
+                DroneController.RightNoteHit(note);
             }
 
 

@@ -26,6 +26,15 @@ public class DroneInstantiator : MonoBehaviour
     [SerializeField]
     GameObject player;
 
+    [SerializeField]
+    float NoteHitForce  = 10f;
+
+    [SerializeField]
+    int rightGloveMidiStart = 55;
+
+    [SerializeField]
+    int leftGloveMidiStart = 24;
+
 
     // Use this for initialization
     void Start()
@@ -68,23 +77,29 @@ public class DroneInstantiator : MonoBehaviour
 
     }
 
-    internal void NoteHit(int note)
+    internal void NoteHit(int droneGroup)
     {
         var dronesPerGroup = _amount / 10;
         for (int i = 0; i < dronesPerGroup; i++)
         {
-            var droneNumber = note * dronesPerGroup + i;
+            var droneNumber = droneGroup * dronesPerGroup + i;
             GameObject drone = drones[droneNumber];
             Transform transformToMove = drone.GetComponent<Transform>();
 
-            float dist = Vector3.Distance(transformToMove.localPosition, player.transform.localPosition);
-
-            float modifier = 30f;
-
-            Vector3 pos = new Vector3(transformToMove.localPosition.x + modifier, transformToMove.localPosition.y, transformToMove.localPosition.z + modifier);
+            Vector3 pos = new Vector3(transformToMove.localPosition.x + NoteHitForce, transformToMove.localPosition.y, transformToMove.localPosition.z + NoteHitForce);
 
             transformToMove.localPosition = pos;
         }
         return;
+    }
+
+    internal void LeftNoteHit(int note)
+    {
+        NoteHit(note - leftGloveMidiStart);
+    }
+
+    internal void RightNoteHit(int note)
+    {
+        NoteHit(note - rightGloveMidiStart);
     }
 }

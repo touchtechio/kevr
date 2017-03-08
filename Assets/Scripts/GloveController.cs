@@ -9,6 +9,25 @@ public class GloveController : MonoBehaviour
     public GameObject LeftHandObject;
     public GameObject RightHandObject;
 
+    public static int leftThumb = 3270;
+    public static int leftIndex = 4630;
+    public static int leftMiddle = 5820;
+    public static int leftRing = 5510;
+    public static int leftPink = 4720;
+    public static int rightThumb = 2870;
+    public static int rightIndex = 4400;
+    public static int rightMiddle = 5700;
+    public static int rightRing = 5500;
+    public static int rightPink = 4290;
+
+    private int[] fingerThresholds =
+    {
+        leftPink, leftRing, leftMiddle, leftIndex, leftThumb,
+        rightThumb, rightIndex, rightMiddle, rightRing, rightPink
+    };
+
+   
+
     // Use this for initialization
     void Start()
     {
@@ -99,5 +118,11 @@ public class GloveController : MonoBehaviour
     {
         SetWristAngle(RightHandObject, degrees);
 
+    }
+
+    internal float GetFingerBend(int finger, int gloveValue)
+    {
+        int threshold = fingerThresholds[finger];
+        return (float)gloveValue - threshold - 100/ 200f; 
     }
 }
