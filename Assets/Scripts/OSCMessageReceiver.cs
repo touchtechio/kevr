@@ -86,7 +86,8 @@ namespace UniOSC
         private const string leftZone = "left/zone";
 
         //REALSENSE DRAGONFLY OSC address
-        private const string cursor = "cursor";
+        private const string cursorLeft = "/cursor/s124/left";
+        private const string cursorRight = "/cursor/s124/right";
         private const string heartbeat = "heartbeat";
 
 
@@ -231,41 +232,68 @@ namespace UniOSC
             }
 
             // handles rs data from single camera
-            if (msg.Address.Contains(cursor))
+            if (msg.Address.Contains(cursorLeft))
             {
-                if (!msg.Address.Contains(heartbeat))
+
+                float xPos = (float)msg.Data[0];
+                float zPos = (float)msg.Data[1];
+                float yPos = (float)msg.Data[2];
+
+
+                GloveController.rsZoneLeftY(yPos+1);
+
+                if (Math.Abs(xPos) < 0.05)
+                {
+                    // zone center
+                    GameVR.leftZoneColor(1);
+
+                }
+                else if (Math.Abs(xPos) < 0.15)
                 {
 
+                    // zone middle
 
-                    float xPos = (float)msg.Data[0];
-
-                    if (Math.Abs(xPos) < 0.05)
-                    {
-                        // zone center
-                        GameVR.rightZoneColor(1);
-                        GameVR.leftZoneColor(1);
-
-                    }
-                    else if (Math.Abs(xPos) < 0.15)
-                    {
-
-                        // zone middle
-
-                        GameVR.rightZoneColor(2);
-                        GameVR.leftZoneColor(2);
-                    }
-                    else
-                    {
-                        // zone outside
-                        GameVR.rightZoneColor(3);
-                        GameVR.leftZoneColor(3);
-                    }
-
-                    Debug.Log(xPos);
+                    GameVR.leftZoneColor(2);
+                }
+                else
+                {
+                    // zone outside
+                    GameVR.leftZoneColor(3);
                 }
 
-                //GameVR.rightZoneColor(rightZoneData);
+                Debug.Log(xPos);
 
+            }
+            if (msg.Address.Contains(cursorRight))
+            {
+
+                float xPos = (float)msg.Data[0];
+                float zPos = (float)msg.Data[1];
+                float yPos = (float)msg.Data[2];
+
+
+                GloveController.rsZoneRightY(yPos + 1);
+
+                if (Math.Abs(xPos) < 0.05)
+                {
+                    // zone center
+                    GameVR.rightZoneColor(1);
+
+                }
+                else if (Math.Abs(xPos) < 0.15)
+                {
+
+                    // zone middle
+
+                    GameVR.rightZoneColor(2);
+                }
+                else
+                {
+                    // zone outside
+                    GameVR.rightZoneColor(3);
+                }
+
+                Debug.Log(xPos);
 
             }
 
