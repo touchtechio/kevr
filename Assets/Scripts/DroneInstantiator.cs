@@ -44,7 +44,7 @@ public class DroneInstantiator : MonoBehaviour
         for (int i = 0; i < _amount; i++)
         {
             GameObject drone = Instantiate(_prefab, transform.position + new Vector3(i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
-            drone.GetComponent<MeshRenderer>().material.color = Color.HSVToRGB(i / (float)_amount, .9f, .5f);
+            drone.GetComponentInChildren<MeshRenderer>().material.color = Color.HSVToRGB(i / (float)_amount, .9f, .5f);
             drones[i] = drone;
         }
 
@@ -77,6 +77,9 @@ public class DroneInstantiator : MonoBehaviour
 
     }
 
+    /*
+     * @droneGroup as 0-9 from left to right
+     * */
     internal void NoteHit(int droneGroup)
     {
         var dronesPerGroup = _amount / 10;

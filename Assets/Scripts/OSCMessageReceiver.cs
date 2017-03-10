@@ -11,17 +11,7 @@ namespace UniOSC
 
     public class OSCMessageReceiver : BaseOSC
     {
-        private const string oscSideTap = "gesture/ring-right-hand/sidetap";
-        private const string oscTap = "gesture/ring-right-hand/tap";
-        private const string oscOrientation = "motion/ring-right-hand/orientation";
-        private const string oscOmni = "gesture/ring-right-hand/omni";
-        private const string oscRightHandFingers = "gesture/right-hand/fingers";
-        private const string oscLeftHandFingers = "gesture/left-hand/fingers";
-        private const string oscRightHandWrist = "gesture/right-hand/wrist";
-        private const string oscLeftHandWrist = "gesture/left-hand/wrist";
-        private const string oscLeftNote = "midi/1";
-        private const string oscRighttNote = "midi/2";
-
+      
         // Use this for initialization
 
         private int noteVal;
@@ -42,6 +32,21 @@ namespace UniOSC
         public DroneInstantiator DroneController;
 
         OscMessage msg;
+
+
+        //Syncphony osc addresses
+
+        private const string oscSideTap = "gesture/ring-right-hand/sidetap";
+        private const string oscTap = "gesture/ring-right-hand/tap";
+        private const string oscOrientation = "motion/ring-right-hand/orientation";
+        private const string oscOmni = "gesture/ring-right-hand/omni";
+        private const string oscRightHandFingers = "gesture/right-hand/fingers";
+        private const string oscLeftHandFingers = "gesture/left-hand/fingers";
+        private const string oscRightHandWrist = "gesture/right-hand/wrist";
+        private const string oscLeftHandWrist = "gesture/left-hand/wrist";
+        private const string oscLeftNote = "midi/1";
+        private const string oscRighttNote = "midi/2";
+
 
 
 
@@ -118,8 +123,6 @@ namespace UniOSC
             if (msg == null) return;
 
 
-
-
             // handles OSC data simulating glove
             for (int i = 0; i < 5; i++)
             {
@@ -156,7 +159,10 @@ namespace UniOSC
 
 
             //
-            // syncphony gloves
+            //  SYNCPHONY
+            //
+
+            // syncphony glove finger bends
             if (msg.Address.Contains(oscLeftHandFingers))
             {
                 //   Debug.Log("left:" + msg.Data[1] + "," + msg.Data[2] + "," + msg.Data[3] + "," + msg.Data[4] + "," + msg.Data[5]);
@@ -175,6 +181,8 @@ namespace UniOSC
                     FountainRSController.fountainHeightRight(i, fingerBendData);
                 }
             }
+
+            // syncphony glove wrist rotation
             if (msg.Address.Contains(oscLeftHandWrist))
             {
                 int degrees = (int)msg.Data[1];
@@ -187,11 +195,13 @@ namespace UniOSC
                 // Debug.Log("right-wrist:" + degrees);
                 GloveController.SetRightWristAngle(degrees);
             }
+
+            // syncphony glove MIDI note hits
             if (msg.Address.Contains(oscLeftNote))
             {
                 int note = (int)msg.Data[1];
                 Debug.Log("left-note:" + note);
-                DroneController.LeftNoteHit(note);
+                DroneController.LeftNoteHit(note); // note is a midi note
             }
 
             if (msg.Address.Contains(oscRighttNote))
@@ -200,9 +210,6 @@ namespace UniOSC
                 Debug.Log("right-note:" + note);
                 DroneController.RightNoteHit(note);
             }
-
-
-
 
             // handles osc data simulating hand position over realsense
             if (msg.Address.Contains(rsZoneLeftXZ))
@@ -241,6 +248,8 @@ namespace UniOSC
 
 
                 GloveController.rsZoneLeftY(yPos+1);
+                GloveController.rsZoneLeftXZ(-zPos*5, -xPos*5);
+
 
                 if (Math.Abs(xPos) < 0.05)
                 {
@@ -273,6 +282,8 @@ namespace UniOSC
 
 
                 GloveController.rsZoneRightY(yPos + 1);
+                GloveController.rsZoneRightXZ(zPos*10, xPos*10);
+
 
                 if (Math.Abs(xPos) < 0.05)
                 {

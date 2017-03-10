@@ -51,6 +51,7 @@ public class GloveController : MonoBehaviour
        // Debug.Log("finger" + i + "bend value" + fingerBendDataRight);
     }
 
+    
     public void rsZoneLeftXZ(float rsZoneDataLeftX, float rsZoneDataLeftZ)
     {
        // Debug.Log("left hand is at x pos " + rsZoneDataLeftX + " y pos " + rsZoneDataLeftZ);
@@ -111,7 +112,7 @@ public class GloveController : MonoBehaviour
 
     internal void SetLeftWristAngle(int degrees)
     {
-        SetWristAngle(LeftHandObject, degrees);
+        SetWristAngle(LeftHandObject, degrees+30);
     }
 
     internal void SetRightWristAngle(int degrees)
@@ -120,9 +121,12 @@ public class GloveController : MonoBehaviour
 
     }
 
+
+    //atempts to scale syncphony finger bend to 0.0 - 1.0
     internal float GetFingerBend(int finger, int gloveValue)
     {
         int threshold = fingerThresholds[finger];
-        return (float)gloveValue - threshold - 100/ 200f; 
+        return (float)gloveValue - threshold - 200/ 400f; 
     }
+
 }
