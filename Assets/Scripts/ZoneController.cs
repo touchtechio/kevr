@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ZoneController : MonoBehaviour {
+public class ZoneController : MonoBehaviour
+{
     /*
     public float timerMax;
 
@@ -40,7 +41,7 @@ public class ZoneController : MonoBehaviour {
     void Awake()
     {
 
-      //  source = GetComponent<AudioSource>();
+        //  source = GetComponent<AudioSource>();
     }
 
     enum Screen
@@ -53,25 +54,36 @@ public class ZoneController : MonoBehaviour {
         INTERRUPT,
     }
 
-    [SerializeField]
     int _amount = 3;
 
     [SerializeField]
     GameObject zoneObject;
 
-    [SerializeField]
+
     GameObject[] zoneLeft;
 
-    [SerializeField]
     GameObject[] zoneRight;
 
     [SerializeField]
     float displacementX = 0.3f;
 
     [SerializeField]
+    float displacementY = 0.2f;
+
+    [SerializeField]
     int displacementZ = 0;
 
+    public GameObject zone4SliderLeft;
+    GameObject zone4SliderRight;
+    public GameObject waterGloveLeft;
+    GameObject waterGloveRight;
+    public GameObject droneGloveLeft;
+    GameObject droneGloveRight;
+
     Color[] zoneColors = { Color.green, Color.yellow, Color.red };
+
+    [SerializeField]
+    float[] xPosRange = { -0.35f, -0.15f, 0f, 0.15f, 0.35f };
 
     void Start()
     {
@@ -80,7 +92,7 @@ public class ZoneController : MonoBehaviour {
         for (int i = 0; i < _amount; i++)
         {
             // instantiate fountains based on prefab and then assign to fountain jet array
-            GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(-(displacementX *.5f + i * displacementX), 0, i * displacementZ), Quaternion.identity) as GameObject;
+            GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(-(displacementX * .5f + i * displacementX), 0, i * displacementZ), Quaternion.identity) as GameObject;
             zoneLeft[i] = zone;
         }
 
@@ -89,24 +101,38 @@ public class ZoneController : MonoBehaviour {
         for (int i = 0; i < _amount; i++)
         {
             // instantiate fountains based on prefab and then assign to fountain jet array
-            GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(displacementX * .5f+i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(displacementX * .5f + i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
             zoneRight[i] = zone;
         }
 
+        // instantiate slider objects
+        zone4SliderLeft = Instantiate(zone4SliderLeft, transform.position + new Vector3(-(displacementX * .5f + 3 * displacementX), 0, -0.1f), Quaternion.identity) as GameObject;
+        zone4SliderRight = Instantiate(zone4SliderLeft, transform.position + new Vector3((displacementX * .5f + 3 * displacementX), 0, -0.1f), Quaternion.identity) as GameObject;
+        waterGloveLeft = Instantiate(waterGloveLeft, transform.position + new Vector3(-(displacementX * .5f + 3 * displacementX), displacementY, 0), Quaternion.identity) as GameObject;
+        waterGloveRight = Instantiate(waterGloveLeft, transform.position + new Vector3((displacementX * .5f + 3 * displacementX), displacementY, 0), Quaternion.identity) as GameObject;
+        waterGloveRight.transform.localScale = new Vector3(-1, 1, 1);
+        droneGloveLeft = Instantiate(droneGloveLeft, transform.position + new Vector3(-(displacementX * .5f + 3 * displacementX), 2 * displacementY, 0), Quaternion.identity) as GameObject;
+        droneGloveRight = Instantiate(droneGloveLeft, transform.position + new Vector3((displacementX * .5f + 3 * displacementX), 2 * displacementY, 0), Quaternion.identity) as GameObject;
+        droneGloveRight.transform.localScale = new Vector3(-1, 1, 1);
+
     }
 
-    internal void ZoneHeightLeft(int zone, float yPos)
+    private void ZoneHeightLeft(int zone, float yPos)
     {
         //Debug.Log("zone-LEFT:" + zone + " scale value:" + yPos);
+
         ZoneHeight(zoneLeft[zone], zone, yPos);
-       // rightZoneColor(zone);
+
+        // rightZoneColor(zone);
     }
 
-    internal void ZoneHeightRight(int zone, float yPos)
+    private void ZoneHeightRight(int zone, float yPos)
     {
         //Debug.Log("zone-RIGHT:" + zone + " scale value:" + yPos);
+
         ZoneHeight(zoneRight[zone], zone, yPos);
-       // leftZoneColor(zone);
+
+        // leftZoneColor(zone);
     }
 
     internal void ZoneHeight(GameObject ZoneObject, int zone, float yPos)
@@ -115,20 +141,45 @@ public class ZoneController : MonoBehaviour {
         childTransform.localScale = new Vector3(1, (1 + yPos), 1);
     }
 
+    private void SliderLeft(int selectedZone, float zPos)
+    {
+
+        Debug.Log("slider selecting" + selectedZone);
+
+        Debug.Log("slider selected");
+        zone4SliderLeft.GetComponentInChildren<MeshRenderer>().material.color = Color.cyan;
+        Transform moveSlider = zone4SliderLeft.transform.GetChild(0);
+
+        moveSlider.localPosition = new Vector3(0, 0, 0.03f+zPos);
+
+    }
+
+    private void SliderRight(int selectedZone, float zPos)
+    {
+
+        Debug.Log("slider selecting" + selectedZone);
+
+        Debug.Log("slider selected");
+        zone4SliderRight.GetComponentInChildren<MeshRenderer>().material.color = Color.cyan;
+        Transform moveSlider = zone4SliderRight.transform.GetChild(0);
+
+        moveSlider.localPosition = new Vector3(0, 0, zPos);
+
+    }
 
     public void rightZoneColor(int zoneNumber)
     {
-        for (int i = 0; i < zoneRight.Length; i++ )
+        for (int i = 0; i < zoneRight.Length; i++)
         {
             zoneRight[i].GetComponentInChildren<MeshRenderer>().material.color = Color.white;
 
-      
+
             //Debug.Log(rightZones.Length);
 
         }
-       zoneRight[zoneNumber].GetComponentInChildren<MeshRenderer>().material.color = zoneColors[zoneNumber];
+        zoneRight[zoneNumber].GetComponentInChildren<MeshRenderer>().material.color = zoneColors[zoneNumber];
 
-        Debug.Log("color: "+ zoneColors[zoneNumber]);
+        //Debug.Log("color: " + zoneColors[zoneNumber]);
 
     }
 
@@ -144,7 +195,7 @@ public class ZoneController : MonoBehaviour {
         }
         zoneLeft[zoneNumber].GetComponentInChildren<MeshRenderer>().material.color = zoneColors[zoneNumber];
 
-        Debug.Log("color: " + zoneColors[zoneNumber]);
+        //  Debug.Log("color: " + zoneColors[zoneNumber]);
 
 
 
@@ -153,23 +204,80 @@ public class ZoneController : MonoBehaviour {
     internal int GetZone(float xPos)
     {
 
-        if (Math.Abs(xPos) < 0.05)
+        //// xpos values are -0.3 to 0.3
+        for (int i = 0; i < (xPosRange.Length - 1); i++)
         {
-            return 0;
+
+            if (xPos > xPosRange[i] && xPos < xPosRange[i + 1])
+            {
+                Debug.Log("in zone: " + i);
+                return i;
+            }
         }
-        else if (Math.Abs(xPos) < 0.15)
+        //  Debug.Log(xPos + "did not fall into zones");
+        return -1;
+    }
+
+    internal void UpdateLeftZone(float xPos, float zPos, float yPos)
+    {
+
+        int selectedZone = GetZone(xPos);
+
+        if (selectedZone < 3)
         {
-
-            // zone middle
-
-            return 1;
+            ZoneHeightLeft(selectedZone, yPos);
+            leftZoneColor(selectedZone);
         }
         else
         {
-            // zone outside
-            return 2;
+            SliderLeft(selectedZone, zPos);
         }
+
+        return;
+    }
+
+    internal void UpdateRightZone(float xPos, float zPos, float yPos)
+    {
+
+        int selectedZone = GetZone(xPos);
+
+        if (selectedZone < 3)
+        {
+            ZoneHeightRight(selectedZone, yPos);
+            rightZoneColor(selectedZone);
+        }
+        else
+        {
+            SliderRight(selectedZone, zPos);
+        }
+
+        return;
     }
 
 
 }
+
+
+//// to make 5 zones
+/*
+if (Math.Abs(xPos) < 0.05)
+{
+    return 0;
+}
+else if (Math.Abs(xPos) < 0.15)
+{
+
+    // zone middle
+
+    return 1;
+}
+else
+{
+    // zone outside
+    return 2;
+}
+*/
+
+
+
+

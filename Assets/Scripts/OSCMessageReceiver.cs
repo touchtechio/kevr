@@ -11,7 +11,7 @@ namespace UniOSC
 
     public class OSCMessageReceiver : BaseOSC
     {
-      
+
         // Use this for initialization
 
         private int noteVal;
@@ -170,7 +170,7 @@ namespace UniOSC
                 {
                     float fingerBendData = GloveController.GetFingerBend(i, (int)msg.Data[i + 1]);
                     FountainRSController.fountainHeightLeft(i, fingerBendData);
-                   
+
                 }
             }
             if (msg.Address.Contains(oscRightHandFingers))
@@ -178,7 +178,7 @@ namespace UniOSC
                 //   Debug.Log("right:" + msg.Data[1] + "," + msg.Data[2] + "," + msg.Data[3] + "," + msg.Data[4] + "," + msg.Data[5]);
                 for (int i = 0; i < 5; i++)
                 {
-                    float fingerBendData = GloveController.GetFingerBend(i+5, (int)msg.Data[i + 1]);
+                    float fingerBendData = GloveController.GetFingerBend(i + 5, (int)msg.Data[i + 1]);
                     FountainRSController.fountainHeightRight(i, fingerBendData);
                 }
             }
@@ -250,13 +250,7 @@ namespace UniOSC
 
                 GloveController.rsZoneLeftY(yPos);
                 GloveController.rsZoneLeftXZ(-zPos, -xPos);
-
-                int selectedZone = ZoneController.GetZone(xPos);
-                ZoneController.ZoneHeightLeft(selectedZone, yPos);
-
-// color selection
-                ZoneController.leftZoneColor(selectedZone);
-              
+                ZoneController.UpdateLeftZone(xPos, zPos, yPos);
 
             }
             if (msg.Address.Contains(cursorRight))
@@ -269,13 +263,10 @@ namespace UniOSC
 
                 GloveController.rsZoneRightY(yPos);
                 GloveController.rsZoneRightXZ(-zPos, -xPos);
+                ZoneController.UpdateRightZone(xPos, zPos, yPos);
 
 
-                int selectedZone = ZoneController.GetZone(xPos); // returns the corresponding zone number
-                ZoneController.ZoneHeightRight(selectedZone, yPos);
-                ZoneController.rightZoneColor(selectedZone);
 
-                
                 Debug.Log(xPos);
 
             }
@@ -296,5 +287,6 @@ namespace UniOSC
 
 
         }
+
     }
 }
