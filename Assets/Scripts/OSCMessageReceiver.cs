@@ -29,7 +29,7 @@ namespace UniOSC
         public ZoneController ZoneController;
         public GloveController GloveController;
         public FountainRSControllerVR FountainRSController;
-        public DroneInstantiator DroneController;
+        public DroneController DroneController;
 
         OscMessage msg;
 
