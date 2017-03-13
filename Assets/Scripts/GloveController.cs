@@ -6,8 +6,11 @@ using UnityEngine;
 public class GloveController : MonoBehaviour
 {
 
+
     public GameObject LeftHandObject;
     public GameObject RightHandObject;
+
+    public float maxBounds = 900f;
 
     public static int leftThumb = 3270;
     public static int leftIndex = 4630;
@@ -18,7 +21,7 @@ public class GloveController : MonoBehaviour
     public static int rightIndex = 4400;
     public static int rightMiddle = 5700;
     public static int rightRing = 5500;
-    public static int rightPink = 4290;
+    public static int rightPink = 4445;
 
     private int[] fingerThresholds =
     {
@@ -126,7 +129,10 @@ public class GloveController : MonoBehaviour
     internal float GetFingerBend(int finger, int gloveValue)
     {
         int threshold = fingerThresholds[finger];
-        return (float)gloveValue - threshold - 200/ 400f; 
+        float bendPercentage = ((gloveValue - threshold) + maxBounds/2) / maxBounds;
+        Debug.Log("finger: " + finger + " glovevalue: " + gloveValue + " threshold: " + threshold + " bend %: " + bendPercentage);
+        return bendPercentage;
+
     }
 
 }

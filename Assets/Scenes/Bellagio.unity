@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
+  m_IndirectSpecularColor: {r: 0.11480309, g: 0.1197685, b: 0.10575666, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -49123,7 +49123,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1197595002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51282,12 +51282,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ba1d4f60650a054b809fe7895833d55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _amount: 3
   zoneObject: {fileID: 1283166169630696, guid: 794c174e155fe0f4bbb3cbcd5ccb6587, type: 2}
-  zoneLeft: []
-  zoneRight: []
   displacementX: 0.15
+  displacementY: 0.3
   displacementZ: 0
+  zone4SliderLeft: {fileID: 1761410133923608, guid: 0bbf8ba878d641e48a01fa74e9a505f5,
+    type: 2}
+  waterGloveLeft: {fileID: 1644811009640988, guid: 9e63a6b63c51c6846baa7ce48e405bdd,
+    type: 2}
+  droneGloveLeft: {fileID: 1697120021047146, guid: 116a8233ddef45941a11deccacc0cbbe,
+    type: 2}
+  xPosRange:
+  - -0.35
+  - -0.15
+  - 0
+  - 0.15
+  - 0.35
 --- !u!4 &1252059955
 Transform:
   m_ObjectHideFlags: 0
@@ -51531,6 +51541,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LeftHandObject: {fileID: 1261917322}
   RightHandObject: {fileID: 630951525}
+  maxBounds: 900
 --- !u!114 &1256855343
 MonoBehaviour:
   m_ObjectHideFlags: 0
