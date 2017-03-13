@@ -26,7 +26,7 @@ namespace UniOSC
         // private ButtonTest test;
 
         //public OSCDataMapper dataScript; // no longer using this
-        public GameControllerVR GameVR;
+        public ZoneController ZoneController;
         public GloveController GloveController;
         public FountainRSControllerVR FountainRSController;
         public DroneInstantiator DroneController;
@@ -170,6 +170,7 @@ namespace UniOSC
                 {
                     float fingerBendData = GloveController.GetFingerBend(i, (int)msg.Data[i + 1]);
                     FountainRSController.fountainHeightLeft(i, fingerBendData);
+                   
                 }
             }
             if (msg.Address.Contains(oscRightHandFingers))
@@ -247,30 +248,15 @@ namespace UniOSC
                 float yPos = (float)msg.Data[2];
 
 
-                GloveController.rsZoneLeftY(yPos+1);
-                GloveController.rsZoneLeftXZ(-zPos*5, -xPos*5);
+                GloveController.rsZoneLeftY(yPos);
+                GloveController.rsZoneLeftXZ(-zPos, -xPos);
 
+                int selectedZone = ZoneController.GetZone(xPos);
+                ZoneController.ZoneHeightLeft(selectedZone, yPos);
 
-                if (Math.Abs(xPos) < 0.05)
-                {
-                    // zone center
-                    GameVR.leftZoneColor(1);
-
-                }
-                else if (Math.Abs(xPos) < 0.15)
-                {
-
-                    // zone middle
-
-                    GameVR.leftZoneColor(2);
-                }
-                else
-                {
-                    // zone outside
-                    GameVR.leftZoneColor(3);
-                }
-
-                Debug.Log(xPos);
+// color selection
+                ZoneController.leftZoneColor(selectedZone);
+              
 
             }
             if (msg.Address.Contains(cursorRight))
@@ -281,29 +267,15 @@ namespace UniOSC
                 float yPos = (float)msg.Data[2];
 
 
-                GloveController.rsZoneRightY(yPos + 1);
-                GloveController.rsZoneRightXZ(zPos*10, xPos*10);
+                GloveController.rsZoneRightY(yPos);
+                GloveController.rsZoneRightXZ(-zPos, -xPos);
 
 
-                if (Math.Abs(xPos) < 0.05)
-                {
-                    // zone center
-                    GameVR.rightZoneColor(1);
+                int selectedZone = ZoneController.GetZone(xPos); // returns the corresponding zone number
+                ZoneController.ZoneHeightRight(selectedZone, yPos);
+                ZoneController.rightZoneColor(selectedZone);
 
-                }
-                else if (Math.Abs(xPos) < 0.15)
-                {
-
-                    // zone middle
-
-                    GameVR.rightZoneColor(2);
-                }
-                else
-                {
-                    // zone outside
-                    GameVR.rightZoneColor(3);
-                }
-
+                
                 Debug.Log(xPos);
 
             }
@@ -313,13 +285,13 @@ namespace UniOSC
             {
                 rightZoneData = (int)msg.Data[0];
                 //Debug.Log(rightZoneData);
-                GameVR.rightZoneColor(rightZoneData);
+                ZoneController.rightZoneColor(rightZoneData);
 
             }
             else if (msg.Address.Contains(leftZone))
             {
                 leftZoneData = (int)msg.Data[0];
-                GameVR.leftZoneColor(leftZoneData);
+                ZoneController.leftZoneColor(leftZoneData);
             }
 
 

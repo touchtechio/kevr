@@ -75,7 +75,7 @@ public class GloveController : MonoBehaviour
 
         Vector3 pos;
         pos = new Vector3(transformToMove.position.x, rsZoneDataLeftY, transformToMove.position.z );
-        transformToMove.transform.position = pos;
+        transformToMove.localPosition = pos;
 
 
     }
@@ -100,7 +100,7 @@ public class GloveController : MonoBehaviour
 
         Vector3 pos;
         pos = new Vector3(transformToMove.position.x, rsZoneDataRightY, transformToMove.position.z);
-        transformToMove.transform.position = pos;
+        transformToMove.localPosition = pos;
 
     }
 

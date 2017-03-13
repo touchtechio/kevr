@@ -52,9 +52,43 @@ public class GameControllerVR : MonoBehaviour {
         INTERRUPT,
     }
 
+    [SerializeField]
+    int _amount = 3;
+
+    [SerializeField]
+    GameObject zoneObject;
+
+    [SerializeField]
+    GameObject[] zoneLeft;
+
+    [SerializeField]
+    GameObject[] zoneRight;
+
+    [SerializeField]
+    int displacementX = 3;
+
+    [SerializeField]
+    int displacementZ = 1;
+
     void Start()
     {
+        zoneLeft = new GameObject[_amount];
 
+        for (int i = 0; i < _amount; i++)
+        {
+            // instantiate fountains based on prefab and then assign to fountain jet array
+            GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(- i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            zoneLeft[i] = zone;
+        }
+
+        zoneRight = new GameObject[_amount];
+
+        for (int i = 0; i < _amount; i++)
+        {
+            // instantiate fountains based on prefab and then assign to fountain jet array
+            GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            zoneRight[i] = zone;
+        }
 
     }
 
