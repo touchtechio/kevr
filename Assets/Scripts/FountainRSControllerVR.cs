@@ -69,8 +69,13 @@ public class FountainRSControllerVR : MonoBehaviour {
         for (int i = 0; i < _amount; i++)
         {
             // instantiate fountains based on prefab and then assign to fountain jet array
-            GameObject leftFountainJet = Instantiate(_fountainJet, transform.position + new Vector3(-2.5f + i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
-            fountainJetsLeft[i] = leftFountainJet;
+            GameObject jet = Instantiate(_fountainJet, transform.position + new Vector3(-2.5f + i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            Transform jetTransform = jet.GetComponent<Transform>();
+            if (i > 2)
+            {
+                jetTransform.rotation = Quaternion.Euler(0, 0, (i - 2) * 5);
+            }
+            fountainJetsLeft[i] = jet;
         }
 
         fountainJetsRight = new GameObject[_amount];
@@ -78,8 +83,15 @@ public class FountainRSControllerVR : MonoBehaviour {
         for (int i = 0; i < _amount; i++)
         {
             // instantiate fountains based on prefab and then assign to fountain jet array
-            GameObject rightFountainJet = Instantiate(_fountainJet, transform.position + new Vector3(2.5f + -i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
-            fountainJetsRight[i] = rightFountainJet;
+            GameObject jet = Instantiate(_fountainJet, transform.position + new Vector3(2.5f + -i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+
+            Transform jetTransform = jet.GetComponent<Transform>();
+            if (i > 2)
+            {
+                jetTransform.rotation = Quaternion.Euler(0, 0, -(i-2) * 5);
+            }
+
+            fountainJetsRight[i] = jet;
         }
     }
 

@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33218966808000252}
   - component: {fileID: 23292604001777170}
   m_Layer: 0
-  m_Name: fountainLeft0
+  m_Name: FountainPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

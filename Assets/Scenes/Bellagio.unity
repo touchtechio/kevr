@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.11480309, g: 0.1197685, b: 0.10575666, a: 1}
+  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1149,7 +1149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98a461bcf3b161146b09961f533e4665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _amount: 5
+  _amount: 10
   _fountainJet: {fileID: 1183717221365998, guid: f22d16adafc246140893039914ee681a,
     type: 2}
   fountainJetsLeft: []
