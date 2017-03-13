@@ -150,7 +150,7 @@ public class ZoneController : MonoBehaviour
         zone4SliderLeft.GetComponentInChildren<MeshRenderer>().material.color = Color.cyan;
         Transform moveSlider = zone4SliderLeft.transform.GetChild(0);
 
-        moveSlider.localPosition = new Vector3(0, 0, zPos);
+        moveSlider.localPosition = new Vector3(0, 0, 0.03f+zPos);
 
     }
 
