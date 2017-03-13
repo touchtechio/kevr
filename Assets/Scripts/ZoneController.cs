@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class ZoneController : MonoBehaviour
 {
     /*
@@ -54,13 +55,14 @@ public class ZoneController : MonoBehaviour
         INTERRUPT,
     }
 
-    int _amount = 3;
+    int _amount = 4;
 
     [SerializeField]
     GameObject zoneObject;
 
 
-    GameObject[] zoneLeft;
+   GameObject[] zoneLeft;
+   // List<GameObject> zoneLeft;
 
     GameObject[] zoneRight;
 
@@ -80,7 +82,7 @@ public class ZoneController : MonoBehaviour
     public GameObject droneGloveLeft;
     GameObject droneGloveRight;
 
-    Color[] zoneColors = { Color.green, Color.yellow, Color.red };
+    Color[] zoneColors = { Color.green, Color.yellow, Color.red, Color.cyan };
 
     [SerializeField]
     float[] xPosRange = { -0.35f, -0.15f, 0f, 0.15f, 0.35f };
@@ -88,17 +90,20 @@ public class ZoneController : MonoBehaviour
     void Start()
     {
         zoneLeft = new GameObject[_amount];
+        //zoneLeft = new List<GameObject>();
 
-        for (int i = 0; i < _amount; i++)
+        for (int i = 0; i < (_amount-1); i++)
         {
             // instantiate fountains based on prefab and then assign to fountain jet array
             GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(-(displacementX * .5f + i * displacementX), 0, i * displacementZ), Quaternion.identity) as GameObject;
+           // zoneLeft.Add((GameObject)zone);
+      
             zoneLeft[i] = zone;
         }
 
         zoneRight = new GameObject[_amount];
 
-        for (int i = 0; i < _amount; i++)
+        for (int i = 0; i < (_amount-1); i++)
         {
             // instantiate fountains based on prefab and then assign to fountain jet array
             GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(displacementX * .5f + i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
@@ -106,8 +111,12 @@ public class ZoneController : MonoBehaviour
         }
 
         // instantiate slider objects
-        zone4SliderLeft = Instantiate(zone4SliderLeft, transform.position + new Vector3(-(displacementX * .5f + 3 * displacementX), 0, -0.1f), Quaternion.identity) as GameObject;
-        zone4SliderRight = Instantiate(zone4SliderLeft, transform.position + new Vector3((displacementX * .5f + 3 * displacementX), 0, -0.1f), Quaternion.identity) as GameObject;
+        zone4SliderLeft = Instantiate(zone4SliderLeft, transform.position + new Vector3(-(displacementX * .5f + 3 * displacementX), 0.05f, -0.1f), Quaternion.identity) as GameObject;
+        zoneLeft[3] = zone4SliderLeft;
+        //zoneLeft.Add((GameObject)zone4SliderLeft);
+        zone4SliderRight = Instantiate(zone4SliderLeft, transform.position + new Vector3((displacementX * .5f + 3 * displacementX), 0.05f, -0.1f), Quaternion.identity) as GameObject;
+        zoneRight[3] = zone4SliderRight;
+
         waterGloveLeft = Instantiate(waterGloveLeft, transform.position + new Vector3(-(displacementX * .5f + 3 * displacementX), displacementY, 0), Quaternion.identity) as GameObject;
         waterGloveRight = Instantiate(waterGloveLeft, transform.position + new Vector3((displacementX * .5f + 3 * displacementX), displacementY, 0), Quaternion.identity) as GameObject;
         waterGloveRight.transform.localScale = new Vector3(-1, 1, 1);
@@ -138,43 +147,41 @@ public class ZoneController : MonoBehaviour
     internal void ZoneHeight(GameObject ZoneObject, int zone, float yPos)
     {
         Transform childTransform = ZoneObject.transform.GetChild(0);
-        childTransform.localScale = new Vector3(1, (1 + yPos), 1);
+        childTransform.localScale = new Vector3(1, 5* yPos, 1);
     }
 
-    private void SliderLeft(int selectedZone, float zPos)
+    private void SliderLeft(float zPos)
+    {
+        SliderMotion(zone4SliderLeft, zPos);
+    }
+
+    private void SliderRight(float zPos)
     {
 
-        Debug.Log("slider selecting" + selectedZone);
-
-        Debug.Log("slider selected");
-        zone4SliderLeft.GetComponentInChildren<MeshRenderer>().material.color = Color.cyan;
-        Transform moveSlider = zone4SliderLeft.transform.GetChild(0);
-
-        moveSlider.localPosition = new Vector3(0, 0, 0.03f+zPos);
+        SliderMotion(zone4SliderRight, zPos);
 
     }
-
-    private void SliderRight(int selectedZone, float zPos)
+    private void SliderMotion(GameObject selectedSlider, float zPos)
     {
 
-        Debug.Log("slider selecting" + selectedZone);
+       // Debug.Log("slider selecting" + selectedZone);
 
-        Debug.Log("slider selected");
-        zone4SliderRight.GetComponentInChildren<MeshRenderer>().material.color = Color.cyan;
-        Transform moveSlider = zone4SliderRight.transform.GetChild(0);
+      //  Debug.Log("slider selected");
+        
+        Transform moveSlider = selectedSlider.transform.GetChild(0);
 
-        moveSlider.localPosition = new Vector3(0, 0, zPos);
+        moveSlider.localPosition = new Vector3(0, 0, 0.06f+ zPos);
 
     }
+
+
 
     public void rightZoneColor(int zoneNumber)
     {
         for (int i = 0; i < zoneRight.Length; i++)
         {
-            zoneRight[i].GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+           zoneRight[i].GetComponentInChildren<MeshRenderer>().material.color = Color.white;
 
-
-            //Debug.Log(rightZones.Length);
 
         }
         zoneRight[zoneNumber].GetComponentInChildren<MeshRenderer>().material.color = zoneColors[zoneNumber];
@@ -186,16 +193,17 @@ public class ZoneController : MonoBehaviour
     public void leftZoneColor(int zoneNumber)
     {
         for (int i = 0; i < zoneLeft.Length; i++)
+        //foreach (GameObject zones in zoneLeft)
         {
+
             zoneLeft[i].GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-
-
             //Debug.Log(rightZones.Length);
-
         }
+       
+
         zoneLeft[zoneNumber].GetComponentInChildren<MeshRenderer>().material.color = zoneColors[zoneNumber];
 
-        //  Debug.Log("color: " + zoneColors[zoneNumber]);
+       //  Debug.Log("color: " + zoneColors[zoneNumber]);
 
 
 
@@ -210,7 +218,7 @@ public class ZoneController : MonoBehaviour
 
             if (xPos > xPosRange[i] && xPos < xPosRange[i + 1])
             {
-                Debug.Log("in zone: " + i);
+               // Debug.Log("in zone: " + i);
                 return i;
             }
         }
@@ -222,15 +230,17 @@ public class ZoneController : MonoBehaviour
     {
 
         int selectedZone = GetZone(xPos);
+        leftZoneColor(selectedZone);
 
         if (selectedZone < 3)
         {
             ZoneHeightLeft(selectedZone, yPos);
-            leftZoneColor(selectedZone);
+          
         }
         else
         {
-            SliderLeft(selectedZone, zPos);
+            
+            SliderLeft(zPos);
         }
 
         return;
@@ -240,15 +250,17 @@ public class ZoneController : MonoBehaviour
     {
 
         int selectedZone = GetZone(xPos);
+        rightZoneColor(selectedZone);
 
         if (selectedZone < 3)
         {
             ZoneHeightRight(selectedZone, yPos);
-            rightZoneColor(selectedZone);
+            
         }
         else
         {
-            SliderRight(selectedZone, zPos);
+            
+            SliderRight(zPos);
         }
 
         return;
