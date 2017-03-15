@@ -124,46 +124,7 @@ namespace UniOSC
             if (msg == null) return;
 
 
-            // handles OSC data simulating glove
-            for (int i = 0; i < 5; i++)
-            {
-                if (msg.Address.Contains(fingerBendLeft[i]))
-                {
-                    float fingerBendDataLeft = (float)msg.Data[0];
-                    GloveController.fingerBendLeft(i, fingerBendDataLeft);
-                    FountainRSController.fountainHeightLeft(i, fingerBendDataLeft);
-                    DroneController.FingerBend(4 - i, fingerBendDataLeft);
-
-                }
-
-                if (msg.Address.Contains(fingerBendRight[i]))
-                {
-                    //Debug.Log("right data");
-                    float fingerBendDataRight = (float)msg.Data[0];
-                    GloveController.fingerBendRight(i, fingerBendDataRight);
-                    FountainRSController.fountainHeightRight(i, fingerBendDataRight);
-                    DroneController.FingerBend(i + 5, fingerBendDataRight);
-
-                }
-            }
-
-
-            // handles Touch Osc data simulating notes
-            for (int i = 0; i < 5; i++)
-            {
-                if (msg.Address.Contains(LeftNoteAddresses[i]))
-                {
-                    Debug.Log("note:" + i);
-                    DroneController.LeftNoteHit(i);
-                }
-                if (msg.Address.Contains(RightNoteAddresses[i]))
-                {
-                    Debug.Log("note:" + i);
-                    DroneController.RightNoteHit(i);
-                }
-            }
-
-
+ 
             //
             //  SYNCPHONY
             //
@@ -171,50 +132,15 @@ namespace UniOSC
             SynphonyGloveData();
 
             // handles osc data simulating hand position over realsense
-            if (msg.Address.Contains(rsZoneLeftXZ))
-            {
-                float rsZoneDataLeftX = (float)msg.Data[0];
-                float rsZoneDataLeftZ = (float)msg.Data[1];
-
-                //todo:  x and z transforms are flipped
-                GloveController.rsZoneLeftXZ(- 0.3f*rsZoneDataLeftX+.1f, 0.3f -0.5f*rsZoneDataLeftZ); 
-                //Debug.Log("left OSC zone data: " + rsZoneDataLeftX);
-
-                Vector3 leftPosition = GloveController.GetLeftPosition();
-                ZoneController.UpdateLeftZone(-leftPosition.z, -leftPosition.x, leftPosition.y);
-               
-            }
-
-            if (msg.Address.Contains(rsZoneLeftY))
-            {
-                float rsZoneDataLeftY = (float)msg.Data[0];
-
-                GloveController.rsZoneLeftY(rsZoneDataLeftY*0.5f + 0.4f);
+            touchOSCZones();
 
 
-                Vector3 leftPosition = GloveController.GetLeftPosition();
-                ZoneController.UpdateLeftZone(-leftPosition.z, leftPosition.x, leftPosition.y);
+            // handles Touch Osc data simulating notes
+            touchOSCNotes();
 
-            }
+            // handles Touch OSC data simulating glove
+            touchOSCBEnds();
 
-            if (msg.Address.Contains(rsZoneRightXZ))
-            {
-                float rsZoneDataRightX = (float)msg.Data[0];
-                float rsZoneDataRightZ = (float)msg.Data[1];
-                GloveController.rsZoneRightXZ(-0.3f*rsZoneDataRightX + .1f, 0.1f +0.5f*rsZoneDataRightZ);
-
-                Vector3 position = GloveController.GetLeftPosition();
-                ZoneController.UpdateRightZone(position.z, -position.x, position.y);
-            }
-
-            if (msg.Address.Contains(rsZoneRightY))
-            {
-                float rsZoneDataRightY = (float)msg.Data[0];
-                GloveController.rsZoneRightY(rsZoneDataRightY * 0.5f + 0.4f);
-
-                Vector3 position = GloveController.GetLeftPosition();
-                ZoneController.UpdateRightZone(-position.z, position.x, position.y);
-            }
 
             // handles rs data from single camera
             if (msg.Address.Contains(cursorLeft))
@@ -227,7 +153,7 @@ namespace UniOSC
 
                 GloveController.rsZoneLeftY(yPos);
                 GloveController.rsZoneLeftXZ(-zPos, -xPos);
-                ZoneController.UpdateLeftZone(xPos, zPos, yPos);
+                ZoneController.UpdateLeftZone(xPos, yPos, zPos);
                 //                ZoneController.UpdateLeftZone(GloveController.GetLeftPosition());
 
 
@@ -242,7 +168,7 @@ namespace UniOSC
 
                 GloveController.rsZoneRightY(yPos);
                 GloveController.rsZoneRightXZ(-zPos, -xPos);
-                ZoneController.UpdateRightZone(xPos, zPos, yPos);
+                ZoneController.UpdateRightZone(xPos, yPos, zPos);
 
 
 
@@ -265,6 +191,100 @@ namespace UniOSC
             }
 
 
+        }
+
+        private void touchOSCBEnds()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (msg.Address.Contains(fingerBendLeft[i]))
+                {
+                    float fingerBendDataLeft = (float)msg.Data[0];
+                    GloveController.fingerBendLeft(i, fingerBendDataLeft);
+                    FountainRSController.fountainHeightLeft(i, fingerBendDataLeft);
+                    DroneController.FingerBend(4 - i, fingerBendDataLeft);
+
+                }
+
+                if (msg.Address.Contains(fingerBendRight[i]))
+                {
+                    //Debug.Log("right data");
+                    float fingerBendDataRight = (float)msg.Data[0];
+                    GloveController.fingerBendRight(i, fingerBendDataRight);
+                    FountainRSController.fountainHeightRight(i, fingerBendDataRight);
+                    DroneController.FingerBend(i + 5, fingerBendDataRight);
+
+                }
+            }
+        }
+
+        private void touchOSCNotes()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (msg.Address.Contains(LeftNoteAddresses[i]))
+                {
+                    Debug.Log("note:" + i);
+                    DroneController.LeftNoteHit(i);
+                }
+                if (msg.Address.Contains(RightNoteAddresses[i]))
+                {
+                    Debug.Log("note:" + i);
+                    DroneController.RightNoteHit(i);
+                }
+            }
+        }
+
+        private void touchOSCZones()
+        {
+            if (msg.Address.Contains(rsZoneLeftXZ))
+            {
+                float rsZoneDataLeftX = (float)msg.Data[0];
+                float rsZoneDataLeftZ = (float)msg.Data[1];
+
+                //todo:  x and z transforms are flipped
+                GloveController.rsZoneLeftXZ(-0.3f * rsZoneDataLeftX + .1f, 0.3f - 0.5f * rsZoneDataLeftZ);
+                //Debug.Log("left OSC zone data: " + rsZoneDataLeftX);
+
+                Vector3 position = GloveController.GetLeftPosition();
+                ZoneController.UpdateLeftZone(-position.z, position.y, -position.x);
+
+            }
+
+            if (msg.Address.Contains(rsZoneLeftY))
+            {
+                float rsZoneDataLeftY = (float)msg.Data[0];
+
+                GloveController.rsZoneLeftY(rsZoneDataLeftY * 0.5f + 0.4f);
+
+
+                Vector3 position = GloveController.GetLeftPosition();
+                Debug.Log(position.y + " y pos");
+                ZoneController.UpdateLeftZone(-position.z, position.y, position.x);
+
+            }
+
+            if (msg.Address.Contains(rsZoneRightXZ))
+            {
+                float rsZoneDataRightX = (float)msg.Data[0];
+                float rsZoneDataRightZ = (float)msg.Data[1];
+
+                // convert from touch osc to rs coordinates
+                GloveController.rsZoneRightXZ(-0.3f * rsZoneDataRightX + .1f, 0.1f + 0.5f * rsZoneDataRightZ);
+
+                Vector3 position = GloveController.GetLeftPosition();
+                ZoneController.UpdateRightZone(position.z, position.y, -position.x);
+            }
+
+            if (msg.Address.Contains(rsZoneRightY))
+            {
+                float rsZoneDataRightY = (float)msg.Data[0];
+                GloveController.rsZoneRightY(rsZoneDataRightY * 0.5f + 0.4f);
+
+                Vector3 position = GloveController.GetLeftPosition();
+
+                ZoneController.UpdateRightZone(-position.z, position.y, position.x);
+            }
         }
 
         private void SynphonyGloveData()

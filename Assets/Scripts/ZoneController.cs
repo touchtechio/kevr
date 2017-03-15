@@ -30,7 +30,7 @@ public class ZoneController : MonoBehaviour
     float displacementX = 0.3f;
 
     [SerializeField]
-    float displacementY = 0.2f;
+    float displacementY = 0.1f;
 
     [SerializeField]
     int displacementZ = 0;
@@ -46,7 +46,12 @@ public class ZoneController : MonoBehaviour
     Color[] zoneColors = { Color.green, Color.yellow, Color.red, Color.cyan };
 
     [SerializeField]
+    // x range is -0.3 - 0.3
     float[] xPosRange = { -0.35f, -0.15f, 0f, 0.15f, 0.35f };
+
+    [SerializeField]
+    // y range is 0.2 - 0.85
+    public float[] yPosRange = {0.35f, 0.55f, 0.7f, 0.9f};
 
     void Start()
     {
@@ -81,7 +86,7 @@ public class ZoneController : MonoBehaviour
 
         waterGloveLeft = Instantiate(waterGloveLeft, transform.position + new Vector3(-(displacementX * .5f + 3 * displacementX), displacementY, 0), Quaternion.identity) as GameObject;
         waterGloveRight = Instantiate(waterGloveLeft, transform.position + new Vector3((displacementX * .5f + 3 * displacementX), displacementY, 0), Quaternion.identity) as GameObject;
-        waterGloveRight.transform.localScale = new Vector3(-1, 1, 1);
+        waterGloveRight.transform.localScale = new Vector3(-1, 1, 1); // mirrors 
         droneGloveLeft = Instantiate(droneGloveLeft, transform.position + new Vector3(-(displacementX * .5f + 3 * displacementX), 2 * displacementY, 0), Quaternion.identity) as GameObject;
         droneGloveRight = Instantiate(droneGloveLeft, transform.position + new Vector3((displacementX * .5f + 3 * displacementX), 2 * displacementY, 0), Quaternion.identity) as GameObject;
         droneGloveRight.transform.localScale = new Vector3(-1, 1, 1);
@@ -144,8 +149,6 @@ public class ZoneController : MonoBehaviour
         for (int i = 0; i < zoneRight.Length; i++)
         {
            zoneRight[i].GetComponentInChildren<MeshRenderer>().material.color = new Color(100, 100, 100, 10);
-
-
         }
         zoneRight[zoneNumber].GetComponentInChildren<MeshRenderer>().material.color = zoneColors[zoneNumber];
 
@@ -189,11 +192,37 @@ public class ZoneController : MonoBehaviour
         return -1;
     }
 
-    internal void UpdateLeftZone(float xPos, float zPos, float yPos)
+    internal int GetYZone(float yPos)
     {
+
+        //// ypos values are -0.9 to 0.9
+        for (int i = 0; i < (yPosRange.Length - 1); i++)
+        {
+
+            if (yPos > yPosRange[i] && yPos < yPosRange[i + 1])
+            {
+               // Debug.Log("in zone: " + i);
+                return i;
+            }
+        }
+        //  Debug.Log(xPos + "did not fall into zones");
+        return -1;
+    }
+
+
+    internal void UpdateLeftZone(float xPos, float yPos, float zPos)
+    {
+        Transform waterGloveScale = waterGloveLeft.transform.GetChild(0);
+        waterGloveScale.localScale = new Vector3(1, 1, 1);
+        Transform droneGloveScale = droneGloveLeft.transform.GetChild(0);
+        droneGloveScale.localScale = new Vector3(1, 1, 1);
+        int selectedYZone = GetYZone(yPos);
 
         int selectedZone = GetZone(xPos);
         leftZoneColor(selectedZone);
+
+      
+       
 
         if (selectedZone < 3)
         {
@@ -202,8 +231,22 @@ public class ZoneController : MonoBehaviour
         }
         else
         {
-            
-            SliderLeft(zPos);
+            if (selectedYZone == 0)
+            {
+                SliderLeft(zPos);
+            }
+            else if (selectedYZone == 1)
+            {
+                
+                waterGloveScale.localScale = new Vector3(1.5f, 1, 1.5f);
+                //Debug.Log("I am in " + selectedYZone + ", ypos: " + yPos);
+            }
+            else if (selectedYZone == 2)
+            {
+
+                droneGloveScale.localScale = new Vector3(1.5f, 1, 1.5f);
+                //Debug.Log("I am in " + selectedYZone + ", ypos: " + yPos);
+            }
         }
 
         return;
@@ -215,6 +258,12 @@ public class ZoneController : MonoBehaviour
         int selectedZone = GetZone(xPos);
         rightZoneColor(selectedZone);
 
+        Transform waterGloveScale = waterGloveRight.transform.GetChild(0);
+        waterGloveScale.localScale = new Vector3(1, 1, 1);
+        Transform droneGloveScale = droneGloveRight.transform.GetChild(0);
+        droneGloveScale.localScale = new Vector3(1, 1, 1);
+        int selectedYZone = GetYZone(yPos);
+
         if (selectedZone < 3)
         {
             ZoneHeightRight(selectedZone, yPos);
@@ -222,8 +271,22 @@ public class ZoneController : MonoBehaviour
         }
         else
         {
-            
-            SliderRight(zPos);
+            if (selectedYZone == 0)
+            {
+                SliderLeft(zPos);
+            }
+            else if (selectedYZone == 1)
+            {
+
+                waterGloveScale.localScale = new Vector3(1.5f, 1, 1.5f);
+                //Debug.Log("I am in " + selectedYZone + ", ypos: " + yPos);
+            }
+            else if (selectedYZone == 2)
+            {
+
+                droneGloveScale.localScale = new Vector3(1.5f, 1, 1.5f);
+                //Debug.Log("I am in " + selectedYZone + ", ypos: " + yPos);
+            }
         }
 
         return;
