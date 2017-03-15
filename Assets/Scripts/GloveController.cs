@@ -54,10 +54,52 @@ public class GloveController : MonoBehaviour
        // Debug.Log("finger" + i + "bend value" + fingerBendDataRight);
     }
 
-    
+
+
+    internal void SetWristAngle(GameObject Hand, int degrees)
+    {
+        Transform transform = Hand.GetComponent<Transform>();
+        transform.rotation = Quaternion.Euler(-90, 180, 0) * Quaternion.Euler(0, -degrees-90, 0);
+    }
+
+    internal void SetLeftWristAngle(int degrees)
+    {
+        SetWristAngle(LeftHandObject, degrees+30);
+    }
+
+    internal void SetRightWristAngle(int degrees)
+    {
+        SetWristAngle(RightHandObject, degrees);
+
+    }
+
+    public Vector3 GetRightPosition()
+    {
+        Transform transformToMove = RightHandObject.GetComponent<Transform>();
+        return transformToMove.localPosition;
+    }
+
+    public Vector3 GetLeftPosition()
+    {
+        Transform transformToMove = LeftHandObject.GetComponent<Transform>();
+        return transformToMove.localPosition;
+    }
+
+    //atempts to scale syncphony finger bend to 0.0 - 1.0
+    internal float GetFingerBend(int finger, int gloveValue)
+    {
+        int threshold = fingerThresholds[finger];
+        float bendPercentage = ((gloveValue - threshold) + maxBounds/2) / maxBounds;
+      //  Debug.Log("finger: " + finger + " glovevalue: " + gloveValue + " threshold: " + threshold + " bend %: " + bendPercentage);
+        return bendPercentage;
+
+    }
+
+    //todo:  x and z transforms are flipped
+
     public void rsZoneLeftXZ(float rsZoneDataLeftX, float rsZoneDataLeftZ)
     {
-       // Debug.Log("left hand is at x pos " + rsZoneDataLeftX + " y pos " + rsZoneDataLeftZ);
+        // Debug.Log("left hand is at x pos " + rsZoneDataLeftX + " y pos " + rsZoneDataLeftZ);
         Transform transformToMove = LeftHandObject.GetComponent<Transform>();
 
 
@@ -69,6 +111,16 @@ public class GloveController : MonoBehaviour
         //HandObject.GetComponent<Transform>() = new Vector3(rsZoneDataLeftX, 0, rsZoneDataLeftZ);
     }
 
+    // realsense old y axis
+    //public void rsZoneLeftY(float rsZoneDataLeftY)
+    //{
+    //    // Debug.Log("left hand is at y pos " + rsZoneDataLeftY);
+    //    Transform transformToMove = LeftHandObject.GetComponent<Transform>();
+    //    Vector3 pos;
+    //    pos = new Vector3(transformToMove.position.x, rsZoneDataLeftY, transformToMove.position.z);
+    //    transformToMove.localPosition = pos;
+    //}
+
 
     public void rsZoneLeftY(float rsZoneDataLeftY)
     {
@@ -77,11 +129,13 @@ public class GloveController : MonoBehaviour
         Transform transformToMove = LeftHandObject.GetComponent<Transform>();
 
         Vector3 pos;
-        pos = new Vector3(transformToMove.position.x, rsZoneDataLeftY, transformToMove.position.z );
+        pos = new Vector3(transformToMove.localPosition.x, rsZoneDataLeftY, transformToMove.localPosition.z);
         transformToMove.localPosition = pos;
 
 
     }
+
+
 
     public void rsZoneRightXZ(float rsZoneDataRightX, float rsZoneDataRightZ)
     {
@@ -102,37 +156,12 @@ public class GloveController : MonoBehaviour
         Transform transformToMove = RightHandObject.GetComponent<Transform>();
 
         Vector3 pos;
-        pos = new Vector3(transformToMove.position.x, rsZoneDataRightY, transformToMove.position.z);
+        pos = new Vector3(transformToMove.localPosition.x, rsZoneDataRightY, transformToMove.localPosition.z);
         transformToMove.localPosition = pos;
 
     }
 
-    internal void SetWristAngle(GameObject Hand, int degrees)
-    {
-        Transform transform = Hand.GetComponent<Transform>();
-        transform.rotation = Quaternion.Euler(-90, 180, 0) * Quaternion.Euler(0, -degrees-90, 0);
-    }
-
-    internal void SetLeftWristAngle(int degrees)
-    {
-        SetWristAngle(LeftHandObject, degrees+30);
-    }
-
-    internal void SetRightWristAngle(int degrees)
-    {
-        SetWristAngle(RightHandObject, degrees);
-
-    }
 
 
-    //atempts to scale syncphony finger bend to 0.0 - 1.0
-    internal float GetFingerBend(int finger, int gloveValue)
-    {
-        int threshold = fingerThresholds[finger];
-        float bendPercentage = ((gloveValue - threshold) + maxBounds/2) / maxBounds;
-      //  Debug.Log("finger: " + finger + " glovevalue: " + gloveValue + " threshold: " + threshold + " bend %: " + bendPercentage);
-        return bendPercentage;
-
-    }
 
 }

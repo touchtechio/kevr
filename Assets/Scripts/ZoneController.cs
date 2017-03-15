@@ -7,53 +7,13 @@ using UnityEngine.UI;
 
 public class ZoneController : MonoBehaviour
 {
-    /*
-    public float timerMax;
 
-    bool[] timerStart = { false, false, false, false, false, false }; // timer for tutorial icons
-    float[] timer = { 0F, 0F, 0F, 0F, 0F, 0F };
-
-
-    private Screen currentScreen;
-    private Screen previousScreen;
-
-
-    Vector3 iconScale = new Vector3(1, 1);
-    Vector3 startingPosition;
-    int toggleCount;
-    int textMessageScrollCount;
-
-    public AudioClip selectSound;
-    public AudioClip backSound;
-    public AudioClip upSound;
-    public AudioClip downSound;
-
-    public AudioSource source;
-    private float volume = 0.6f;
-  
-
-    public GameObject[] rightZones;
-    public GameObject[] leftZones;
-    public GameObject rightZone1;
-    public GameObject rightZone2;
-    public GameObject rightZone3;
-   
-      */
     void Awake()
     {
 
         //  source = GetComponent<AudioSource>();
     }
 
-    enum Screen
-    {
-        TUTORIAL,
-        APP_VIEW,
-        TEXT_LIST,
-        TEXT_DETAIL,
-        PHOTO_ALBUM,
-        INTERRUPT,
-    }
 
     int _amount = 4;
 
@@ -83,7 +43,7 @@ public class ZoneController : MonoBehaviour
     GameObject droneGloveRight;
 
     private Color zone1Color;
-    Color[] zoneColors = { new Color(0, 150, 0, 50), Color.yellow, Color.red, Color.cyan };
+    Color[] zoneColors = { Color.green, Color.yellow, Color.red, Color.cyan };
 
     [SerializeField]
     float[] xPosRange = { -0.35f, -0.15f, 0f, 0.15f, 0.35f };
@@ -128,6 +88,7 @@ public class ZoneController : MonoBehaviour
 
     }
 
+    // passing left and right zone information to main zone height controller
     private void ZoneHeightLeft(int zone, float yPos)
     {
         //Debug.Log("zone-LEFT:" + zone + " scale value:" + yPos);
@@ -152,6 +113,7 @@ public class ZoneController : MonoBehaviour
         childTransform.localScale = new Vector3(1, 5* yPos, 1);
     }
 
+    // passing information from left slider and right slider
     private void SliderLeft(float zPos)
     {
         SliderMotion(zone4SliderLeft, zPos);
@@ -163,6 +125,7 @@ public class ZoneController : MonoBehaviour
         SliderMotion(zone4SliderRight, zPos);
 
     }
+
     private void SliderMotion(GameObject selectedSlider, float zPos)
     {
 
@@ -176,13 +139,11 @@ public class ZoneController : MonoBehaviour
 
     }
 
-
-
     public void rightZoneColor(int zoneNumber)
     {
         for (int i = 0; i < zoneRight.Length; i++)
         {
-           zoneRight[i].GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+           zoneRight[i].GetComponentInChildren<MeshRenderer>().material.color = new Color(100, 100, 100, 10);
 
 
         }
@@ -270,7 +231,6 @@ public class ZoneController : MonoBehaviour
 
 
 }
-
 
 //// to make 5 zones
 /*

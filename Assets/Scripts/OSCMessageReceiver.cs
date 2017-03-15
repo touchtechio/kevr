@@ -168,6 +168,107 @@ namespace UniOSC
             //  SYNCPHONY
             //
 
+            SynphonyGloveData();
+
+            // handles osc data simulating hand position over realsense
+            if (msg.Address.Contains(rsZoneLeftXZ))
+            {
+                float rsZoneDataLeftX = (float)msg.Data[0];
+                float rsZoneDataLeftZ = (float)msg.Data[1];
+
+                //todo:  x and z transforms are flipped
+                GloveController.rsZoneLeftXZ(- 0.3f*rsZoneDataLeftX+.1f, 0.3f -0.5f*rsZoneDataLeftZ); 
+                //Debug.Log("left OSC zone data: " + rsZoneDataLeftX);
+
+                Vector3 leftPosition = GloveController.GetLeftPosition();
+                ZoneController.UpdateLeftZone(-leftPosition.z, -leftPosition.x, leftPosition.y);
+               
+            }
+
+            if (msg.Address.Contains(rsZoneLeftY))
+            {
+                float rsZoneDataLeftY = (float)msg.Data[0];
+
+                GloveController.rsZoneLeftY(rsZoneDataLeftY*0.5f + 0.4f);
+
+
+                Vector3 leftPosition = GloveController.GetLeftPosition();
+                ZoneController.UpdateLeftZone(-leftPosition.z, leftPosition.x, leftPosition.y);
+
+            }
+
+            if (msg.Address.Contains(rsZoneRightXZ))
+            {
+                float rsZoneDataRightX = (float)msg.Data[0];
+                float rsZoneDataRightZ = (float)msg.Data[1];
+                GloveController.rsZoneRightXZ(-0.3f*rsZoneDataRightX + .1f, 0.1f +0.5f*rsZoneDataRightZ);
+
+                Vector3 position = GloveController.GetLeftPosition();
+                ZoneController.UpdateRightZone(position.z, -position.x, position.y);
+            }
+
+            if (msg.Address.Contains(rsZoneRightY))
+            {
+                float rsZoneDataRightY = (float)msg.Data[0];
+                GloveController.rsZoneRightY(rsZoneDataRightY * 0.5f + 0.4f);
+
+                Vector3 position = GloveController.GetLeftPosition();
+                ZoneController.UpdateRightZone(-position.z, position.x, position.y);
+            }
+
+            // handles rs data from single camera
+            if (msg.Address.Contains(cursorLeft))
+            {
+
+                float xPos = (float)msg.Data[0];
+                float zPos = (float)msg.Data[1];
+                float yPos = (float)msg.Data[2];
+
+
+                GloveController.rsZoneLeftY(yPos);
+                GloveController.rsZoneLeftXZ(-zPos, -xPos);
+                ZoneController.UpdateLeftZone(xPos, zPos, yPos);
+                //                ZoneController.UpdateLeftZone(GloveController.GetLeftPosition());
+
+
+            }
+            if (msg.Address.Contains(cursorRight))
+            {
+
+                float xPos = (float)msg.Data[0];
+                float zPos = (float)msg.Data[1];
+                float yPos = (float)msg.Data[2];
+
+
+                GloveController.rsZoneRightY(yPos);
+                GloveController.rsZoneRightXZ(-zPos, -xPos);
+                ZoneController.UpdateRightZone(xPos, zPos, yPos);
+
+
+
+                Debug.Log(xPos);
+
+            }
+
+            // handles osc rs data from Max
+            if (msg.Address.Contains(rightZone))
+            {
+                rightZoneData = (int)msg.Data[0];
+                //Debug.Log(rightZoneData);
+                ZoneController.rightZoneColor(rightZoneData);
+
+            }
+            else if (msg.Address.Contains(leftZone))
+            {
+                leftZoneData = (int)msg.Data[0];
+                ZoneController.leftZoneColor(leftZoneData);
+            }
+
+
+        }
+
+        private void SynphonyGloveData()
+        {
             // syncphony glove finger bends
             if (msg.Address.Contains(oscLeftHandFingers))
             {
@@ -217,82 +318,6 @@ namespace UniOSC
                 Debug.Log("right-note:" + note);
                 DroneController.RightMidiNoteHit(note);
             }
-
-            // handles osc data simulating hand position over realsense
-            if (msg.Address.Contains(rsZoneLeftXZ))
-            {
-                float rsZoneDataLeftX = (float)msg.Data[0];
-                float rsZoneDataLeftZ = (float)msg.Data[1];
-                GloveController.rsZoneLeftXZ(rsZoneDataLeftX, rsZoneDataLeftZ);
-            }
-
-            if (msg.Address.Contains(rsZoneLeftY))
-            {
-                float rsZoneDataLeftY = (float)msg.Data[0];
-                GloveController.rsZoneLeftY(rsZoneDataLeftY);
-            }
-
-            if (msg.Address.Contains(rsZoneRightXZ))
-            {
-                float rsZoneDataRightX = (float)msg.Data[0];
-                float rsZoneDataRightZ = (float)msg.Data[1];
-                GloveController.rsZoneRightXZ(rsZoneDataRightX, rsZoneDataRightZ);
-            }
-
-            if (msg.Address.Contains(rsZoneRightY))
-            {
-                float rsZoneDataRightY = (float)msg.Data[0];
-                GloveController.rsZoneRightY(rsZoneDataRightY);
-            }
-
-            // handles rs data from single camera
-            if (msg.Address.Contains(cursorLeft))
-            {
-
-                float xPos = (float)msg.Data[0];
-                float zPos = (float)msg.Data[1];
-                float yPos = (float)msg.Data[2];
-
-
-                GloveController.rsZoneLeftY(yPos);
-                GloveController.rsZoneLeftXZ(-zPos, -xPos);
-                ZoneController.UpdateLeftZone(xPos, zPos, yPos);
-
-            }
-            if (msg.Address.Contains(cursorRight))
-            {
-
-                float xPos = (float)msg.Data[0];
-                float zPos = (float)msg.Data[1];
-                float yPos = (float)msg.Data[2];
-
-
-                GloveController.rsZoneRightY(yPos);
-                GloveController.rsZoneRightXZ(-zPos, -xPos);
-                ZoneController.UpdateRightZone(xPos, zPos, yPos);
-
-
-
-                Debug.Log(xPos);
-
-            }
-
-            // handles osc rs data from Max
-            if (msg.Address.Contains(rightZone))
-            {
-                rightZoneData = (int)msg.Data[0];
-                //Debug.Log(rightZoneData);
-                ZoneController.rightZoneColor(rightZoneData);
-
-            }
-            else if (msg.Address.Contains(leftZone))
-            {
-                leftZoneData = (int)msg.Data[0];
-                ZoneController.leftZoneColor(leftZoneData);
-            }
-
-
         }
-
     }
 }
