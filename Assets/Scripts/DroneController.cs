@@ -105,7 +105,7 @@ public class DroneController : MonoBehaviour
             LeftDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().enabled = true;
 
             RightDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().TargetPoint = target;
-            LeftDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().enabled = true;
+            RightDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().enabled = true;
 
         }
     }
@@ -136,11 +136,40 @@ public class DroneController : MonoBehaviour
 
     }
 
-    /*
-     * @droneGroup as 0-9 from left to right
-     * */
-    internal void NoteHit(int droneGroup)
+
+    internal void LeftMidiNoteHit(int note)
     {
+        int droneGroup = 5 - (note - leftGloveMidiStart);
+        LeftNoteHit(droneGroup);
+    }
+
+   internal void LeftNoteHit(int droneGroup)
+    {
+
+        var dronesPerGroup = _amount / 5;
+        for (int i = 0; i < dronesPerGroup; i++)
+        {
+            var droneNumber = droneGroup * dronesPerGroup + i;
+            Debug.Log("index:" + droneNumber);
+            GameObject drone = LeftDrones[droneNumber];
+            Transform transformToMove = drone.GetComponent<Transform>();
+
+            Vector3 pos = new Vector3(transformToMove.localPosition.x + NoteHitForce, transformToMove.localPosition.y, transformToMove.localPosition.z + NoteHitForce);
+
+            transformToMove.localPosition = pos;
+        }
+        return;
+    }
+
+    internal void RightMidiNoteHit(int note)
+    {
+        int droneGroup = note - rightGloveMidiStart - 5;
+        RightNoteHit(droneGroup);
+    }
+
+    internal void RightNoteHit(int droneGroup)
+    {
+
         var dronesPerGroup = _amount / 5;
         for (int i = 0; i < dronesPerGroup; i++)
         {
@@ -153,15 +182,5 @@ public class DroneController : MonoBehaviour
             transformToMove.localPosition = pos;
         }
         return;
-    }
-
-    internal void LeftNoteHit(int note)
-    {
-        NoteHit(note - leftGloveMidiStart);
-    }
-
-    internal void RightNoteHit(int note)
-    {
-        NoteHit(note - rightGloveMidiStart);
     }
 }

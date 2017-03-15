@@ -29,12 +29,7 @@ public class GameControllerVR : MonoBehaviour {
     private float volume = 0.6f;
     */
 
-    public GameObject[] rightZones;
-    public GameObject[] leftZones;
-    public GameObject rightZone1;
-    public GameObject rightZone2;
-    public GameObject rightZone3;
-    Color[] zoneColors = {Color.green, Color.yellow, Color.red};
+
 
     void Awake()
     {
@@ -70,55 +65,25 @@ public class GameControllerVR : MonoBehaviour {
     [SerializeField]
     int displacementZ = 1;
 
+
     void Start()
     {
-        zoneLeft = new GameObject[_amount];
-
-        for (int i = 0; i < _amount; i++)
-        {
-            // instantiate fountains based on prefab and then assign to fountain jet array
-            GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(- i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
-            zoneLeft[i] = zone;
-        }
-
-        zoneRight = new GameObject[_amount];
-
-        for (int i = 0; i < _amount; i++)
-        {
-            // instantiate fountains based on prefab and then assign to fountain jet array
-            GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
-            zoneRight[i] = zone;
-        }
+        // GUI is rendered with last camera.
+        // As we want it to end up in the main screen, make sure main camera is the last one drawn.
+        Debug.Log("displays connected: " + Display.displays.Length);
+        // Display.displays[0] is the primary, default display and is always ON.
+        // Check if additional displays are available and activate each.
+        if (Display.displays.Length > 1)
+            Display.displays[1].Activate();
+        if (Display.displays.Length > 2)
+            Display.displays[2].Activate();
+        if (Display.displays.Length > 3)
+            Display.displays[3].Activate();
 
     }
 
-    public void rightZoneColor(int zoneNumber)
+    void Update()
     {
-        for (int i = 0; i < rightZones.Length; i++ )
-        {
-            rightZones[i].GetComponent<MeshRenderer>().material.color = Color.white;
-      
-            //Debug.Log(rightZones.Length);
-
-        }
-        rightZones[zoneNumber - 1].GetComponent<MeshRenderer>().material.color = zoneColors[zoneNumber - 1];
-        Debug.Log(zoneNumber);
-
-    }
-
-    public void leftZoneColor(int zoneNumber)
-    {
-        for (int i = 0; i < leftZones.Length; i++)
-        {
-            leftZones[i].GetComponent<MeshRenderer>().material.color = Color.white;
-            //Debug.Log(rightZones.Length);
-
-        }
-        leftZones[zoneNumber - 1].GetComponent<MeshRenderer>().material.color = zoneColors[zoneNumber - 1];
-        Debug.Log(zoneNumber);
-
-
-
     }
 
 }

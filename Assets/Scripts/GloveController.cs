@@ -130,7 +130,7 @@ public class GloveController : MonoBehaviour
     {
         int threshold = fingerThresholds[finger];
         float bendPercentage = ((gloveValue - threshold) + maxBounds/2) / maxBounds;
-        Debug.Log("finger: " + finger + " glovevalue: " + gloveValue + " threshold: " + threshold + " bend %: " + bendPercentage);
+      //  Debug.Log("finger: " + finger + " glovevalue: " + gloveValue + " threshold: " + threshold + " bend %: " + bendPercentage);
         return bendPercentage;
 
     }

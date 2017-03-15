@@ -82,7 +82,8 @@ namespace UniOSC
         private const string noteRight5 = "Kevin/noteRight5";
 
 
-        private string[] NoteAddresses = { noteLeft5, noteLeft4, noteLeft3, noteLeft2, noteLeft1, noteRight1, noteRight2, noteRight3, noteRight4, noteRight5 };
+        private string[] LeftNoteAddresses = { noteLeft1, noteLeft2, noteLeft3, noteLeft4, noteLeft5 };
+        private string[] RightNoteAddresses = { noteRight1, noteRight2, noteRight3, noteRight4, noteRight5 };
 
 
 
@@ -148,12 +149,17 @@ namespace UniOSC
 
 
             // handles Touch Osc data simulating notes
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
-                if (msg.Address.Contains(NoteAddresses[i]))
+                if (msg.Address.Contains(LeftNoteAddresses[i]))
                 {
                     Debug.Log("note:" + i);
-                    DroneController.NoteHit(i);
+                    DroneController.LeftNoteHit(i);
+                }
+                if (msg.Address.Contains(RightNoteAddresses[i]))
+                {
+                    Debug.Log("note:" + i);
+                    DroneController.RightNoteHit(i);
                 }
             }
 
@@ -202,14 +208,14 @@ namespace UniOSC
             {
                 int note = (int)msg.Data[1];
                 Debug.Log("left-note:" + note);
-                DroneController.LeftNoteHit(note); // note is a midi note
+                DroneController.LeftMidiNoteHit(note); // note is a midi note
             }
 
             if (msg.Address.Contains(oscRighttNote))
             {
                 int note = (int)msg.Data[1];
                 Debug.Log("right-note:" + note);
-                DroneController.RightNoteHit(note);
+                DroneController.RightMidiNoteHit(note);
             }
 
             // handles osc data simulating hand position over realsense

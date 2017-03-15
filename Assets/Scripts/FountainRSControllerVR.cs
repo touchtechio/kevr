@@ -106,7 +106,7 @@ public class FountainRSControllerVR : MonoBehaviour {
 
     public void fountainHeightRight(int i, float fingerBendDataRight)
     {
-        Debug.Log("finger" + i + "bend value" + fingerBendDataRight);
+       // Debug.Log("finger" + i + "bend value" + fingerBendDataRight);
         fountainJetsRight[i].transform.localScale = new Vector3(100, 40 + 5000 * fingerBendDataRight, 100);
 
     }

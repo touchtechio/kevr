@@ -83,7 +83,7 @@ public class ZoneController : MonoBehaviour
     GameObject droneGloveRight;
 
     private Color zone1Color;
-    Color[] zoneColors = { new Color(0, 100F, 0, 100), Color.yellow, Color.red, Color.cyan };
+    Color[] zoneColors = { new Color(0, 150, 0, 50), Color.yellow, Color.red, Color.cyan };
 
     [SerializeField]
     float[] xPosRange = { -0.35f, -0.15f, 0f, 0.15f, 0.35f };
