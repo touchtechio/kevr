@@ -35,14 +35,11 @@ public class DroneController : MonoBehaviour
         LeftDrones = new GameObject[_amount];
         RightDrones = new GameObject[_amount];
 
-        Vector3 leftStart = LeftDronesHome.GetComponent<Transform>().position;
-        Vector3 rightStart = RightDronesHome.GetComponent<Transform>().position;
-
         Vector3 target = PlayerTarget.GetComponent<Transform>().position;
 
         for (int i = 0; i < _amount; i++)
         {
-            GameObject drone = Instantiate(_prefab, leftStart + new Vector3(-i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            GameObject drone = Instantiate(_prefab, leftStart(i), Quaternion.identity) as GameObject;
             drone.name = "drone-left-" + i;
             drone.GetComponentInChildren<MeshRenderer>().material.color = Color.HSVToRGB(i / (float)_amount, .5f, .5f);
             //drone.GetComponent<UnitySteer.Behaviors.SteerForPoint>().TargetPoint = target;
@@ -51,7 +48,7 @@ public class DroneController : MonoBehaviour
 
         for (int i = 0; i < _amount; i++)
         {
-            GameObject drone = Instantiate(_prefab, rightStart + new Vector3(i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            GameObject drone = Instantiate(_prefab, rightStart(i), Quaternion.identity) as GameObject;
             drone.name = "drone-right-" + i;
             drone.GetComponentInChildren<MeshRenderer>().material.color = Color.HSVToRGB(i / (float)_amount, .5f, .5f);
             //drone.GetComponent<UnitySteer.Behaviors.SteerForPoint>().TargetPoint = target;
@@ -60,6 +57,21 @@ public class DroneController : MonoBehaviour
 
 
     }
+
+    private Vector3 leftStart(int droneNumber)
+    {
+        Vector3 leftGroupStart = LeftDronesHome.GetComponent<Transform>().position;
+        return leftGroupStart + new Vector3(-droneNumber * displacementX, 0, droneNumber * displacementZ);
+    }
+
+
+    private Vector3 rightStart(int droneNumber)
+    {
+        Vector3 rightGroupStart = RightDronesHome.GetComponent<Transform>().position;
+        return rightGroupStart + new Vector3(droneNumber * displacementX, 0, droneNumber * displacementZ);
+    }
+
+
 
     void Update()
     {
@@ -79,14 +91,14 @@ public class DroneController : MonoBehaviour
 
     private void TargetHome()
     {
-        Vector3 leftStart = LeftDronesHome.GetComponent<Transform>().position;
-        Vector3 rightStart = RightDronesHome.GetComponent<Transform>().position;
+      //  Vector3 leftStart = LeftDronesHome.GetComponent<Transform>().position;
+      //  Vector3 rightStart = RightDronesHome.GetComponent<Transform>().position;
 
         for (int i = 0; i < _amount; i++)
         {
-            LeftDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().TargetPoint = leftStart;
+            LeftDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().TargetPoint = leftStart(i);
             LeftDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().enabled = true;
-            RightDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().TargetPoint = rightStart;
+            RightDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().TargetPoint = rightStart(i);
             RightDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().enabled = true;
         }
     }
