@@ -62,9 +62,10 @@ public class ZoneController : MonoBehaviour
         for (int i = 0; i < (_amount-1); i++)
         {
             // instantiate fountains based on prefab and then assign to fountain jet array
-            GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(-(displacementX * .5f + i * displacementX), 0, i * displacementZ), Quaternion.identity) as GameObject;
-           // zoneLeft.Add((GameObject)zone);
-      
+           // GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(-(displacementX * .5f + i * displacementX ), 0, i * displacementZ), Quaternion.identity) as GameObject;
+            GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(-(displacementX * .45f + i * displacementX + 0.05f), 0, i * displacementZ), Quaternion.identity) as GameObject;
+            // zoneLeft.Add((GameObject)zone);
+
             zoneLeft[i] = zone;
         }
 
@@ -73,15 +74,15 @@ public class ZoneController : MonoBehaviour
         for (int i = 0; i < (_amount-1); i++)
         {
             // instantiate fountains based on prefab and then assign to fountain jet array
-            GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(displacementX * .5f + i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(displacementX * .45f + i * displacementX+ 0.05f, 0 , i * displacementZ), Quaternion.identity) as GameObject;
             zoneRight[i] = zone;
         }
 
         // instantiate slider objects
-        zone4SliderLeft = Instantiate(zone4SliderLeft, transform.position + new Vector3(-(displacementX * .5f + 3 * displacementX), 0.05f, -0.1f), Quaternion.identity) as GameObject;
+        zone4SliderLeft = Instantiate(zone4SliderLeft, transform.position + new Vector3(-(displacementX * .45f + 3 * displacementX + 0.05f), 0.05f, -0.1f), Quaternion.identity) as GameObject;
         zoneLeft[3] = zone4SliderLeft;
         //zoneLeft.Add((GameObject)zone4SliderLeft);
-        zone4SliderRight = Instantiate(zone4SliderLeft, transform.position + new Vector3((displacementX * .5f + 3 * displacementX), 0.05f, -0.1f), Quaternion.identity) as GameObject;
+        zone4SliderRight = Instantiate(zone4SliderLeft, transform.position + new Vector3((displacementX * .45f + 3 * displacementX)+ 0.05f, 0.05f, -0.1f), Quaternion.identity) as GameObject;
         zoneRight[3] = zone4SliderRight;
 
         waterGloveLeft = Instantiate(waterGloveLeft, transform.position + new Vector3(-(displacementX * .5f + 3 * displacementX), displacementY, 0), Quaternion.identity) as GameObject;
@@ -148,7 +149,7 @@ public class ZoneController : MonoBehaviour
     {
         for (int i = 0; i < zoneRight.Length; i++)
         {
-           zoneRight[i].GetComponentInChildren<MeshRenderer>().material.color = new Color(100, 100, 100, 10);
+           zoneRight[i].GetComponentInChildren<MeshRenderer>().material.color = Color.white;
         }
         zoneRight[zoneNumber].GetComponentInChildren<MeshRenderer>().material.color = zoneColors[zoneNumber];
 
