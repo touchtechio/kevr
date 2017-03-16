@@ -58,6 +58,37 @@ public class DroneController : MonoBehaviour
 
     }
 
+
+    // Update is called once per frame
+    void Update()
+    {
+
+
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                Debug.Log("targeting player");
+                TargetPlayer();
+            }
+
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                Debug.Log("targeting home");
+                TargetHome();
+            }
+
+      
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            for (int i = 0; i < _amount; i++)
+            {
+                LeftDrones[i].GetComponentInChildren<Animation>().Play();
+                RightDrones[i].GetComponentInChildren<Animation>().Play();
+               
+            }
+        }
+   
+    }
+
     private Vector3 leftStart(int droneNumber)
     {
         Vector3 leftGroupStart = LeftDronesHome.GetComponent<Transform>().position;
@@ -71,23 +102,6 @@ public class DroneController : MonoBehaviour
         return rightGroupStart + new Vector3(droneNumber * displacementX, 0, droneNumber * displacementZ);
     }
 
-
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            Debug.Log("targeting player");
-            TargetPlayer();
-        }
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            Debug.Log("targeting home");
-            TargetHome();
-        }
-
-    }
 
     private void TargetHome()
     {
@@ -169,6 +183,9 @@ public class DroneController : MonoBehaviour
             Vector3 pos = new Vector3(transformToMove.localPosition.x + NoteHitForce, transformToMove.localPosition.y, transformToMove.localPosition.z + NoteHitForce);
 
             transformToMove.localPosition = pos;
+
+            LeftDrones[i].GetComponentInChildren<Animation>().Play();
+          
         }
         return;
     }
@@ -192,6 +209,9 @@ public class DroneController : MonoBehaviour
             Vector3 pos = new Vector3(transformToMove.localPosition.x + NoteHitForce, transformToMove.localPosition.y, transformToMove.localPosition.z + NoteHitForce);
 
             transformToMove.localPosition = pos;
+
+            RightDrones[i].GetComponentInChildren<Animation>().Play();
+
         }
         return;
     }
