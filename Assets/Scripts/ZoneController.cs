@@ -47,7 +47,7 @@ public class ZoneController : MonoBehaviour
 
     [SerializeField]
     // x range is -0.3 - 0.3
-    float[] xPosRange = { -0.35f, -0.15f, 0f, 0.15f, 0.35f };
+    float[] xPosRange = { -0.35f, -0.10f, 0.5f, 0.10f, 0.30f };
 
     [SerializeField]
     // y range is 0.2 - 0.85
@@ -115,7 +115,7 @@ public class ZoneController : MonoBehaviour
     internal void ZoneHeight(GameObject ZoneObject, int zone, float yPos)
     {
         Transform childTransform = ZoneObject.transform.GetChild(0);
-        childTransform.localScale = new Vector3(1, 5* yPos, 1);
+        childTransform.localScale = new Vector3(1, 8* Mathf.Pow(yPos, 2), 1); // Mathf.Pow(yPos, 2) for square (pow 2)
     }
 
     // passing information from left slider and right slider

@@ -123,11 +123,8 @@ namespace UniOSC
             // if no message, escape
             if (msg == null) return;
 
-
- 
             //
             //  SYNCPHONY
-            //
 
             SynphonyGloveData();
 
@@ -143,6 +140,31 @@ namespace UniOSC
 
 
             // handles rs data from single camera
+            rsZones();
+
+            // handles osc rs data from Max
+            rsZonesViaMax();
+
+        }
+
+        private void rsZonesViaMax()
+        {
+            if (msg.Address.Contains(rightZone))
+            {
+                rightZoneData = (int)msg.Data[0];
+                //Debug.Log(rightZoneData);
+                ZoneController.rightZoneColor(rightZoneData);
+
+            }
+            else if (msg.Address.Contains(leftZone))
+            {
+                leftZoneData = (int)msg.Data[0];
+                ZoneController.leftZoneColor(leftZoneData);
+            }
+        }
+
+        private void rsZones()
+        {
             if (msg.Address.Contains(cursorLeft))
             {
 
@@ -170,27 +192,9 @@ namespace UniOSC
                 GloveController.rsZoneRightXZ(-zPos, -xPos);
                 ZoneController.UpdateRightZone(xPos, yPos, zPos);
 
-
-
                 Debug.Log(xPos);
 
             }
-
-            // handles osc rs data from Max
-            if (msg.Address.Contains(rightZone))
-            {
-                rightZoneData = (int)msg.Data[0];
-                //Debug.Log(rightZoneData);
-                ZoneController.rightZoneColor(rightZoneData);
-
-            }
-            else if (msg.Address.Contains(leftZone))
-            {
-                leftZoneData = (int)msg.Data[0];
-                ZoneController.leftZoneColor(leftZoneData);
-            }
-
-
         }
 
         private void touchOSCBEnds()
