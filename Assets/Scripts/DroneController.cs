@@ -176,16 +176,9 @@ public class DroneController : MonoBehaviour
         for (int i = 0; i < dronesPerGroup; i++)
         {
             var droneNumber = droneGroup * dronesPerGroup + i;
-            Debug.Log("index:" + droneNumber);
             GameObject drone = LeftDrones[droneNumber];
-            Transform transformToMove = drone.GetComponent<Transform>();
+            HitDrone(drone);
 
-            Vector3 pos = new Vector3(transformToMove.localPosition.x + NoteHitForce, transformToMove.localPosition.y, transformToMove.localPosition.z + NoteHitForce);
-
-            transformToMove.localPosition = pos;
-
-            LeftDrones[i].GetComponentInChildren<Animation>().Play();
-          
         }
         return;
     }
@@ -204,15 +197,23 @@ public class DroneController : MonoBehaviour
         {
             var droneNumber = droneGroup * dronesPerGroup + i;
             GameObject drone = RightDrones[droneNumber];
-            Transform transformToMove = drone.GetComponent<Transform>();
-
-            Vector3 pos = new Vector3(transformToMove.localPosition.x + NoteHitForce, transformToMove.localPosition.y, transformToMove.localPosition.z + NoteHitForce);
-
-            transformToMove.localPosition = pos;
-
-            RightDrones[i].GetComponentInChildren<Animation>().Play();
+            HitDrone(drone);
 
         }
         return;
     }
+
+    internal void HitDrone(GameObject drone)
+    {
+
+        Transform transformToMove = drone.GetComponent<Transform>();
+
+        Vector3 pos = new Vector3(transformToMove.localPosition.x + NoteHitForce, transformToMove.localPosition.y, transformToMove.localPosition.z + NoteHitForce);
+
+        //  transformToMove.localPosition = pos;
+
+        drone.GetComponentInChildren<Animation>().Play();
+
+    }
+
 }

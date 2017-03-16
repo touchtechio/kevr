@@ -46,6 +46,8 @@ namespace UniOSC
         private const string oscLeftHandWrist = "gesture/left-hand/wrist";
         private const string oscLeftNote = "midi/1";
         private const string oscRighttNote = "midi/2";
+        private const string oscLeftWristCc = "midicc/1";
+        private const string oscRightWristCc = "midicc/2";
 
 
 
@@ -92,8 +94,8 @@ namespace UniOSC
         private const string leftZone = "left/zone";
 
         //REALSENSE DRAGONFLY OSC address
-        private const string cursorLeft = "/cursor/s124/left";
-        private const string cursorRight = "/cursor/s124/right";
+ //       int[] realsense = { 90, 91, 124 };
+        int[] realsense = { 91, 124 };
         private const string heartbeat = "heartbeat";
 
 
@@ -165,35 +167,48 @@ namespace UniOSC
 
         private void rsZones()
         {
-            if (msg.Address.Contains(cursorLeft))
+
+            for (int i = 0; i < realsense.Length; i++)
             {
-
-                float xPos = (float)msg.Data[0];
-                float zPos = (float)msg.Data[1];
-                float yPos = (float)msg.Data[2];
+                string cursorLeft = "/cursor/s" + realsense[i] + "/left";
+                string cursorRight = "/cursor/s"+ realsense[i] + "/right";
 
 
-                GloveController.rsZoneLeftY(yPos);
-                GloveController.rsZoneLeftXZ(-zPos, -xPos);
-                ZoneController.UpdateLeftZone(xPos, yPos, zPos);
-                //                ZoneController.UpdateLeftZone(GloveController.GetLeftPosition());
+                if (msg.Address.Contains(cursorLeft))
+                {
+
+                    float xPos = (float)msg.Data[0];
+                    float zPos = (float)msg.Data[1];
+                    float yPos = (float)msg.Data[2];
+
+                    if(91 == realsense[i])
+                    {
+                        xPos = -xPos;
+                        zPos = -zPos;
+                    }
+
+                    GloveController.rsZoneLeftY(yPos);
+                    GloveController.rsZoneLeftXZ(-zPos, -xPos);
+                    ZoneController.UpdateLeftZone(xPos, yPos, zPos);
+                    //                ZoneController.UpdateLeftZone(GloveController.GetLeftPosition());
 
 
-            }
-            if (msg.Address.Contains(cursorRight))
-            {
+                }
+                if (msg.Address.Contains(cursorRight))
+                {
 
-                float xPos = (float)msg.Data[0];
-                float zPos = (float)msg.Data[1];
-                float yPos = (float)msg.Data[2];
+                    float xPos = (float)msg.Data[0];
+                    float zPos = (float)msg.Data[1];
+                    float yPos = (float)msg.Data[2];
 
 
-                GloveController.rsZoneRightY(yPos);
-                GloveController.rsZoneRightXZ(-zPos, -xPos);
-                ZoneController.UpdateRightZone(xPos, yPos, zPos);
+                    GloveController.rsZoneRightY(yPos);
+                    GloveController.rsZoneRightXZ(-zPos, -xPos);
+                    ZoneController.UpdateRightZone(xPos, yPos, zPos);
 
-                Debug.Log(xPos);
+                    Debug.Log(xPos);
 
+                }
             }
         }
 
@@ -326,6 +341,21 @@ namespace UniOSC
                 int degrees = (int)msg.Data[1];
                 // Debug.Log("right-wrist:" + degrees);
                 GloveController.SetRightWristAngle(degrees);
+            }
+
+            // syncphony glove MIDI note hits
+            if (msg.Address.Contains(oscLeftWristCc))
+            {
+                int degrees = (int)msg.Data[0];
+                //Debug.Log("left-wrist:" + degrees);
+                GloveController.SetLeftWristAngle(degrees+180);
+            }
+
+            if (msg.Address.Contains(oscRightWristCc))
+            {
+                int degrees = (int)msg.Data[0];
+                //Debug.Log("right-wrist:" + degrees);
+                GloveController.SetRightWristAngle(degrees-90);
             }
 
             // syncphony glove MIDI note hits
