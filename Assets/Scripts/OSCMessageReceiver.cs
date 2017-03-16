@@ -123,6 +123,7 @@ namespace UniOSC
             // if no message, escape
             if (msg == null) return;
 
+
             //
             //  SYNCPHONY
 
@@ -263,7 +264,7 @@ namespace UniOSC
 
 
                 Vector3 position = GloveController.GetLeftPosition();
-                Debug.Log(position.y + " y pos");
+                //Debug.Log(position.y + " y pos");
                 ZoneController.UpdateLeftZone(-position.z, position.y, position.x);
 
             }

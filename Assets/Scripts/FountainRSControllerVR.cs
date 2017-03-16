@@ -24,6 +24,8 @@ public class FountainRSControllerVR : MonoBehaviour {
     [SerializeField]
     int displacementZ = -1;
 
+    public ZoneController zoneController;
+
     void Awake()
     {
         
@@ -68,16 +70,27 @@ public class FountainRSControllerVR : MonoBehaviour {
 
     public void fountainHeightLeft(int i, float fingerBendDataLeft)
     {
-        //Debug.Log("finger" + i + "bend value" + fingerBendDataLeft);
-        fountainJetsLeft[i].transform.localScale = new Vector3 (100,40 + 5000 *fingerBendDataLeft,100);
-
-      
+        if (zoneController.isWaterGloveLeft)
+        {
+            //Debug.Log("finger" + i + "bend value" + fingerBendDataLeft);
+            fountainJetsLeft[i].transform.localScale = new Vector3(100, 40 + 5000 * fingerBendDataLeft, 100);
+        }
+        else
+        {
+            Debug.Log("fountain off");
+        }
     }
 
     public void fountainHeightRight(int i, float fingerBendDataRight)
     {
-       // Debug.Log("finger" + i + "bend value" + fingerBendDataRight);
+        if (zoneController.isWaterGloveRight) { 
+        // Debug.Log("finger" + i + "bend value" + fingerBendDataRight);
         fountainJetsRight[i].transform.localScale = new Vector3(100, 40 + 5000 * fingerBendDataRight, 100);
+    }
+        else
+        {
+            Debug.Log("fountain off");
+        }
 
     }
 
