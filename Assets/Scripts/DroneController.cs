@@ -162,12 +162,13 @@ public class DroneController : MonoBehaviour
 
     }
 
-
+    /*
     internal void LeftMidiNoteHit(int note)
     {
         int droneGroup = 5 - (note - leftGloveMidiStart);
         LeftNoteHit(droneGroup);
     }
+    */
 
    internal void LeftNoteHit(int droneGroup)
     {
@@ -182,13 +183,13 @@ public class DroneController : MonoBehaviour
         }
         return;
     }
-
+    /*
     internal void RightMidiNoteHit(int note)
     {
         int droneGroup = note - rightGloveMidiStart - 5;
         RightNoteHit(droneGroup);
     }
-
+    */
     internal void RightNoteHit(int droneGroup)
     {
 

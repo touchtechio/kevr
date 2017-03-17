@@ -87,6 +87,9 @@ namespace UniOSC
         private string[] LeftNoteAddresses = { noteLeft1, noteLeft2, noteLeft3, noteLeft4, noteLeft5 };
         private string[] RightNoteAddresses = { noteRight1, noteRight2, noteRight3, noteRight4, noteRight5 };
 
+        // glove midi config
+        public int rightGloveMidiStart = 55;
+        public int leftGloveMidiStart = 24;
 
 
         // Max OSC addresses
@@ -246,6 +249,7 @@ namespace UniOSC
                 {
                     Debug.Log("note:" + i);
                     DroneController.LeftNoteHit(i);
+                    FountainRSController.fountainMididLeft(i);
                 }
                 if (msg.Address.Contains(RightNoteAddresses[i]))
                 {
@@ -363,15 +367,23 @@ namespace UniOSC
             if (msg.Address.Contains(oscLeftNote))
             {
                 int note = (int)msg.Data[1];
+                int droneGroup = 5 - (note - leftGloveMidiStart);
+                DroneController.LeftNoteHit(note); // note is a midi note
+
+                int fountainNumber = leftGloveMidiStart - note + 4;
                 Debug.Log("left-note:" + note);
-                DroneController.LeftMidiNoteHit(note); // note is a midi note
+
+                FountainRSController.fountainMididLeft(fountainNumber);
             }
 
             if (msg.Address.Contains(oscRighttNote))
             {
                 int note = (int)msg.Data[1];
-                Debug.Log("right-note:" + note);
-                DroneController.RightMidiNoteHit(note);
+                int droneGroup = note - rightGloveMidiStart - 5;
+                Debug.Log("right-note:" + droneGroup);
+                DroneController.RightNoteHit(droneGroup);
+
+
             }
         }
     }

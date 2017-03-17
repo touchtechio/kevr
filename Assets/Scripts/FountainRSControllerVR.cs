@@ -94,5 +94,18 @@ public class FountainRSControllerVR : MonoBehaviour {
 
     }
 
+    public void fountainMididLeft(int i)
+    {
+        if (zoneController.isWaterGloveLeft)
+        {
+            //Debug.Log("finger" + i + "bend value" + fingerBendDataLeft);
+           // fountainJetsLeft[i].transform.localScale = new Vector3(100, 40 + 5000 * fountainJetHeightLeft[i], 100);
+        }
+        else
+        {
+            Debug.Log("fountain off");
+        }
+    }
+
 
 }
