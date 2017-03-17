@@ -1,8 +1,5 @@
-using UnityEngine;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using OSCsharp.Data;
+using UnityEngine;
 
 
 namespace UniOSC
@@ -279,12 +276,13 @@ namespace UniOSC
             {
                 float rsZoneDataLeftY = (float)msg.Data[0];
 
-                GloveController.rsZoneLeftY(rsZoneDataLeftY * 0.5f + 0.4f);
+                GloveController.rsZoneLeftY(rsZoneDataLeftY * 0.5f + 0.3f); // movement of the glove asset
+
 
 
                 Vector3 position = GloveController.GetLeftPosition();
-                //Debug.Log(position.y + " y pos");
-                ZoneController.UpdateLeftZone(-position.z, position.y, position.x);
+               // Debug.Log(position.y + " y pos");
+                ZoneController.UpdateLeftZone(-position.z, position.y, position.x); // zone mappings
 
             }
 
@@ -296,18 +294,20 @@ namespace UniOSC
                 // convert from touch osc to rs coordinates
                 GloveController.rsZoneRightXZ(-0.3f * rsZoneDataRightX + .1f, 0.1f + 0.5f * rsZoneDataRightZ);
 
-                Vector3 position = GloveController.GetLeftPosition();
+                Vector3 position = GloveController.GetRightPosition();
                 ZoneController.UpdateRightZone(position.z, position.y, -position.x);
+                Debug.Log("x position of right glove " + position.z);
             }
 
             if (msg.Address.Contains(rsZoneRightY))
             {
                 float rsZoneDataRightY = (float)msg.Data[0];
-                GloveController.rsZoneRightY(rsZoneDataRightY * 0.5f + 0.4f);
+                GloveController.rsZoneRightY(rsZoneDataRightY * 0.5f + 0.3f);
 
-                Vector3 position = GloveController.GetLeftPosition();
+                Vector3 position = GloveController.GetRightPosition();
 
-                ZoneController.UpdateRightZone(-position.z, position.y, position.x);
+                ZoneController.UpdateRightZone(position.z, position.y, -position.x);
+                
             }
         }
 

@@ -26,7 +26,7 @@ public class FountainRSControllerVR : MonoBehaviour {
 
     public ZoneController zoneController;
 
-    //int[] fountainJetHeightLeft = { 2000, 2500, 2000, 2000, 1000 };
+    int[] fountainJetHeightLeft = { 2000, 2500, 2000, 2000, 1000 };
 
     void Awake()
     {
