@@ -56,19 +56,38 @@ public class FountainRSControllerVR : MonoBehaviour
         {
             // instantiate fountains based on prefab and then assign to fountain jet array
             GameObject jet = Instantiate(_fountainJet, transform.position + new Vector3(-2.5f + i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
-            jetParticles = Instantiate(_fountainParticles, transform.position + new Vector3(-2.5f + i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+
             Transform jetTransform = jet.GetComponent<Transform>();
             if (i > 2)
             {
                 jetTransform.rotation = Quaternion.Euler(0, 0, (i - 2) * 5);
             }
             fountainJetsLeft[i] = jet;
-            jetParticles.transform.GetChild(0).gameObject.SetActive(true);
-            //fountainJetParticlesLeft[i] = jetParticles;
+
+            //   jetParticles = Instantiate(_fountainParticles, transform.position + new Vector3(-2.5f + i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            //  jetParticles.transform.GetChild(0).gameObject.SetActive(true);
+
+            // fountainJetParticlesLeft[i] = jetParticles;
 
         }
 
-        fountainJetsRight = new GameObject[_amount];
+
+        fountainJetParticlesLeft = new GameObject[_amount];
+
+        for (int i = 0; i < _amount; i++)
+        {
+
+
+            jetParticles = Instantiate(_fountainParticles, transform.position + new Vector3(-2.5f + i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            jetParticles.transform.GetChild(0).gameObject.SetActive(true);
+
+            fountainJetParticlesLeft[i] = jetParticles;
+
+        }
+
+
+
+        fountainJetsRight = new GameObject[_amount]; // initialize jet array
 
         for (int i = 0; i < _amount; i++)
         {
@@ -113,13 +132,22 @@ public class FountainRSControllerVR : MonoBehaviour
 
     }
 
-    public void fountainMididLeft(int i)
+    public void fountainMidiLeft(int i)
     {
         if (zoneController.isWaterGloveLeft)
         {
-            //Debug.Log("finger" + i + "bend value" + fingerBendDataLeft);
-            fountainJetsLeft[i].transform.localScale = new Vector3(100, fountainJetHeightLeft[i], 100);
-            //fountainJetsLeft[i].transform.localScale = new Vector3(100, 40 + 5000, 100);
+            Debug.Log("finger" + i);
+            fountainJetsLeft[i].transform.localScale = new Vector3(100, fountainJetHeightLeft[i], 100); // setting the old fountain jets by finger
+            //fountainJetParticlesLeft[i].transform.GetChild(0).gameObject.SetActive(true); // single test jet
+           // fountainJetsLeft[i].transform.localScale = new Vector3(100, 40 + 5000, 100);
+            {
+
+                fountainChild.SetActive(true);
+            }
+            if (fountainChild.GetComponentInChildren<ParticleSystem>().IsAlive() == false)
+            {
+                fountainChild.SetActive(false);
+            }
         }
         else
         {
@@ -145,18 +173,31 @@ public class FountainRSControllerVR : MonoBehaviour
         }
         */
 
-        if (Input.GetKeyUp(KeyCode.Space))
-         
 
+        // check why 2 presses to make jets happen
+        if (Input.GetKeyUp(KeyCode.Space)) 
         {
-            
-            fountainChild.SetActive(true);
+            for (int i = 0; i < _amount; i++)
+
+            {
+                jetParticles.transform.GetChild(0).gameObject.SetActive(true);
+                //fountainChild.SetActive(true);
+                fountainJetParticlesLeft[i].transform.GetChild(0).gameObject.SetActive(true);
+                if (fountainJetParticlesLeft[i].GetComponentInChildren<ParticleSystem>().IsAlive() == false)
+                {
+                    fountainJetParticlesLeft[i].transform.GetChild(0).gameObject.SetActive(false); ;
+                }
+            }
         }
+        /* single jet tester
         if (fountainChild.GetComponentInChildren<ParticleSystem>().IsAlive() == false)
         {
             fountainChild.SetActive(false);
         }
-         //   _fountainParticles.SetActive((false));
+        */
+
+
+        //   _fountainParticles.SetActive((false));
     }
 }
 

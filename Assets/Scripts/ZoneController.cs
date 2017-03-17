@@ -217,7 +217,7 @@ public class ZoneController : MonoBehaviour
             if ((yPos > yPosRange[i]) && (yPos < yPosRange[i + 1]))
             {
                
-                Debug.Log("ypos : " + yPos + "in zone: " + i);
+               // Debug.Log("ypos : " + yPos + "in zone: " + i);
                 return i;
             }
         }

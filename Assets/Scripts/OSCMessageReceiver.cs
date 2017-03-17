@@ -246,7 +246,7 @@ namespace UniOSC
                 {
                     Debug.Log("note:" + i);
                     DroneController.LeftNoteHit(i);
-                    FountainRSController.fountainMididLeft(i);
+                    FountainRSController.fountainMidiLeft(i);
                 }
                 if (msg.Address.Contains(RightNoteAddresses[i]))
                 {
@@ -367,13 +367,16 @@ namespace UniOSC
             if (msg.Address.Contains(oscLeftNote))
             {
                 int note = (int)msg.Data[1];
-                int droneGroup = 5 - (note - leftGloveMidiStart);
-                DroneController.LeftNoteHit(note); // note is a midi note
+                int droneGroup = 4 - (note - leftGloveMidiStart);
+                Debug.Log("left-note:" + note + " droneGroup:" + droneGroup);
+                DroneController.LeftNoteHit(droneGroup); // note is a midi note
+
+
 
                 int fountainNumber = leftGloveMidiStart - note + 4;
-                Debug.Log("left-note:" + note);
+                Debug.Log("left-note:" + note + " fountainNumber:" + fountainNumber);
 
-                FountainRSController.fountainMididLeft(fountainNumber);
+                FountainRSController.fountainMidiLeft(fountainNumber);
             }
 
             if (msg.Address.Contains(oscRighttNote))
