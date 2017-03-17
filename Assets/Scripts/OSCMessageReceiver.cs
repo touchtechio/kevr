@@ -348,14 +348,14 @@ namespace UniOSC
             {
                 int degrees = (int)msg.Data[0];
                 //Debug.Log("left-wrist:" + degrees);
-                GloveController.SetLeftWristAngle(degrees+180);
+                GloveController.SetLeftWristAngle(-degrees-90);
             }
 
             if (msg.Address.Contains(oscRightWristCc))
             {
                 int degrees = (int)msg.Data[0];
                 //Debug.Log("right-wrist:" + degrees);
-                GloveController.SetRightWristAngle(degrees-90);
+                GloveController.SetRightWristAngle(-degrees-90);
             }
 
             // syncphony glove MIDI note hits
