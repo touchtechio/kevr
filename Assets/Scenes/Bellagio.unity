@@ -51684,10 +51684,10 @@ MonoBehaviour:
   - 0.4
   - 0.6
   - 0.95
-  isWaterGloveLeft: 0
-  isWaterGloveRight: 0
-  isDroneGloveLeft: 0
-  isDroneGloveRight: 0
+  isWaterGloveLeft: 1
+  isWaterGloveRight: 1
+  isDroneGloveLeft: 1
+  isDroneGloveRight: 1
 --- !u!4 &1252059955
 Transform:
   m_ObjectHideFlags: 0
