@@ -45,7 +45,6 @@ public class FountainRSControllerVR : MonoBehaviour
     }
 
 
-
     void Start()
     {
         //_fountainParticles.transform.GetChild(0).gameObject.SetActive(true);
@@ -137,17 +136,23 @@ public class FountainRSControllerVR : MonoBehaviour
         if (zoneController.isWaterGloveLeft)
         {
             Debug.Log("finger" + i);
-            fountainJetsLeft[i].transform.localScale = new Vector3(100, fountainJetHeightLeft[i], 100); // setting the old fountain jets by finger
-            //fountainJetParticlesLeft[i].transform.GetChild(0).gameObject.SetActive(true); // single test jet
-           // fountainJetsLeft[i].transform.localScale = new Vector3(100, 40 + 5000, 100);
-            {
 
-                fountainChild.SetActive(true);
-            }
-            if (fountainChild.GetComponentInChildren<ParticleSystem>().IsAlive() == false)
+            fountainJetParticlesLeft[i].transform.GetChild(0).gameObject.SetActive(true); // single test jet
+            if (fountainJetParticlesLeft[i].GetComponentInChildren<ParticleSystem>().IsAlive() == false)
             {
-                fountainChild.SetActive(false);
+                fountainJetParticlesLeft[i].transform.GetChild(0).gameObject.SetActive(false); ;
             }
+            // fountainJetsLeft[i].transform.localScale = new Vector3(100, fountainJetHeightLeft[i], 100); // setting the old fountain jets by finger
+
+            // fountainJetsLeft[i].transform.localScale = new Vector3(100, 40 + 5000, 100);
+            /* {
+
+                 fountainChild.SetActive(true);
+             }
+             if (fountainChild.GetComponentInChildren<ParticleSystem>().IsAlive() == false)
+             {
+                 fountainChild.SetActive(false);
+             }*/
         }
         else
         {
