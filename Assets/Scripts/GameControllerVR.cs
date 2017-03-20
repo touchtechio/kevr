@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameControllerVR : MonoBehaviour {
+public class GameControllerVR : MonoBehaviour
+{
     /*
     public float timerMax;
 
@@ -34,7 +35,7 @@ public class GameControllerVR : MonoBehaviour {
     void Awake()
     {
 
-      //  source = GetComponent<AudioSource>();
+        //  source = GetComponent<AudioSource>();
     }
 
     enum Screen
@@ -65,6 +66,8 @@ public class GameControllerVR : MonoBehaviour {
     [SerializeField]
     int displacementZ = 1;
 
+    public ZoneController ZoneController;
+
 
     void Start()
     {
@@ -84,6 +87,53 @@ public class GameControllerVR : MonoBehaviour {
 
     void Update()
     {
-    }
+        /*
+        private void keyboardData()
+    {
+        if (Input.GetKeyDown(KeyCode.F)) // check if it was in zone 1 before
+        {
 
+            // to turn left water glove switch on and off
+
+            if (!ZoneController.isWaterGloveLeft)
+            {
+
+                ZoneController.isWaterGloveLeft = true;
+
+            }
+            else
+            {
+                ZoneController.isWaterGloveLeft = false;
+
+
+            }
+
+          //  Debug.Log("water glove mode " + ZoneController.isWaterGloveLeft);
+        }
+
+        if (Input.GetKeyDown(KeyCode.G)) // check if it was in zone 1 before
+        {
+
+            // to turn left water glove switch on and off
+
+            if (!ZoneController.isWaterGloveRight)
+            {
+
+                ZoneController.isWaterGloveRight = true;
+
+            }
+            else
+            {
+                ZoneController.isWaterGloveRight = false;
+
+
+            }
+
+           // Debug.Log("water glove mode " + isWaterGloveLeft);
+        }
+    }
+    */
+    }
 }
+
+

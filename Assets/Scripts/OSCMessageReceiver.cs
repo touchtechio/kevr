@@ -387,15 +387,14 @@ namespace UniOSC
                 Debug.Log("right-note:" + droneGroup);
                 DroneController.RightNoteHit(droneGroup);
 
+                int fountainNumber = note - rightGloveMidiStart;
+                Debug.Log("right-note:" + fountainNumber);
+                FountainRSController.fountainMidiRight(fountainNumber);
 
             }
         }
 
 
-        private void KeyboardData()
-        {
 
-            if (Input.GetKeyDown(KeyCode.T)) { }
-        }
     }
 }
