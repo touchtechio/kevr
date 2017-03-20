@@ -10,7 +10,9 @@ public class DroneController : MonoBehaviour
 
 
     [Header("drone group settings")]
-    public int _amount = 15;
+	public int dronesPerGroup = 3;
+	int DronesPerHand;
+
     public int displacementX = 5;
     public int displacementZ = 5;
 
@@ -32,25 +34,26 @@ public class DroneController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        LeftDrones = new GameObject[_amount];
-        RightDrones = new GameObject[_amount];
+		DronesPerHand = dronesPerGroup * 5;
+		LeftDrones = new GameObject[DronesPerHand];
+		RightDrones = new GameObject[DronesPerHand];
 
         Vector3 target = PlayerTarget.GetComponent<Transform>().position;
 
-        for (int i = 0; i < _amount; i++)
+		for (int i = 0; i < DronesPerHand; i++)
         {
             GameObject drone = Instantiate(_prefab, leftStart(i), Quaternion.identity) as GameObject;
             drone.name = "drone-left-" + i;
-            drone.GetComponentInChildren<MeshRenderer>().material.color = Color.HSVToRGB(i / (float)_amount, .5f, .5f);
+			drone.GetComponentInChildren<MeshRenderer>().material.color = Color.HSVToRGB(i / (float)DronesPerHand, .5f, .5f);
             //drone.GetComponent<UnitySteer.Behaviors.SteerForPoint>().TargetPoint = target;
             LeftDrones[i] = drone;
         }
 
-        for (int i = 0; i < _amount; i++)
+		for (int i = 0; i < DronesPerHand; i++)
         {
             GameObject drone = Instantiate(_prefab, rightStart(i), Quaternion.identity) as GameObject;
             drone.name = "drone-right-" + i;
-            drone.GetComponentInChildren<MeshRenderer>().material.color = Color.HSVToRGB(i / (float)_amount, .5f, .5f);
+			drone.GetComponentInChildren<MeshRenderer>().material.color = Color.HSVToRGB(i / (float)DronesPerHand, .5f, .5f);
             //drone.GetComponent<UnitySteer.Behaviors.SteerForPoint>().TargetPoint = target;
             RightDrones[i] = drone;
         }
@@ -79,28 +82,39 @@ public class DroneController : MonoBehaviour
       
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            for (int i = 0; i < _amount; i++)
+			for (int i = 0; i < DronesPerHand; i++)
             {
-                LeftDrones[i].GetComponentInChildren<Animation>().Play();
-                RightDrones[i].GetComponentInChildren<Animation>().Play();
+				HitDrone (LeftDrones [i]);
+				HitDrone (RightDrones [i]);
+
+                //LeftDrones[i].GetComponentInChildren<Animation>().Play();
+                //RightDrones[i].GetComponentInChildren<Animation>().Play();
                
             }
         }
    
     }
 
-    private Vector3 leftStart(int droneNumber)
-    {
-        Vector3 leftGroupStart = LeftDronesHome.GetComponent<Transform>().position;
-        return leftGroupStart + new Vector3(-droneNumber * displacementX, 0, droneNumber * displacementZ);
-    }
+	private Vector3 leftStart(int droneNumber)
+	{
+		Vector3 leftGroupStart = LeftDronesHome.GetComponent<Transform>().position;
+		return leftGroupStart + leftOffset(droneNumber);
+	}
+	private Vector3 leftOffset(int droneNumber)
+	{
+		return new Vector3(-droneNumber/dronesPerGroup * displacementX, 0, droneNumber%dronesPerGroup * displacementZ);
+	}
 
 
-    private Vector3 rightStart(int droneNumber)
-    {
-        Vector3 rightGroupStart = RightDronesHome.GetComponent<Transform>().position;
-        return rightGroupStart + new Vector3(droneNumber * displacementX, 0, droneNumber * displacementZ);
-    }
+	private Vector3 rightStart(int droneNumber)
+	{
+		Vector3 rightGroupStart = RightDronesHome.GetComponent<Transform>().position;
+		return rightGroupStart + rightOffset(droneNumber);
+	}
+	private Vector3 rightOffset(int droneNumber)
+	{
+		return new Vector3(droneNumber/dronesPerGroup * displacementX, 0, droneNumber%dronesPerGroup * displacementZ);
+	}
 
 
     private void TargetHome()
@@ -108,7 +122,7 @@ public class DroneController : MonoBehaviour
       //  Vector3 leftStart = LeftDronesHome.GetComponent<Transform>().position;
       //  Vector3 rightStart = RightDronesHome.GetComponent<Transform>().position;
 
-        for (int i = 0; i < _amount; i++)
+		for (int i = 0; i < DronesPerHand; i++)
         {
             LeftDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().TargetPoint = leftStart(i);
             LeftDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().enabled = true;
@@ -117,29 +131,29 @@ public class DroneController : MonoBehaviour
         }
     }
 
-    private void TargetPlayer()
-    {
-      
-        Vector3 leftStart = LeftDronesHome.GetComponent<Transform>().position;
-        Vector3 rightStart = RightDronesHome.GetComponent<Transform>().position;
+	private void TargetPlayer()
+	{
+		Vector3 target = PlayerTarget.GetComponent<Transform>().position;
+		TargetPoint (target);
+	}
 
-        Vector3 target = PlayerTarget.GetComponent<Transform>().position;
+	private void TargetPoint( Vector3 target)
+	{
+		for (int i = 0; i < DronesPerHand; i++)
+		{
+			LeftDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().TargetPoint = target + leftOffset(i) - new Vector3(0.5f*displacementX,0f,0f);
+			LeftDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().enabled = true;
 
-        for (int i = 0; i < _amount; i++)
-        {
-            LeftDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().TargetPoint = target;
-            LeftDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().enabled = true;
+			RightDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().TargetPoint = target + rightOffset(i) + new Vector3(0.5f*displacementX,0f,0f);
+			RightDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().enabled = true;
 
-            RightDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().TargetPoint = target;
-            RightDrones[i].GetComponent<UnitySteer.Behaviors.SteerForPoint>().enabled = true;
-
-        }
-    }
+		}
+	}
 
     internal void FingerBend(int group, float fingerBendPercent)
     {
 
-        var dronesPerGroup = _amount / 10;
+		var dronesPerGroup = DronesPerHand / 10;
         for (int i = 0; i < dronesPerGroup; i++)
         {
             var droneNumber = group * dronesPerGroup + i;
@@ -162,47 +176,28 @@ public class DroneController : MonoBehaviour
 
     }
 
-    /*
-    internal void LeftMidiNoteHit(int note)
-    {
-        int droneGroup = 5 - (note - leftGloveMidiStart);
-        LeftNoteHit(droneGroup);
-    }
-    */
+	internal void LeftNoteHit(int droneGroup)
+	{
+		HitDroneGroup (droneGroup, LeftDrones);
+	}
 
-   internal void LeftNoteHit(int droneGroup)
-    {
+	internal void RightNoteHit(int droneGroup)
+	{
+		HitDroneGroup (droneGroup, RightDrones);
+	}
 
-        var dronesPerGroup = _amount / 5;
-        for (int i = 0; i < dronesPerGroup; i++)
-        {
-            var droneNumber = droneGroup * dronesPerGroup + i;
-            GameObject drone = LeftDrones[droneNumber];
-            HitDrone(drone);
+	internal void HitDroneGroup(int droneGroup, GameObject[] drones )
+	{
 
-        }
-        return;
-    }
-    /*
-    internal void RightMidiNoteHit(int note)
-    {
-        int droneGroup = note - rightGloveMidiStart - 5;
-        RightNoteHit(droneGroup);
-    }
-    */
-    internal void RightNoteHit(int droneGroup)
-    {
+		for (int i = 0; i < dronesPerGroup; i++)
+		{
+			var droneNumber = droneGroup * dronesPerGroup + i;
+			GameObject drone = drones[droneNumber];
+			HitDrone(drone);
 
-        var dronesPerGroup = _amount / 5;
-        for (int i = 0; i < dronesPerGroup; i++)
-        {
-            var droneNumber = droneGroup * dronesPerGroup + i;
-            GameObject drone = RightDrones[droneNumber];
-            HitDrone(drone);
-
-        }
-        return;
-    }
+		}
+		return;
+	}
 
     internal void HitDrone(GameObject drone)
     {
@@ -211,7 +206,7 @@ public class DroneController : MonoBehaviour
 
         Vector3 pos = new Vector3(transformToMove.localPosition.x + NoteHitForce, transformToMove.localPosition.y, transformToMove.localPosition.z + NoteHitForce);
 
-        //  transformToMove.localPosition = pos;
+        //transformToMove.localPosition = pos;
 
         drone.GetComponentInChildren<Animation>().Play();
 
