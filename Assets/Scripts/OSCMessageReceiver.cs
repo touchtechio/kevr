@@ -252,6 +252,7 @@ namespace UniOSC
                 {
                     Debug.Log("note:" + i);
                     DroneController.RightNoteHit(i);
+                    FountainRSController.fountainMidiRight(i);
                 }
             }
         }
@@ -388,6 +389,13 @@ namespace UniOSC
 
 
             }
+        }
+
+
+        private void KeyboardData()
+        {
+
+            if (Input.GetKeyDown(KeyCode.T)) { }
         }
     }
 }
