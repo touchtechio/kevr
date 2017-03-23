@@ -1,0 +1,164 @@
+fileFormatVersion: 2
+guid: a1f07e840fae6ed45a51d0a03f721ec4
+timeCreated: 1490308728
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Body_GRP
+    100002: Control_GRP
+    100004: Hand1
+    100006: Hand_JNT
+    100008: Index_01
+    100010: index_01_CNTRL
+    100012: Index_02
+    100014: index_02_CNTRL
+    100016: Index_03
+    100018: index_03_CNTRL
+    100020: Index_Tip
+    100022: Joint_GRP
+    100024: //RootNode
+    100026: Middle_01
+    100028: middle_01_CNTRL
+    100030: Middle_02
+    100032: middle_02_CNTRL
+    100034: Middle_03
+    100036: middle_03_CNTRL
+    100038: Middle_Tip
+    100040: Pinky_01
+    100042: pinky_01_CNTRL
+    100044: Pinky_02
+    100046: pinky_02_CNTRL
+    100048: Pinky_03
+    100050: pinky_03_CNTRL
+    100052: Pinky_Tip
+    100054: Ring_01
+    100056: ring_01_CNTRL
+    100058: Ring_02
+    100060: ring_02_CNTRL
+    100062: Ring_03
+    100064: ring_03_CNTRL
+    100066: Ring_Tip
+    100068: Thumb_01
+    100070: thumb_01_CNTRL
+    100072: Thumb_02
+    100074: thumb_02_CNTRL
+    100076: Thumb_03
+    100078: thumb_03_CNTRL
+    100080: Thumb_Tip
+    100082: wrist_CNTRL
+    100084: Wrist_JNT
+    400000: Body_GRP
+    400002: Control_GRP
+    400004: Hand1
+    400006: Hand_JNT
+    400008: Index_01
+    400010: index_01_CNTRL
+    400012: Index_02
+    400014: index_02_CNTRL
+    400016: Index_03
+    400018: index_03_CNTRL
+    400020: Index_Tip
+    400022: Joint_GRP
+    400024: //RootNode
+    400026: Middle_01
+    400028: middle_01_CNTRL
+    400030: Middle_02
+    400032: middle_02_CNTRL
+    400034: Middle_03
+    400036: middle_03_CNTRL
+    400038: Middle_Tip
+    400040: Pinky_01
+    400042: pinky_01_CNTRL
+    400044: Pinky_02
+    400046: pinky_02_CNTRL
+    400048: Pinky_03
+    400050: pinky_03_CNTRL
+    400052: Pinky_Tip
+    400054: Ring_01
+    400056: ring_01_CNTRL
+    400058: Ring_02
+    400060: ring_02_CNTRL
+    400062: Ring_03
+    400064: ring_03_CNTRL
+    400066: Ring_Tip
+    400068: Thumb_01
+    400070: thumb_01_CNTRL
+    400072: Thumb_02
+    400074: thumb_02_CNTRL
+    400076: Thumb_03
+    400078: thumb_03_CNTRL
+    400080: Thumb_Tip
+    400082: wrist_CNTRL
+    400084: Wrist_JNT
+    4300000: Hand1
+    9500000: //RootNode
+    13700000: Hand1
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
