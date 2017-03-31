@@ -115,7 +115,7 @@ public class ZoneController : MonoBehaviour
         droneGloveLeft.name = "drone-left-glove";
         droneGloveLeft.transform.parent = transform;
         droneGloveRight = Instantiate(droneGloveRight, transform.position + new Vector3((displacementX * .8f + 3 * displacementX), 2 * displacementY, 0), Quaternion.identity) as GameObject;
-        droneGloveRight.name = "drone-right-glove";
+        droneGloveRight.name = "drone-right -glove";
         droneGloveRight.transform.parent = transform;
         droneGloveRight.transform.localScale = new Vector3(1, 1, 1);
 
@@ -284,7 +284,7 @@ public class ZoneController : MonoBehaviour
                 else
                 {
                     isWaterGloveLeft = false;
-                    waterGloveScale.localScale = new Vector3(1f, 1, 1f);
+                    waterGloveScale.localScale = new Vector3(1f, 1f, 1f);
 
                 }
 
@@ -304,7 +304,7 @@ public class ZoneController : MonoBehaviour
                 }
                 else
                 {
-                    droneGloveScale.localScale = new Vector3(1f, 1, 1f);
+                    droneGloveScale.localScale = new Vector3(1f, 1f, 1f);
                     isDroneGloveLeft = false;
                 }
             }

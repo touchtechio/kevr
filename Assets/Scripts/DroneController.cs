@@ -29,12 +29,26 @@ public class DroneController : MonoBehaviour
     private GameObject[] LeftDrones;
     private GameObject[] RightDrones;
 
+    private ZoneController ZoneController;
+
+
 
 
     // Use this for initialization
     void Start()
     {
-		DronesPerHand = dronesPerGroup * 5;
+
+        if (null == ZoneController)
+        {
+            ZoneController = GameObject.Find("ZONES").GetComponent<ZoneController>();
+            if (null == ZoneController)
+            {
+                Debug.Log("ERROR: couldn't find ZoneController");
+            }
+
+        }
+
+        DronesPerHand = dronesPerGroup * 5;
 		LeftDrones = new GameObject[DronesPerHand];
 		RightDrones = new GameObject[DronesPerHand];
 
@@ -67,7 +81,7 @@ public class DroneController : MonoBehaviour
     {
 
 
-            if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.T))
             {
                 Debug.Log("targeting player");
                 TargetPlayer();
@@ -178,12 +192,20 @@ public class DroneController : MonoBehaviour
 
 	internal void LeftNoteHit(int droneGroup)
 	{
-		HitDroneGroup (droneGroup, LeftDrones);
+        if (ZoneController.droneGloveLeft)
+        {
+
+            HitDroneGroup(droneGroup, LeftDrones);
+        }
 	}
 
 	internal void RightNoteHit(int droneGroup)
 	{
-		HitDroneGroup (droneGroup, RightDrones);
+        if (ZoneController.droneGloveRight)
+        {
+
+            HitDroneGroup(droneGroup, RightDrones);
+        }
 	}
 
 	internal void HitDroneGroup(int droneGroup, GameObject[] drones )

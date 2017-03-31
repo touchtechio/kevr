@@ -266,15 +266,16 @@ namespace UniOSC
         {
             if (msg.Address.Contains(rsZoneLeftXZ))
             {
-                float rsZoneDataLeftX = (float)msg.Data[0];
-                float rsZoneDataLeftZ = (float)msg.Data[1];
+                float incomingTouchOscZ = (float)msg.Data[0];
+                float incomingTouchOscX = (float)msg.Data[1];
 
-                //todo:  x and z transforms are flipped
-                GloveController.rsZoneLeftXZ(-0.3f * rsZoneDataLeftX + .1f, 0.3f - 0.5f * rsZoneDataLeftZ);
-                //Debug.Log("left OSC zone data: " + rsZoneDataLeftX);
+                //         GloveController.rsZoneLeftXZ(-0.3f * rsZoneDataLeftX + .1f, 0.3f - 0.5f * rsZoneDataLeftZ);
+                //                GloveController.rsZoneLeftXZ((0.7f * incomingTouchOscX - 0.35f), 0.2f * incomingTouchOscZ - 0.1f);
+
+                GloveController.rsZoneLeftXZ(0.35f - 0.7f * incomingTouchOscX, 0.2f * incomingTouchOscZ - 0.1f);
 
                 Vector3 position = GloveController.GetLeftPosition();
-                ZoneController.UpdateLeftZone(-position.z, position.y, -position.x);
+                ZoneController.UpdateLeftZone(position.x, position.y, position.z);
 
             }
 
@@ -284,25 +285,21 @@ namespace UniOSC
 
                 GloveController.rsZoneLeftY(rsZoneDataLeftY * 0.5f + 0.3f); // movement of the glove asset
 
-
-
                 Vector3 position = GloveController.GetLeftPosition();
-               // Debug.Log(position.y + " y pos");
-                ZoneController.UpdateLeftZone(-position.z, position.y, position.x); // zone mappings
+                ZoneController.UpdateLeftZone(position.x, position.y, position.z); 
 
             }
 
             if (msg.Address.Contains(rsZoneRightXZ))
             {
-                float rsZoneDataRightX = (float)msg.Data[0];
-                float rsZoneDataRightZ = (float)msg.Data[1];
+                float incomingTouchOscZ = (float)msg.Data[0];
+                float incomingTouchOscX = (float)msg.Data[1];
 
                 // convert from touch osc to rs coordinates
-                GloveController.rsZoneRightXZ(-0.3f * rsZoneDataRightX + .1f, 0.1f + 0.5f * rsZoneDataRightZ);
+                GloveController.rsZoneRightXZ(0.7f * incomingTouchOscX - 0.35f, 0.2f * incomingTouchOscZ - 0.1f);
 
                 Vector3 position = GloveController.GetRightPosition();
-                ZoneController.UpdateRightZone(position.z, position.y, -position.x);
-                Debug.Log("x position of right glove " + position.z);
+                ZoneController.UpdateRightZone(position.x, position.y, position.z);
             }
 
             if (msg.Address.Contains(rsZoneRightY))
@@ -311,9 +308,8 @@ namespace UniOSC
                 GloveController.rsZoneRightY(rsZoneDataRightY * 0.5f + 0.3f);
 
                 Vector3 position = GloveController.GetRightPosition();
+                ZoneController.UpdateRightZone(position.x, position.y, position.z);
 
-                ZoneController.UpdateRightZone(position.z, position.y, -position.x);
-                
             }
         }
 
