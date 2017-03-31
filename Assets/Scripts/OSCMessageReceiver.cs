@@ -94,8 +94,9 @@ namespace UniOSC
         private const string leftZone = "left/zone";
 
         //REALSENSE DRAGONFLY OSC address
- //       int[] realsense = { 90, 91, 124 };
-        int[] realsense = { 91, 124, 125 };
+        //       int[] realsense = { 90, 91, 124 };
+        int[] leftRealsense = { 91, 124 };
+        int[] rightRealsense = { 125 };
         private const string heartbeat = "heartbeat";
 
 
@@ -168,21 +169,19 @@ namespace UniOSC
 
         private void rsZones()
         {
-
-            for (int i = 0; i < realsense.Length; i++)
+            foreach (int realsense in leftRealsense)
             {
-                string cursorLeft = "/cursor/s" + realsense[i] + "/left";
-                string cursorRight = "/cursor/s"+ realsense[i] + "/right";
 
+                string cursor = "/cursor/s" + realsense + "/left";
 
-                if (msg.Address.Contains(cursorLeft))
+                if (msg.Address.Contains(cursor))
                 {
 
                     float xPos = -(float)msg.Data[0];
                     float zPos = (float)msg.Data[1];
                     float yPos = (float)msg.Data[2];
 
-                    if(91 == realsense[i])
+                    if (91 == realsense)
                     {
                         xPos = -xPos;
                         zPos = -zPos;
@@ -191,11 +190,19 @@ namespace UniOSC
                     GloveController.rsZoneLeftY(yPos);
                     GloveController.rsZoneLeftXZ(xPos, zPos);
                     ZoneController.UpdateLeftZone(xPos, yPos, zPos);
-                    //                ZoneController.UpdateLeftZone(GloveController.GetLeftPosition());
-
 
                 }
-                if (msg.Address.Contains(cursorRight))
+
+            }
+
+            foreach (int realsense in rightRealsense)
+            {
+
+                string cursor = "/cursor/s" + realsense + "/right";
+
+
+
+                if (msg.Address.Contains(cursor))
                 {
 
                     float xPos = -(float)msg.Data[0];
@@ -206,8 +213,6 @@ namespace UniOSC
                     GloveController.rsZoneRightY(yPos);
                     GloveController.rsZoneRightXZ(xPos, zPos);
                     ZoneController.UpdateRightZone(xPos, yPos, zPos);
-
-                   // Debug.Log(xPos);
 
                 }
             }
