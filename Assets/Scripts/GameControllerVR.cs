@@ -48,26 +48,6 @@ public class GameControllerVR : MonoBehaviour
         INTERRUPT,
     }
 
-    [SerializeField]
-    int _amount = 3;
-
-    [SerializeField]
-    GameObject zoneObject;
-
-    [SerializeField]
-    GameObject[] zoneLeft;
-
-    [SerializeField]
-    GameObject[] zoneRight;
-
-    [SerializeField]
-    int displacementX = 3;
-
-    [SerializeField]
-    int displacementZ = 1;
-
-    public ZoneController ZoneController;
-
 
     void Start()
     {
@@ -76,11 +56,11 @@ public class GameControllerVR : MonoBehaviour
         Debug.Log("displays connected: " + Display.displays.Length);
         // Display.displays[0] is the primary, default display and is always ON.
         // Check if additional displays are available and activate each.
-      //  if (Display.displays.Length > 1)
+        if (Display.displays.Length > 1)
             Display.displays[1].Activate();
-      //  if (Display.displays.Length > 2)
+        if (Display.displays.Length > 2)
             Display.displays[2].Activate();
-       // if (Display.displays.Length > 3)
+        if (Display.displays.Length > 3)
             Display.displays[3].Activate();
 
     }

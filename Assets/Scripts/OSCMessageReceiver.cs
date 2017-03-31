@@ -95,7 +95,7 @@ namespace UniOSC
 
         //REALSENSE DRAGONFLY OSC address
  //       int[] realsense = { 90, 91, 124 };
-        int[] realsense = { 91, 124 };
+        int[] realsense = { 91, 124, 125 };
         private const string heartbeat = "heartbeat";
 
 
@@ -178,7 +178,7 @@ namespace UniOSC
                 if (msg.Address.Contains(cursorLeft))
                 {
 
-                    float xPos = (float)msg.Data[0];
+                    float xPos = -(float)msg.Data[0];
                     float zPos = (float)msg.Data[1];
                     float yPos = (float)msg.Data[2];
 
@@ -189,7 +189,7 @@ namespace UniOSC
                     }
 
                     GloveController.rsZoneLeftY(yPos);
-                    GloveController.rsZoneLeftXZ(-zPos, -xPos);
+                    GloveController.rsZoneLeftXZ(xPos, zPos);
                     ZoneController.UpdateLeftZone(xPos, yPos, zPos);
                     //                ZoneController.UpdateLeftZone(GloveController.GetLeftPosition());
 
@@ -198,16 +198,16 @@ namespace UniOSC
                 if (msg.Address.Contains(cursorRight))
                 {
 
-                    float xPos = (float)msg.Data[0];
+                    float xPos = -(float)msg.Data[0];
                     float zPos = (float)msg.Data[1];
                     float yPos = (float)msg.Data[2];
 
 
                     GloveController.rsZoneRightY(yPos);
-                    GloveController.rsZoneRightXZ(-zPos, -xPos);
+                    GloveController.rsZoneRightXZ(xPos, zPos);
                     ZoneController.UpdateRightZone(xPos, yPos, zPos);
 
-                    Debug.Log(xPos);
+                   // Debug.Log(xPos);
 
                 }
             }

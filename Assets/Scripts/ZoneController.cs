@@ -45,14 +45,14 @@ public class ZoneController : MonoBehaviour
     private Color zone1Color;
     Color[] zoneColors = { Color.green, Color.yellow, Color.red, Color.cyan };
 
-    [SerializeField]
+
     // x range is -0.3 - 0.3
-    float[] xPosRange = { -0.35f, -0.10f, 0.5f, 0.10f, 0.30f };
+     float[] xPosLeftRange = { -0.5f, -0.10f, 0.05f, 0.10f, 0.50f };
 
-    // x range is 0.1-0.6 on the touch OSC
-    float[] xPosRightRange = {0.1f, 0.22f, 0.34f, 0.46f, 1.66f }; 
+    // x range is -0.3 - 0.3
+     float[] xPosRightRange = { -0.5f, -0.10f, 0.05f, 0.10f, 0.50f };
 
-    [SerializeField]
+
     // y range is 0.2 - 0.85
     public float[] yPosRange = { 0.35f, 0.55f, 0.7f, 0.9f };
 
@@ -121,7 +121,7 @@ public class ZoneController : MonoBehaviour
 
     private void ZoneHeightRight(int zone, float yPos)
     {
-        Debug.Log("zone-RIGHT:" + zone + " scale value:" + yPos);
+       // Debug.Log("zone-RIGHT:" + zone + " scale value:" + yPos);
 
         ZoneHeight(zoneRight[zone], zone, yPos);
       
@@ -197,13 +197,13 @@ public class ZoneController : MonoBehaviour
         for (int i = 0; i < (arrayXRange.Length - 1); i++)
         {
 
-            if (xPos > arrayXRange[i] && xPos < arrayXRange[i + 1])
+            if ((xPos > arrayXRange[i]) && (xPos < arrayXRange[i + 1]))
             {
-                // Debug.Log("in zone: " + i);
+                Debug.Log(xPos + ": in zone: " + i);
                 return i;
             }
         }
-        //  Debug.Log(xPos + "did not fall into zones");
+        Debug.Log(xPos + ": did not fall into zones");
         return -1;
     }
 
@@ -234,7 +234,16 @@ public class ZoneController : MonoBehaviour
        // droneGloveScale.localScale = new Vector3(1, 1, 1);
         int selectedYZone = GetYZone(yPos);
 
-        int selectedZone = GetZone(xPos, xPosRange);
+        int selectedZone = GetZone(xPos, xPosLeftRange);
+
+        if (selectedZone == -1)
+        {
+            Debug.Log(xPos + "," + yPos + "," + zPos + " : yielded no X zone");
+            return;
+        }
+
+        // left zones filled
+        selectedZone = 3 - selectedZone;
         leftZoneColor(selectedZone);
 
        // Debug.Log("ypos: " + yPos);
@@ -300,15 +309,22 @@ public class ZoneController : MonoBehaviour
 
         int selectedXZone = GetZone(xPos, xPosRightRange);
       
+        if (selectedXZone == -1)
+        {
+            Debug.Log(xPos +","+ yPos +","+ zPos + " : yielded no X zone");
+            return;
+        }
 
         rightZoneColor(selectedXZone);
+
+
 
         Transform waterGloveScale = waterGloveRight.transform.GetChild(0);
         //waterGloveScale.localScale = new Vector3(1, 1, 1);
         Transform droneGloveScale = droneGloveRight.transform.GetChild(0);
         //droneGloveScale.localScale = new Vector3(1, 1, 1);
         int selectedYZone = GetYZone(yPos);
-        Debug.Log("which y zone" + selectedYZone + "last y zone state " +lastRightZoneYState);
+      //  Debug.Log("which y zone" + selectedYZone + "last y zone state " +lastRightZoneYState);
 
         if (selectedXZone < 3)
         {
