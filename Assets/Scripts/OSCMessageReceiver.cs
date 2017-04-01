@@ -269,9 +269,6 @@ namespace UniOSC
                 float incomingTouchOscZ = (float)msg.Data[0];
                 float incomingTouchOscX = (float)msg.Data[1];
 
-                //         GloveController.rsZoneLeftXZ(-0.3f * rsZoneDataLeftX + .1f, 0.3f - 0.5f * rsZoneDataLeftZ);
-                //                GloveController.rsZoneLeftXZ((0.7f * incomingTouchOscX - 0.35f), 0.2f * incomingTouchOscZ - 0.1f);
-
                 GloveController.rsZoneLeftXZ(0.35f - 0.7f * incomingTouchOscX, 0.2f * incomingTouchOscZ - 0.1f);
 
                 Vector3 position = GloveController.GetLeftPosition();
@@ -281,9 +278,9 @@ namespace UniOSC
 
             if (msg.Address.Contains(rsZoneLeftY))
             {
-                float rsZoneDataLeftY = (float)msg.Data[0];
+                float incomingTouchOscY = (float)msg.Data[0];
 
-                GloveController.rsZoneLeftY(rsZoneDataLeftY * 0.5f + 0.3f); // movement of the glove asset
+                GloveController.rsZoneLeftY(incomingTouchOscY * 0.5f + 0.3f); // movement of the glove asset
 
                 Vector3 position = GloveController.GetLeftPosition();
                 ZoneController.UpdateLeftZone(position.x, position.y, position.z); 
@@ -304,8 +301,8 @@ namespace UniOSC
 
             if (msg.Address.Contains(rsZoneRightY))
             {
-                float rsZoneDataRightY = (float)msg.Data[0];
-                GloveController.rsZoneRightY(rsZoneDataRightY * 0.5f + 0.3f);
+                float incomingTouchOscY = (float)msg.Data[0];
+                GloveController.rsZoneRightY(incomingTouchOscY * 0.5f + 0.3f);
 
                 Vector3 position = GloveController.GetRightPosition();
                 ZoneController.UpdateRightZone(position.x, position.y, position.z);

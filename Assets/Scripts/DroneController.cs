@@ -192,7 +192,7 @@ public class DroneController : MonoBehaviour
 
 	internal void LeftNoteHit(int droneGroup)
 	{
-        if (ZoneController.droneGloveLeft)
+        if (ZoneController.isDroneGloveLeft)
         {
 
             HitDroneGroup(droneGroup, LeftDrones);
@@ -201,7 +201,7 @@ public class DroneController : MonoBehaviour
 
 	internal void RightNoteHit(int droneGroup)
 	{
-        if (ZoneController.droneGloveRight)
+        if (ZoneController.isDroneGloveRight)
         {
 
             HitDroneGroup(droneGroup, RightDrones);
