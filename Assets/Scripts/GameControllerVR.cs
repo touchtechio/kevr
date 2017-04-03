@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,6 +30,12 @@ public class GameControllerVR : MonoBehaviour
     public AudioSource source;
     private float volume = 0.6f;
     */
+
+    public Text YPosLeft;
+    public GameObject leftUI;
+    float leftPos = 100;
+    public UniOSC.OSCMessageReceiver OSCMessages;
+    public GloveController gloveController;
 
 
 
@@ -62,11 +69,16 @@ public class GameControllerVR : MonoBehaviour
             Display.displays[2].Activate();
         if (Display.displays.Length > 3)
             Display.displays[3].Activate();
+        YPosLeft.text = leftPos.ToString();
 
     }
 
     void Update()
     {
+
+        Vector3 position = gloveController.GetLeftPosition();
+        UpdateLeftZone(position.x, position.y, position.z);
+
         /*
         private void keyboardData()
     {
@@ -113,6 +125,14 @@ public class GameControllerVR : MonoBehaviour
         }
     }
     */
+    }
+
+    private void UpdateLeftZone(float xpos, float ypos, float zpos)
+    {
+        ypos =(int) (ypos * 100);
+        
+        YPosLeft.text = ypos.ToString();
+       
     }
 }
 
