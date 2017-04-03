@@ -1,3 +1,9 @@
+#if UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_4_8 || UNITY_4_9
+
+#define UNITY_4
+
+#endif
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -99,19 +105,31 @@ namespace UnityStandardAssets.Water
                 Vector4 clipPlane = CameraSpacePlane(reflectionCamera, pos, normal, 1.0f);
                 reflectionCamera.projectionMatrix = cam.CalculateObliqueMatrix(clipPlane);
 
-				// Set custom culling matrix from the current camera
-				reflectionCamera.cullingMatrix = cam.projectionMatrix * cam.worldToCameraMatrix;
-
-				reflectionCamera.cullingMask = ~(1 << 4) & reflectLayers.value; // never render water layer
+                reflectionCamera.cullingMask = ~(1 << 4) & reflectLayers.value; // never render water layer
                 reflectionCamera.targetTexture = m_ReflectionTexture;
-                bool oldCulling = GL.invertCulling;
-                GL.invertCulling = !oldCulling;
+
+#if UNITY_4
+
+#else
+
+                GL.invertCulling = true;
+
+#endif
+
                 reflectionCamera.transform.position = newpos;
                 Vector3 euler = cam.transform.eulerAngles;
                 reflectionCamera.transform.eulerAngles = new Vector3(-euler.x, euler.y, euler.z);
                 reflectionCamera.Render();
                 reflectionCamera.transform.position = oldpos;
-                GL.invertCulling = oldCulling;
+
+#if UNITY_4
+
+#else
+
+                GL.invertCulling = false;
+
+#endif
+
                 GetComponent<Renderer>().sharedMaterial.SetTexture("_ReflectionTex", m_ReflectionTexture);
             }
 
@@ -125,10 +143,7 @@ namespace UnityStandardAssets.Water
                 Vector4 clipPlane = CameraSpacePlane(refractionCamera, pos, normal, -1.0f);
                 refractionCamera.projectionMatrix = cam.CalculateObliqueMatrix(clipPlane);
 
-				// Set custom culling matrix from the current camera
-				refractionCamera.cullingMatrix = cam.projectionMatrix * cam.worldToCameraMatrix;
-
-				refractionCamera.cullingMask = ~(1 << 4) & refractLayers.value; // never render water layer
+                refractionCamera.cullingMask = ~(1 << 4) & refractLayers.value; // never render water layer
                 refractionCamera.targetTexture = m_RefractionTexture;
                 refractionCamera.transform.position = cam.transform.position;
                 refractionCamera.transform.rotation = cam.transform.rotation;
@@ -291,7 +306,15 @@ namespace UnityStandardAssets.Water
                     reflectionCamera.enabled = false;
                     reflectionCamera.transform.position = transform.position;
                     reflectionCamera.transform.rotation = transform.rotation;
+
+#if UNITY_4
+
+#else
+
                     reflectionCamera.gameObject.AddComponent<FlareLayer>();
+
+#endif
+
                     go.hideFlags = HideFlags.HideAndDontSave;
                     m_ReflectionCameras[currentCamera] = reflectionCamera;
                 }
@@ -324,7 +347,15 @@ namespace UnityStandardAssets.Water
                     refractionCamera.enabled = false;
                     refractionCamera.transform.position = transform.position;
                     refractionCamera.transform.rotation = transform.rotation;
+
+#if UNITY_4
+
+#else
+
                     refractionCamera.gameObject.AddComponent<FlareLayer>();
+
+#endif
+
                     go.hideFlags = HideFlags.HideAndDontSave;
                     m_RefractionCameras[currentCamera] = refractionCamera;
                 }
