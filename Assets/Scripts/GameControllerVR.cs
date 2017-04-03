@@ -32,10 +32,9 @@ public class GameControllerVR : MonoBehaviour
     */
 
     public Text YPosLeft;
-    public GameObject leftUI;
     float leftPos = 100;
-    public UniOSC.OSCMessageReceiver OSCMessages;
-    public GloveController gloveController;
+
+    private GloveController gloveController;
 
 
 
@@ -69,7 +68,17 @@ public class GameControllerVR : MonoBehaviour
             Display.displays[2].Activate();
         if (Display.displays.Length > 3)
             Display.displays[3].Activate();
-        YPosLeft.text = leftPos.ToString();
+
+        if (null == gloveController)
+        {
+            gloveController = GameObject.Find("GameController").GetComponent<GloveController>(); // finds the component anywhere in game
+            if(null == gloveController)
+            {
+                Debug.Log("ERROR: couldn't find ZoneController");
+            }
+
+        }
+       // YPosLeft.text = leftPos.ToString();
 
     }
 
