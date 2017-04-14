@@ -32,7 +32,7 @@ public class GameControllerVR : MonoBehaviour
     */
 
     public Text YPosLeft;
-    float leftPos = 100;
+    public Text YPosRight;
 
     private GloveController gloveController;
 
@@ -85,8 +85,11 @@ public class GameControllerVR : MonoBehaviour
     void Update()
     {
 
-        Vector3 position = gloveController.GetLeftPosition();
-        UpdateLeftZone(position.x, position.y, position.z);
+        Vector3 leftPosition = gloveController.GetLeftPosition();
+        UpdateLeftZone(leftPosition.x, leftPosition.y, leftPosition.z);
+
+        Vector3 rightPosition = gloveController.GetRightPosition();
+        UpdateRightZone(rightPosition.x, rightPosition.y, rightPosition.z);
 
         /*
         private void keyboardData()
@@ -138,10 +141,17 @@ public class GameControllerVR : MonoBehaviour
 
     private void UpdateLeftZone(float xpos, float ypos, float zpos)
     {
-        ypos =(int) (ypos * 100);
-        
+        ypos = (int)(ypos * 100);
+
         YPosLeft.text = ypos.ToString();
-       
+
+    }
+    private void UpdateRightZone(float xpos, float ypos, float zpos)
+    {
+        ypos = (int)(ypos * 100);
+
+        YPosRight.text = ypos.ToString();
+
     }
 }
 
