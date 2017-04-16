@@ -34,7 +34,7 @@ public class FountainRSControllerVR : MonoBehaviour
     [SerializeField]
     int displacementZ = -1;
 
-    public ZoneController zoneController;
+    public ZoneControllerSingleCamera zoneController;
     public ParticleSystem mainParticleSystem;
 
     int[] fountainJetHeightLeft = { 2000, 2500, 2000, 2000, 1000 };

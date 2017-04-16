@@ -23,7 +23,7 @@ namespace UniOSC
         // private ButtonTest test;
 
         //public OSCDataMapper dataScript; // no longer using this
-        public ZoneController ZoneController;
+        public ZoneControllerSingleCamera ZoneController;
         public GloveController GloveController;
         public FountainRSControllerVR FountainRSController;
         public DroneController DroneController;
@@ -97,8 +97,7 @@ namespace UniOSC
 
         //REALSENSE DRAGONFLY OSC address
         //       int[] realsense = { 90, 91, 124 };
-        int[] leftRealsense = { 91, 124 };
-        int[] rightRealsense = { 125 };
+        int[] activeRealsense = { 91, 90, 124, 125 };
         private const string heartbeat = "heartbeat";
 
 
@@ -171,12 +170,13 @@ namespace UniOSC
 
         private void rsZones()
         {
-            foreach (int realsense in leftRealsense)
+            foreach (int realsense in activeRealsense)
             {
 
-                string cursor = "/cursor/s" + realsense + "/left";
+                string leftCursor = "/cursor/s" + realsense + "/left";
+                string rightCursor = "/cursor/s" + realsense + "/right";
 
-                if (msg.Address.Contains(cursor))
+                if (msg.Address.Contains(leftCursor) || msg.Address.Contains(rightCursor))
                 {
 
                     float xPos = -(float)msg.Data[0];
@@ -189,35 +189,23 @@ namespace UniOSC
                         zPos = -zPos;
                     }
 
-                    GloveController.rsZoneLeftY(yPos);
-                    GloveController.rsZoneLeftXZ(xPos, zPos);
+                    if (msg.Address.Contains(leftCursor))
+                    {
+                        GloveController.rsZoneLeftY(yPos);
+                        GloveController.rsZoneLeftXZ(xPos, zPos);
+                    } else  {
+                        GloveController.rsZoneRightY(yPos);
+                        GloveController.rsZoneRightXZ(xPos, zPos);
+                    }
+
                     ZoneController.UpdateLeftZone(xPos, yPos, zPos);
 
+
                 }
 
             }
 
-            foreach (int realsense in rightRealsense)
-            {
-
-                string cursor = "/cursor/s" + realsense + "/right";
-
-
-
-                if (msg.Address.Contains(cursor))
-                {
-
-                    float xPos = -(float)msg.Data[0];
-                    float zPos = (float)msg.Data[1];
-                    float yPos = (float)msg.Data[2];
-
-
-                    GloveController.rsZoneRightY(yPos);
-                    GloveController.rsZoneRightXZ(xPos, zPos);
-                    ZoneController.UpdateRightZone(xPos, yPos, zPos);
-
-                }
-            }
+         
         }
 
         private void touchOSCBEnds()
