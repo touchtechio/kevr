@@ -10,7 +10,7 @@ public class GloveController : MonoBehaviour
     public GameObject LeftHandObject;
     public GameObject RightHandObject;
 
-    public float maxBounds = 900f;
+    public float maxBounds = 850f;
 
     public static int leftThumb = 3270;
     public static int leftIndex = 4630;
@@ -60,7 +60,7 @@ public class GloveController : MonoBehaviour
     {
         Transform transform = Hand.GetComponent<Transform>();
         //  transform.rotation = Quaternion.Euler(-90, 180, 0) * Quaternion.Euler(0, -degrees - 90, 0);
-        transform.parent.rotation = Quaternion.Euler(0, 0, degrees);
+        transform.GetChild(0).rotation = Quaternion.Euler(0, 0, degrees);
     }
 
     internal void SetLeftWristAngle(int degrees)
@@ -91,7 +91,7 @@ public class GloveController : MonoBehaviour
     {
         int threshold = fingerThresholds[finger];
         float bendPercentage = ((gloveValue - threshold) + maxBounds/2) / maxBounds;
-      //  Debug.Log("finger: " + finger + " glovevalue: " + gloveValue + " threshold: " + threshold + " bend %: " + bendPercentage);
+        Debug.Log("finger: " + finger + " glovevalue: " + gloveValue + " threshold: " + threshold + " bend %: " + bendPercentage);
         return bendPercentage;
 
     }
