@@ -194,11 +194,10 @@ namespace UniOSC
                     {
                         GloveController.enableLeft();
                         GloveController.disableRight();
-
                         GloveController.rsZoneLeftY(yPos);
                         GloveController.rsZoneLeftXZ(xPos, zPos);
                     } else  {
-                        GloveController.enableRight();
+                       // GloveController.enableRight();
                         GloveController.disableLeft();
                         GloveController.rsZoneRightY(yPos);
                         GloveController.rsZoneRightXZ(xPos, zPos);
