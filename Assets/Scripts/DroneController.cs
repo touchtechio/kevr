@@ -29,7 +29,7 @@ public class DroneController : MonoBehaviour
     private GameObject[] LeftDrones;
     private GameObject[] RightDrones;
 
-    private ZoneController ZoneController;
+    private ZoneControllerSingleCamera ZoneController;
 
 
 
@@ -40,7 +40,7 @@ public class DroneController : MonoBehaviour
 
         if (null == ZoneController)
         {
-            ZoneController = GameObject.Find("ZONES").GetComponent<ZoneController>();
+            ZoneController = GameObject.Find("ZONES").GetComponent<ZoneControllerSingleCamera>();
             if (null == ZoneController)
             {
                 Debug.Log("ERROR: couldn't find ZoneController");

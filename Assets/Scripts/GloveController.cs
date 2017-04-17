@@ -65,7 +65,7 @@ public class GloveController : MonoBehaviour
 
     internal void SetLeftWristAngle(int degrees)
     {
-        SetWristAngle(LeftHandObject, degrees+30);
+        SetWristAngle(LeftHandObject, degrees+25);
     }
 
     internal void SetRightWristAngle(int degrees)
@@ -91,7 +91,7 @@ public class GloveController : MonoBehaviour
     {
         int threshold = fingerThresholds[finger];
         float bendPercentage = ((gloveValue - threshold) + maxBounds/2) / maxBounds;
-        Debug.Log("finger: " + finger + " glovevalue: " + gloveValue + " threshold: " + threshold + " bend %: " + bendPercentage);
+     //   Debug.Log("finger: " + finger + " glovevalue: " + gloveValue + " threshold: " + threshold + " bend %: " + bendPercentage);
         return bendPercentage;
 
     }
@@ -140,6 +140,7 @@ public class GloveController : MonoBehaviour
 
     public void rsZoneRightXZ(float rsZoneDataRightX, float rsZoneDataRightZ)
     {
+
         // Debug.Log("right hand is at x pos " + rsZoneDataRightX + " y pos " + rsZoneDataRightZ);
         //  HandObject.GetComponent<Transform> = new Vector3(rsZoneLeftX, rsZoneLeftY, rsZoneLeftZ);
         Transform transformToMove = RightHandObject.GetComponent<Transform>();
@@ -162,7 +163,24 @@ public class GloveController : MonoBehaviour
 
     }
 
+    internal void enableRight()
+    {
+        RightHandObject.SetActive(true);
+    }
 
+    
+    internal void disableRight()
+    {
+        RightHandObject.SetActive(false);
+    }
 
+    internal void enableLeft()
+    {
+        LeftHandObject.SetActive(true);
+    }
 
+    internal void disableLeft()
+    {
+        LeftHandObject.SetActive(false);
+    }
 }

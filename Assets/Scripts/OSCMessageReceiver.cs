@@ -29,6 +29,7 @@ namespace UniOSC
         public DroneController DroneController;
         public FingerControl LeftFingerController;
         public FingerControl RightFingerController;
+        
 
         OscMessage msg;
 
@@ -191,9 +192,14 @@ namespace UniOSC
 
                     if (msg.Address.Contains(leftCursor))
                     {
+                        GloveController.enableLeft();
+                        GloveController.disableRight();
+
                         GloveController.rsZoneLeftY(yPos);
                         GloveController.rsZoneLeftXZ(xPos, zPos);
                     } else  {
+                        GloveController.enableRight();
+                        GloveController.disableLeft();
                         GloveController.rsZoneRightY(yPos);
                         GloveController.rsZoneRightXZ(xPos, zPos);
                     }
@@ -311,6 +317,7 @@ namespace UniOSC
                     float fingerBendData = GloveController.GetFingerBend(4-i, (int)msg.Data[i + 1]);
                     FountainRSController.fountainHeightLeft(i, fingerBendData);
                     LeftFingerController.bendFinger(i, fingerBendData);
+                    
 
                 }
             }
@@ -374,7 +381,7 @@ namespace UniOSC
             {
                 int note = (int)msg.Data[1];
                 int droneGroup = note - rightGloveMidiStart - 5;
-                Debug.Log("right-note:" + droneGroup);
+             //   Debug.Log("right-note:" + droneGroup);
                 DroneController.RightNoteHit(droneGroup);
 
                 int fountainNumber = note - rightGloveMidiStart;

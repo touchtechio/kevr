@@ -43,8 +43,11 @@ public class ZoneControllerSingleCamera : MonoBehaviour
     public GameObject droneGloveRight;
 
     private Color zone1Color;
-    Color[] zoneColors = { Color.cyan, Color.grey, Color.magenta};
-
+    static Color ocher = new Color(255/255f, 178/255f, 69/255f, 0.2f);
+    static Color fuscia = new Color(255 / 255f, 79 / 255f, 218 / 255f, 0.2f);
+    static Color turquoise = new Color(30 / 255f, 219 / 255f, 232 / 255f, 0.2f);
+    //Color[] zoneColors = { Color.cyan, Color.grey, Color.magenta };
+    Color[] zoneColors = { turquoise, ocher, fuscia };
 
     // x range is -0.3 - 0.3
     float[] xPosLeftRange = { -0.5f, -0.13f, 0.03f, 0.50f };
