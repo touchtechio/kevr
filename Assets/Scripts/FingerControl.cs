@@ -22,9 +22,14 @@ public class FingerControl : MonoBehaviour {
     internal void bendFinger(int i, float fingerBendData)
     {
 
-        fingers[i].transform.localRotation = Quaternion.Euler(0, 0, fingerBendData*-150);
+        fingers[i].transform.localRotation = Quaternion.Euler(0, 0, fingerBendData*-130);
+        fingers[i].transform.GetChild(0).localRotation = Quaternion.Euler(0, 0, fingerBendData * -90);
+        fingers[i].transform.GetChild(0).GetChild(0).localRotation = Quaternion.Euler(0, 0, fingerBendData * -90);
+
+        // update data readouts
         fingerBendData = fingerBendData * 100;
         finLeft[i].text = ((int)fingerBendData).ToString();
+
 
     }
 }
