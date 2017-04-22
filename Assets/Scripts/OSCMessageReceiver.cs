@@ -29,6 +29,7 @@ namespace UniOSC
         public DroneController DroneController;
         public FingerControl LeftFingerController;
         public FingerControl RightFingerController;
+        public ParticleLauncher ParticleLauncher;
         
 
         OscMessage msg;
@@ -247,6 +248,8 @@ namespace UniOSC
                     Debug.Log("note:" + i);
                     DroneController.LeftNoteHit(i);
                     FountainRSController.fountainMidiLeft(i);
+                    ParticleLauncher.launchParticle(i);
+
                 }
                 if (msg.Address.Contains(RightNoteAddresses[i]))
                 {
@@ -310,12 +313,13 @@ namespace UniOSC
             // syncphony glove finger bends
             if (msg.Address.Contains(oscLeftHandFingers))
             {
-                //   Debug.Log("left:" + msg.Data[1] + "," + msg.Data[2] + "," + msg.Data[3] + "," + msg.Data[4] + "," + msg.Data[5]);
+                // Debug.Log("left:" + msg.Data[1] + "," + msg.Data[2] + "," + msg.Data[3] + "," + msg.Data[4] + "," + msg.Data[5]);
                 for (int i = 0; i < 5; i++)
                 {
                     float fingerBendData = GloveController.GetFingerBend(4-i, (int)msg.Data[i + 1]);
                     FountainRSController.fountainHeightLeft(i, fingerBendData);
                     LeftFingerController.bendFinger(i, fingerBendData);
+                   
                     
 
                 }
@@ -351,6 +355,8 @@ namespace UniOSC
                 int degrees = (int)msg.Data[0];
                 //Debug.Log("left-wrist:" + degrees);
                 GloveController.SetLeftWristAngle(degrees-30);
+            
+
             }
 
             if (msg.Address.Contains(oscRightWristCc))
@@ -365,8 +371,9 @@ namespace UniOSC
             {
                 int note = (int)msg.Data[1];
                 int droneGroup = 4 - (note - leftGloveMidiStart);
-                Debug.Log("left-note:" + note + " droneGroup:" + droneGroup);
+               // Debug.Log("left-note:" + note + " droneGroup:" + droneGroup);
                 DroneController.LeftNoteHit(droneGroup); // note is a midi note
+           
 
 
 
@@ -374,6 +381,7 @@ namespace UniOSC
                 Debug.Log("left-note:" + note + " fountainNumber:" + fountainNumber);
 
                 FountainRSController.fountainMidiLeft(fountainNumber);
+                ParticleLauncher.launchParticle(fountainNumber);
             }
 
             if (msg.Address.Contains(oscRighttNote))
