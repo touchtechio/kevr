@@ -225,6 +225,9 @@ namespace UniOSC
                     FountainRSController.fountainHeightLeft(i, fingerBendDataLeft);
                     DroneController.FingerBend(4 - i, fingerBendDataLeft);
 
+					LeftFingerController.bendFinger(i, fingerBendDataLeft);
+
+
                 }
 
                 if (msg.Address.Contains(fingerBendRight[i]))
@@ -232,8 +235,11 @@ namespace UniOSC
                     //Debug.Log("right data");
                     float fingerBendDataRight = (float)msg.Data[0];
                     GloveController.fingerBendRight(i, fingerBendDataRight);
-                    FountainRSController.fountainHeightRight(i, fingerBendDataRight);
+                    FountainRSController.fountainHeightRight(4-i, fingerBendDataRight);
                     DroneController.FingerBend(i + 5, fingerBendDataRight);
+					RightFingerController.bendFinger(i, fingerBendDataRight);
+
+
 
                 }
             }

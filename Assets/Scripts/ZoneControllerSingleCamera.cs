@@ -292,7 +292,10 @@ public class ZoneControllerSingleCamera : MonoBehaviour
 
     internal void UpdateRightZone(float xPos, float yPos, float zPos)
     {
+		UpdateLeftZone (xPos, yPos, zPos);
 
+		/*
+		 * 
         int selectedXZone = GetZone(xPos, xPosRightRange);
 
         if (selectedXZone == -1)
@@ -317,7 +320,7 @@ public class ZoneControllerSingleCamera : MonoBehaviour
             ZoneHeightRight(selectedXZone, yPos);
 
         }
-       
+       */
 
         return;
     }
