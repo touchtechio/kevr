@@ -7,8 +7,11 @@ public class ParticleLauncher : MonoBehaviour
 {
 
     public ParticleSystem[] particleLauncher;
-    
-   
+
+    private void Start()
+    {
+        Debug.Log("particle launcher");
+    }
 
     // Update is called once per frame
     void Update()
