@@ -26,7 +26,8 @@ namespace UniOSC
         public ZoneControllerSingleCamera ZoneController;
         public GloveController GloveController;
         public FountainRSControllerVR FountainRSController;
-        public DroneController DroneController;
+		public DroneController DroneController;
+		public DronePianoController DronePianoController;
         public FingerControl LeftFingerController;
         public FingerControl RightFingerController;
         public ParticleLauncher ParticleLauncher;
@@ -223,7 +224,7 @@ namespace UniOSC
                     float fingerBendDataLeft = (float)msg.Data[0];
                     GloveController.fingerBendLeft(i, fingerBendDataLeft);
                     FountainRSController.fountainHeightLeft(i, fingerBendDataLeft);
-                    DroneController.FingerBend(4 - i, fingerBendDataLeft);
+					DronePianoController.FingerBend(4 - i, fingerBendDataLeft);
 
 					LeftFingerController.bendFinger(i, fingerBendDataLeft);
 
@@ -236,7 +237,7 @@ namespace UniOSC
                     float fingerBendDataRight = (float)msg.Data[0];
                     GloveController.fingerBendRight(i, fingerBendDataRight);
                     FountainRSController.fountainHeightRight(4-i, fingerBendDataRight);
-                    DroneController.FingerBend(i + 5, fingerBendDataRight);
+					DronePianoController.FingerBend(i + 5, fingerBendDataRight);
 					RightFingerController.bendFinger(i, fingerBendDataRight);
 
 

@@ -271,7 +271,7 @@ namespace UnitySteer.Behaviors
 		 * disregard very small velocities, to avoid jittery movement on
 		 * rounding errors.
 		 */
-            if (TargetSpeed > MinSpeedForTurning && Velocity != Vector3.zero)
+			if (TargetSpeed > MinSpeedForTurning)// && Velocity != Vector3.zero)
             {
                 var newForward = Vector3.Scale(OrientationVelocity, AllowedMovementAxes).normalized;
                 if (TurnTime > 0)
