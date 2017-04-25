@@ -94,7 +94,7 @@ public class FountainRSControllerVR : MonoBehaviour
         for (int i = 0; i < _amount; i++)
         {
             // instantiate fountains based on prefab and then assign to fountain jet array
-            GameObject jet = Instantiate(_fountainJet, transform.position + new Vector3(2.5f  -i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+			GameObject jet = Instantiate(_fountainJet, transform.position + new Vector3(17.5f  -(i-5) * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
 
             Transform jetTransform = jet.GetComponent<Transform>();
             if (i > 2)
@@ -112,7 +112,7 @@ public class FountainRSControllerVR : MonoBehaviour
         {
 
             // fountains are shooting 5-9 so instantiation has to compensate for that
-            jetParticles = Instantiate(_fountainParticles, transform.position + new Vector3(2.5f - (i-5) * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            jetParticles = Instantiate(_fountainParticles, transform.position + new Vector3(17.5f - (i-5) * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
             //jetParticles = Instantiate(_fountainParticles, transform.position + new Vector3(2.5f - (i - 5) * displacementX, 0, i * displacementZ), Quaternion.AngleAxis(90, Vector3.up)) as GameObject;
             jetParticles.transform.GetChild(0).gameObject.SetActive(true);
 

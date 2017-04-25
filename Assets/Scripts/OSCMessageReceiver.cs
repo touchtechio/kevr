@@ -30,7 +30,8 @@ namespace UniOSC
 		public DronePianoController DronePianoController;
         public FingerControl LeftFingerController;
         public FingerControl RightFingerController;
-        public ParticleLauncher ParticleLauncher;
+        public ParticleLauncher ParticleLauncherLeft;
+		public ParticleLauncher ParticleLauncherRight;
         
 
         OscMessage msg;
@@ -255,7 +256,7 @@ namespace UniOSC
                     Debug.Log("note:" + i);
                     DroneController.LeftNoteHit(i);
                     FountainRSController.fountainMidiLeft(i);
-                    ParticleLauncher.launchParticle(i);
+					ParticleLauncherLeft.launchParticle (i);
 
                 }
                 if (msg.Address.Contains(RightNoteAddresses[i]))
@@ -263,7 +264,7 @@ namespace UniOSC
                     Debug.Log("note:" + i);
                     DroneController.RightNoteHit(i);
                     FountainRSController.fountainMidiRight(i);
-                    ParticleLauncher.launchParticle(i);
+                    ParticleLauncherRight.launchParticle(i);
                 }
             }
         }
@@ -386,7 +387,7 @@ namespace UniOSC
                 Debug.Log("left-note:" + note + " fountainNumber:" + fountainNumber);
 
                 FountainRSController.fountainMidiLeft(fountainNumber);
-                ParticleLauncher.launchParticle(fountainNumber);
+                ParticleLauncherLeft.launchParticle(fountainNumber);
             }
 
             if (msg.Address.Contains(oscRighttNote))
@@ -399,7 +400,7 @@ namespace UniOSC
                 int fountainNumber = note - rightGloveMidiStart;
                 Debug.Log("right-note:" + fountainNumber);
                 FountainRSController.fountainMidiRight(fountainNumber);
-                ParticleLauncher.launchParticle(fountainNumber);
+                ParticleLauncherRight.launchParticle(fountainNumber);
 
             }
         }
