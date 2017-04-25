@@ -195,13 +195,13 @@ namespace UniOSC
 
                     if (msg.Address.Contains(leftCursor))
                     {
-                        GloveController.enableLeft();
-                        GloveController.disableRight();
+                       // GloveController.enableLeft();
+                      //  GloveController.disableRight();
                         GloveController.rsZoneLeftY(yPos);
                         GloveController.rsZoneLeftXZ(xPos, zPos);
                     } else  {
-                       // GloveController.enableRight();
-                        GloveController.disableLeft();
+                        GloveController.enableRight();
+                       // GloveController.disableLeft();
                         GloveController.rsZoneRightY(yPos);
                         GloveController.rsZoneRightXZ(xPos, zPos);
                     }
@@ -226,7 +226,6 @@ namespace UniOSC
                     GloveController.fingerBendLeft(i, fingerBendDataLeft);
                     FountainRSController.fountainHeightLeft(i, fingerBendDataLeft);
 					DronePianoController.FingerBend(4 - i, fingerBendDataLeft);
-
 					LeftFingerController.bendFinger(i, fingerBendDataLeft);
 
 
@@ -328,8 +327,9 @@ namespace UniOSC
                     float fingerBendData = GloveController.GetFingerBend(4-i, (int)msg.Data[i + 1]);
                     FountainRSController.fountainHeightLeft(i, fingerBendData);
                     LeftFingerController.bendFinger(i, fingerBendData);
-                   
-                    
+
+                    DronePianoController.FingerBend(4 - i, fingerBendData);
+
 
                 }
             }
@@ -341,6 +341,9 @@ namespace UniOSC
                     float fingerBendData = GloveController.GetFingerBend(i + 5, (int)msg.Data[i + 1]);
                     FountainRSController.fountainHeightRight(i, fingerBendData);
                     RightFingerController.bendFinger(i, fingerBendData);
+
+                    DronePianoController.FingerBend(i + 5, fingerBendData);
+
                 }
             }
 
@@ -399,8 +402,8 @@ namespace UniOSC
 
                 int fountainNumber = note - rightGloveMidiStart;
                 Debug.Log("right-note:" + fountainNumber);
-                FountainRSController.fountainMidiRight(fountainNumber);
-                ParticleLauncherRight.launchParticle(fountainNumber);
+                FountainRSController.fountainMidiRight(fountainNumber-5);
+                ParticleLauncherRight.launchParticle(fountainNumber-5);
 
             }
         }
