@@ -263,6 +263,7 @@ namespace UniOSC
                     Debug.Log("note:" + i);
                     DroneController.RightNoteHit(i);
                     FountainRSController.fountainMidiRight(i);
+                    ParticleLauncher.launchParticle(i);
                 }
             }
         }
@@ -380,9 +381,6 @@ namespace UniOSC
                 int droneGroup = 4 - (note - leftGloveMidiStart);
                // Debug.Log("left-note:" + note + " droneGroup:" + droneGroup);
                 DroneController.LeftNoteHit(droneGroup); // note is a midi note
-           
-
-
 
                 int fountainNumber = leftGloveMidiStart - note + 4;
                 Debug.Log("left-note:" + note + " fountainNumber:" + fountainNumber);
@@ -401,6 +399,7 @@ namespace UniOSC
                 int fountainNumber = note - rightGloveMidiStart;
                 Debug.Log("right-note:" + fountainNumber);
                 FountainRSController.fountainMidiRight(fountainNumber);
+                ParticleLauncher.launchParticle(fountainNumber);
 
             }
         }
