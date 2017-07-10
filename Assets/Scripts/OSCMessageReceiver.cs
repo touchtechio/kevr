@@ -256,6 +256,7 @@ namespace UniOSC
                     DroneController.LeftNoteHit(i);
                     FountainRSController.fountainMidiLeft(i);
 					ParticleLauncherLeft.launchParticle (i);
+                   
 
                 }
                 if (msg.Address.Contains(RightNoteAddresses[i]))
@@ -324,11 +325,12 @@ namespace UniOSC
                 // Debug.Log("left:" + msg.Data[1] + "," + msg.Data[2] + "," + msg.Data[3] + "," + msg.Data[4] + "," + msg.Data[5]);
                 for (int i = 0; i < 5; i++)
                 {
-                    float fingerBendData = GloveController.GetFingerBend(4-i, (int)msg.Data[i + 1]);
+                    float fingerBendData = (float)msg.Data[i + 1];
+ //                   float fingerBendData = GloveController.GetFingerBend(4 - i, (int)msg.Data[i + 1]);
                     FountainRSController.fountainHeightLeft(i, fingerBendData);
                     LeftFingerController.bendFinger(i, fingerBendData);
 
-                    DronePianoController.FingerBend(4 - i, fingerBendData);
+                   // DronePianoController.FingerBend(4 - i, fingerBendData);
 
 
                 }
@@ -338,11 +340,12 @@ namespace UniOSC
                 //   Debug.Log("right:" + msg.Data[1] + "," + msg.Data[2] + "," + msg.Data[3] + "," + msg.Data[4] + "," + msg.Data[5]);
                 for (int i = 0; i < 5; i++)
                 {
-                    float fingerBendData = GloveController.GetFingerBend(i + 5, (int)msg.Data[i + 1]);
+                    float fingerBendData = (float)msg.Data[i + 1];
+                    //float fingerBendData = GloveController.GetFingerBend(i + 5, (int)msg.Data[i + 1]);
                     FountainRSController.fountainHeightRight(i, fingerBendData);
                     RightFingerController.bendFinger(i, fingerBendData);
 
-                    DronePianoController.FingerBend(i + 5, fingerBendData);
+                   // DronePianoController.FingerBend(i + 5, fingerBendData);
 
                 }
             }
@@ -367,8 +370,6 @@ namespace UniOSC
                 int degrees = (int)msg.Data[0];
                 //Debug.Log("left-wrist:" + degrees);
                 GloveController.SetLeftWristAngle(degrees-30);
-            
-
             }
 
             if (msg.Address.Contains(oscRightWristCc))
@@ -407,8 +408,5 @@ namespace UniOSC
 
             }
         }
-
-
-
     }
 }

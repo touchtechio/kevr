@@ -31,9 +31,6 @@ public class DroneController : MonoBehaviour
 
     private ZoneControllerSingleCamera ZoneController;
 
-
-
-
     // Use this for initialization
     void Start()
     {
