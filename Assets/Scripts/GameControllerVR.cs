@@ -52,23 +52,15 @@ public class GameControllerVR : MonoBehaviour
     internal static readonly KeyCode HOTKEY_PYRAMID_CLOSE = KeyCode.Period;
 
 
+
+
     void Awake()
     {
 
         //  source = GetComponent<AudioSource>();
     }
 
-    enum Screen
-    {
-        TUTORIAL,
-        APP_VIEW,
-        TEXT_LIST,
-        TEXT_DETAIL,
-        PHOTO_ALBUM,
-        INTERRUPT,
-    }
-
-
+    
     void Start()
     {
         // GUI is rendered with last camera.
@@ -92,7 +84,10 @@ public class GameControllerVR : MonoBehaviour
             }
 
         }
-       // YPosLeft.text = leftPos.ToString();
+        // YPosLeft.text = leftPos.ToString();
+
+
+
 
     }
 
@@ -104,6 +99,8 @@ public class GameControllerVR : MonoBehaviour
 
         Vector3 rightPosition = gloveController.GetRightPosition();
         UpdateRightZone(rightPosition.x, rightPosition.y, rightPosition.z);
+
+
 
 
         /*
