@@ -40,6 +40,14 @@ public class GloveController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown( GameControllerVR.HOTKEY_GLOVE)) {
+
+            LeftHandObject.SetActive(!LeftHandObject.activeSelf);
+            RightHandObject.SetActive(!RightHandObject.activeSelf);
+
+        }
+
+
 
     }
 

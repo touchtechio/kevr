@@ -78,20 +78,20 @@ public class DroneController : MonoBehaviour
     {
 
 
-        if (Input.GetKeyDown(KeyCode.T))
-            {
-                Debug.Log("targeting player");
-                TargetPlayer();
-            }
+        if (Input.GetKeyDown(GameControllerVR.HOTKEY_DRONE_TO_TARGET))
+        {
+            Debug.Log("targeting player");
+            TargetPlayer();
+        }
 
-            if (Input.GetKeyDown(KeyCode.H))
-            {
-                Debug.Log("targeting home");
-                TargetHome();
-            }
+        if (Input.GetKeyDown(GameControllerVR.HOTKEY_DRONE_TO_HOME))
+        {
+            Debug.Log("targeting home");
+            TargetHome();
+        }
 
-      
-        if (Input.GetKeyDown(KeyCode.Space))
+
+        if (Input.GetKeyDown(GameControllerVR.HOTKEY_DRONE_HIT))
         {
 			for (int i = 0; i < DronesPerHand; i++)
             {
