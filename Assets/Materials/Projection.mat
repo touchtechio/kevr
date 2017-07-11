@@ -36,7 +36,7 @@ Material:
       second: 0.05
     - first:
         name: _Strength
-      second: 1.5
+      second: 6.1
     m_Colors:
     - first:
         name: _Color
@@ -46,7 +46,7 @@ Material:
       second: {r: 0, g: 0, b: 0, a: 0}
     - first:
         name: _NoiseColor
-      second: {r: 0.12477105, g: 1, b: 0.9137931, a: 0}
+      second: {r: 0.12469786, g: 1, b: 0.9137931, a: 0}
     - first:
         name: _NoiseFrequency
       second: {r: 0, g: 0, b: 0, a: 0}
