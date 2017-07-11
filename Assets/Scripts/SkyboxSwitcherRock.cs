@@ -20,8 +20,8 @@ WASDQE to move the camera. Press b to stop, and n to slow down.";
 	}
 	
 	void Update() {
-		if (Input.GetKeyDown("[")) { Load(--current); }
-		if (Input.GetKeyDown("]")) { Load(++current); }
+		if (Input.GetKeyDown(GameControllerVR.HOTKEY_SKYBOX_PREVIOUS)) { Load(--current); }
+		if (Input.GetKeyDown(GameControllerVR.HOTKEY_SKYBOX_NEXT)) { Load(++current); }
 
 	}
 

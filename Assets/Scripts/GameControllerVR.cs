@@ -46,7 +46,10 @@ public class GameControllerVR : MonoBehaviour
     internal static readonly KeyCode HOTKEY_DRONE_TO_TARGET = KeyCode.T;
     internal static readonly KeyCode HOTKEY_DRONE_TO_HOME = KeyCode.H;
     internal static readonly KeyCode HOTKEY_DRONE_HIT = KeyCode.Space;
-    
+    internal static readonly KeyCode HOTKEY_SKYBOX_PREVIOUS = KeyCode.LeftBracket;
+    internal static readonly KeyCode HOTKEY_SKYBOX_NEXT = KeyCode.LeftBracket;
+
+
     void Awake()
     {
 
