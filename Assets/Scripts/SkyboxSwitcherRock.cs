@@ -25,7 +25,7 @@ WASDQE to move the camera. Press b to stop, and n to slow down.";
 
 	}
 
-	void OnGUI() {
+/*	void OnGUI() {
 		string readout = "Speed (mouse wheel): " + CameraScroll.main.speed;
 		readout += "\nAcceleration (r/t): " + CameraScroll.main.acceleration;
 		readout += "\nVelocity: " + CameraScroll.main.velocity;
@@ -35,7 +35,7 @@ WASDQE to move the camera. Press b to stop, and n to slow down.";
 		GUI.Box(new Rect(0, Screen.height * .9f, Screen.width, Screen.height * .1f), message);
 
 
-	}
+	}*/
 	
 	void Load(int i) {
 		if (i < 0) { i = mats.Length + i; }
