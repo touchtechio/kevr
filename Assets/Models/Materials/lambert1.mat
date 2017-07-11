@@ -169,7 +169,7 @@ Material:
       second: {r: 1, g: 1, b: 1, a: 0.5}
     - first:
         name: _ScanLineColor
-      second: {r: 0.10240752, g: 1, b: 1, a: 0.547}
+      second: {r: 0.102217354, g: 1, b: 1, a: 0.547}
     - first:
         name: _ScanLineSettings
       second: {r: 1, g: 0.02, b: 1, a: 0}
