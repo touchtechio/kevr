@@ -16,14 +16,19 @@ WASDQE to move the camera. Press b to stop, and n to slow down.";
 	void Start() {
 		mats = Resources.LoadAll<Material>("Skyboxes"); // folder called skyboxes within any resources folder of type Material
 
-		Load(0);
+		Load(current);
 	}
 	
 	void Update() {
-		if (Input.GetKeyDown(GameControllerVR.HOTKEY_SKYBOX_PREVIOUS)) { Load(--current); }
+		if (Input.GetKeyDown(GameControllerVR.HOTKEY_SKYBOX_PREVIOUS)) { Load(--current);
+          //  Debug.Log(current);
+        }
 		if (Input.GetKeyDown(GameControllerVR.HOTKEY_SKYBOX_NEXT)) { Load(++current); }
 
 	}
+
+    void OnGUI()
+    {
 
         /*
 		string readout = "Speed (mouse wheel): " + CameraScroll.main.speed;
@@ -35,8 +40,9 @@ WASDQE to move the camera. Press b to stop, and n to slow down.";
 		GUI.Box(new Rect(0, Screen.height * .9f, Screen.width, Screen.height * .1f), message);
 
     */
-	
-	void Load(int i) {
+    }
+
+        void Load(int i) {
 		if (i < 0) { i = mats.Length + i; }
 		i = i % mats.Length;
 		current = i;
