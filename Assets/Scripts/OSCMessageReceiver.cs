@@ -103,7 +103,7 @@ namespace UniOSC
 
         //REALSENSE DRAGONFLY OSC address
         //       int[] realsense = { 90, 91, 124 };
-        int[] activeRealsense = { 91, 90, 124, 125 };
+        int[] activeRealsense = { 91, 90, 92, 93, 124, 125 };
         private const string heartbeat = "heartbeat";
 
 
