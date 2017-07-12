@@ -56,6 +56,8 @@ namespace UniOSC
 
 
         //Touch OSC addresses
+        private const string wristLeft = "Kevin/wristLeft";
+        private const string wristRight = "Kevin/wristRight";
         private const string gloveLeft1 = "Kevin/gloveLeft1";
         private const string gloveLeft2 = "Kevin/gloveLeft2";
         private const string gloveLeft3 = "Kevin/gloveLeft3";
@@ -147,6 +149,9 @@ namespace UniOSC
             // handles Touch OSC data simulating glove
             touchOSCBEnds();
 
+            touchOSCWrist();
+
+
 
             // handles rs data from single camera
             rsZones();
@@ -154,6 +159,24 @@ namespace UniOSC
             // handles osc rs data from Max
             rsZonesViaMax();
 
+        }
+
+        private void touchOSCWrist()
+        {
+            // syncphony glove MIDI note hits
+            if (msg.Address.Contains(wristLeft))
+            {
+                float percent = (float)msg.Data[0];
+                //Debug.Log("left-wrist:" + degrees);
+                GloveController.SetLeftWristAngle((int)(180* percent));
+            }
+
+            if (msg.Address.Contains(wristRight))
+            {
+                float percent = (float)msg.Data[0];
+                //Debug.Log("right-wrist:" + degrees);
+                GloveController.SetRightWristAngle((int)(180 * percent));
+            }
         }
 
         private void rsZonesViaMax()

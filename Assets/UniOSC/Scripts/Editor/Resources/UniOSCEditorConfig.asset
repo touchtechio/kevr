@@ -13,10 +13,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedMappingFileObjIndex: 0
   selectedSessionFileObjIndex: 0
-  configTraceScrollpos: {x: 0, y: 6915}
+  configTraceScrollpos: {x: 0, y: 5376}
   isOSCTracing: 1
   isOSCLearning: 0
-  isEditorEnabled: 0
+  isEditorEnabled: 1
   isLastMessageTracing: 0
   mySkin: {fileID: 0}
   learnStyle:
