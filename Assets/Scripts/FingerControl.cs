@@ -8,6 +8,7 @@ public class FingerControl : MonoBehaviour {
 
     public GameObject[] fingers;
     public Text[] finLeft;
+    public Image[] finDial;
   
 
     // Use this for initialization
@@ -30,6 +31,7 @@ public class FingerControl : MonoBehaviour {
         // update data readouts
         fingerBendData = fingerBendData * 100;
         finLeft[i].text = ((int)fingerBendData).ToString();
+        finDial[i].fillAmount = fingerBendData / 100;
         
 
 
