@@ -247,7 +247,7 @@ namespace UniOSC
                 {
                     float fingerBendDataLeft = (float)msg.Data[0];
                     GloveController.fingerBendLeft(i, fingerBendDataLeft);
-                    LeftFingerController.bendFinger(i, fingerBendDataLeft);
+                    LeftFingerController.bendFinger(i, fingerBendDataLeft); // send finger bend data to UI
                     //FountainRSController.fountainHeightLeft(i, fingerBendDataLeft);
 					//DronePianoController.FingerBend(4 - i, fingerBendDataLeft);
 					
@@ -260,7 +260,7 @@ namespace UniOSC
                     Debug.Log("right data");
                     float fingerBendDataRight = (float)msg.Data[0];
                     GloveController.fingerBendRight(i, fingerBendDataRight);
-                    RightFingerController.bendFinger(i, fingerBendDataRight);
+                    RightFingerController.bendFinger(i, fingerBendDataRight); // send finger bend data to UI
                     //FountainRSController.fountainHeightRight(4-i, fingerBendDataRight);
 					//DronePianoController.FingerBend(i + 5, fingerBendDataRight);
 					

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GloveController : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class GloveController : MonoBehaviour
 
     public GameObject LeftHandObject;
     public GameObject RightHandObject;
+    public Text leftRotation;
+    public Text rightRotation;
 
     public float maxBounds = 850f;
 
@@ -46,9 +49,6 @@ public class GloveController : MonoBehaviour
             RightHandObject.SetActive(!RightHandObject.activeSelf);
 
         }
-
-
-
     }
 
     public void fingerBendLeft(int i, float fingerBendDataLeft)
@@ -69,16 +69,21 @@ public class GloveController : MonoBehaviour
         Transform transform = Hand.GetComponent<Transform>();
         //  transform.rotation = Quaternion.Euler(-90, 180, 0) * Quaternion.Euler(0, -degrees - 90, 0);
         transform.GetChild(0).rotation = Quaternion.Euler(0, 0, degrees);
+    
+
     }
 
     internal void SetLeftWristAngle(int degrees)
     {
         SetWristAngle(LeftHandObject, degrees+25);
+        // send wrist rotation data to UI
+        leftRotation.text = ((int)degrees).ToString();
     }
 
     internal void SetRightWristAngle(int degrees)
     {
         SetWristAngle(RightHandObject, degrees);
+        rightRotation.text = ((int)degrees).ToString();
 
     }
 
