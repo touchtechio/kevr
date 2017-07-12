@@ -231,7 +231,7 @@ public class ZoneControllerSingleCamera : MonoBehaviour
 
             if ((xPos > arrayXRange[i]) && (xPos < arrayXRange[i + 1]))
             {
-                Debug.Log(xPos + ": in zone: " + i);
+               // Debug.Log(xPos + ": in zone: " + i);
                 return i;
             }
         }
