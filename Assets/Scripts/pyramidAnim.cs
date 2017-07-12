@@ -15,7 +15,7 @@ public class pyramidAnim : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.Comma))
+        if (Input.GetKeyDown(GameControllerVR.HOTKEY_PYRAMID_OPEN))
         {
             Debug.Log("trigger pyramid open");
             pyramidAnimator.SetTrigger("pyramidOpen");
@@ -25,7 +25,7 @@ public class pyramidAnim : MonoBehaviour {
 
        // AnimatorStateInfo stateInfo = pyramidAnimator.GetCurrentAnimatorStateInfo(0);
         //Debug.Log(stateInfo.fullPathHash);
-        if (Input.GetKeyDown(KeyCode.Period))// && stateInfo.fullPathHash == -1741390083)
+        if (Input.GetKeyDown(GameControllerVR.HOTKEY_PYRAMID_CLOSE))// && stateInfo.fullPathHash == -1741390083)
         {
             Debug.Log("trigger pyramid close");
             pyramidAnimator.SetTrigger("pyramidWait");
