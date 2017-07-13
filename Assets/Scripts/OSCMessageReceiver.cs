@@ -24,6 +24,7 @@ namespace UniOSC
 
         //public OSCDataMapper dataScript; // no longer using this
         public ZoneControllerSingleCamera ZoneController;
+        public ZoneControllerSingleAny ZoneController2;
         public GloveController GloveController;
         public FountainRSControllerVR FountainRSController;
 		public DroneController DroneController;
@@ -36,9 +37,7 @@ namespace UniOSC
 
         OscMessage msg;
 
-
         //Syncphony osc addresses
-
         private const string oscSideTap = "gesture/ring-right-hand/sidetap";
         private const string oscTap = "gesture/ring-right-hand/tap";
         private const string oscOrientation = "motion/ring-right-hand/orientation";
@@ -53,11 +52,13 @@ namespace UniOSC
         private const string oscRightWristCc = "midicc/2";
 
 
-
-
         //Touch OSC addresses
         private const string wristLeft = "Kevin/wristLeft";
         private const string wristRight = "Kevin/wristRight";
+
+        /// <summary>
+        /// glove refers to finger bend data in touch osc
+        /// </summary>
         private const string gloveLeft1 = "Kevin/gloveLeft1";
         private const string gloveLeft2 = "Kevin/gloveLeft2";
         private const string gloveLeft3 = "Kevin/gloveLeft3";
@@ -103,7 +104,8 @@ namespace UniOSC
 
         //REALSENSE DRAGONFLY OSC address
         //       int[] realsense = { 90, 91, 124 };
-        int[] activeRealsense = { 91, 90, 92, 93, 124, 125 };
+        int[] activeRealsense = { 90, 91, 92, 93, 124, 125 };
+        bool[] isRealsenseLeft = { true, false, true, false, true, true};
         private const string heartbeat = "heartbeat";
 
 
@@ -113,14 +115,11 @@ namespace UniOSC
         // upon message received from OSC, call LastMessageUpdate()
         public override void OnOSCMessageReceived(UniOSCEventArgs args)
         {
-
+        
             msg = (OscMessage)args.Packet;
+            Debug.Log("touch osc is working");
 
-
-            //Debug.Log ((int)msg.Data[0]);
-
-
-            //Debug.Log (msg.Data[1]);
+           // Debug.Log (msg.Data[1]);
             LastMessageUpdate();
             if (msg.Data.Count < 1 || isLive != true) return;
 
@@ -186,12 +185,15 @@ namespace UniOSC
                 rightZoneData = (int)msg.Data[0];
                 //Debug.Log(rightZoneData);
                 ZoneController.rightZoneColor(rightZoneData);
+                ZoneController2.rightZoneColor(rightZoneData);
+
 
             }
             else if (msg.Address.Contains(leftZone))
             {
                 leftZoneData = (int)msg.Data[0];
                 ZoneController.leftZoneColor(leftZoneData);
+                ZoneController2.leftZoneColor(leftZoneData);
             }
         }
 
@@ -199,6 +201,8 @@ namespace UniOSC
         {
             foreach (int realsense in activeRealsense)
             {
+                //create zone objects
+           
 
                 string leftCursor = "/cursor/s" + realsense + "/left";
                 string rightCursor = "/cursor/s" + realsense + "/right";
@@ -215,7 +219,16 @@ namespace UniOSC
                         xPos = -xPos;
                         zPos = -zPos;
                     }
-
+                   
+                    // flip rs values for right hand
+                    if (isRealsenseLeft[realsense] == false)
+                    {
+                        xPos = -xPos;
+                        zPos = -zPos;
+                       
+                        
+                    }
+            
                     if (msg.Address.Contains(leftCursor))
                     {
                        // GloveController.enableLeft();
@@ -230,7 +243,7 @@ namespace UniOSC
                     }
 
                     ZoneController.UpdateLeftZone(xPos, yPos, zPos);
-
+                    ZoneController2.UpdateLeftZone(xPos, yPos, zPos);
 
                 }
 
@@ -257,7 +270,7 @@ namespace UniOSC
 
                 if (msg.Address.Contains(fingerBendRight[i]))
                 {
-                    Debug.Log("right data");
+                 //   Debug.Log("right data");
                     float fingerBendDataRight = (float)msg.Data[0];
                     GloveController.fingerBendRight(i, fingerBendDataRight);
                     RightFingerController.bendFinger(i, fingerBendDataRight); // send finger bend data to UI
@@ -296,8 +309,12 @@ namespace UniOSC
 
         private void touchOSCZones()
         {
+            Debug.Log("touch osc zones working");
+          
             if (msg.Address.Contains(rsZoneLeftXZ))
             {
+              
+
                 float incomingTouchOscZ = (float)msg.Data[0];
                 float incomingTouchOscX = (float)msg.Data[1];
 
@@ -305,17 +322,20 @@ namespace UniOSC
 
                 Vector3 position = GloveController.GetLeftPosition();
                 ZoneController.UpdateLeftZone(position.x, position.y, position.z);
+                ZoneController2.UpdateLeftZone(position.x, position.y, position.z);
 
             }
 
             if (msg.Address.Contains(rsZoneLeftY))
             {
+             
                 float incomingTouchOscY = (float)msg.Data[0];
 
                 GloveController.rsZoneLeftY(incomingTouchOscY * 0.5f + 0.3f); // movement of the glove asset
 
                 Vector3 position = GloveController.GetLeftPosition();
-                ZoneController.UpdateLeftZone(position.x, position.y, position.z); 
+                ZoneController.UpdateLeftZone(position.x, position.y, position.z);
+                ZoneController2.UpdateLeftZone(position.x, position.y, position.z);
 
             }
 
@@ -329,6 +349,7 @@ namespace UniOSC
 
                 Vector3 position = GloveController.GetRightPosition();
                 ZoneController.UpdateRightZone(position.x, position.y, position.z);
+                ZoneController2.UpdateRightZone(position.x, position.y, position.z);
             }
 
             if (msg.Address.Contains(rsZoneRightY))
@@ -338,6 +359,7 @@ namespace UniOSC
 
                 Vector3 position = GloveController.GetRightPosition();
                 ZoneController.UpdateRightZone(position.x, position.y, position.z);
+                ZoneController2.UpdateRightZone(position.x, position.y, position.z);
 
             }
         }

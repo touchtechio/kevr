@@ -37,10 +37,10 @@ public class ZoneControllerSingleCamera : MonoBehaviour
 
     public GameObject zone4SliderLeft;
     GameObject zone4SliderRight;
-    public GameObject waterGloveLeft;
+    /*public GameObject waterGloveLeft;
     public GameObject waterGloveRight;
     public GameObject droneGloveLeft;
-    public GameObject droneGloveRight;
+    public GameObject droneGloveRight;*/
 
     private Color zone1Color;
     static Color ocher = new Color(255/255f, 178/255f, 69/255f, 0.2f);
@@ -218,8 +218,6 @@ public class ZoneControllerSingleCamera : MonoBehaviour
 
         //  Debug.Log("color: " + zoneColors[zoneNumber]);
 
-
-
     }
 
     internal int GetZone(float xPos, float[] arrayXRange)
@@ -239,6 +237,7 @@ public class ZoneControllerSingleCamera : MonoBehaviour
         return -1;
     }
 
+    // setting zone y values
     internal int GetYZone(float yPos)
     {
 
@@ -257,6 +256,7 @@ public class ZoneControllerSingleCamera : MonoBehaviour
         return -1;
     }
 
+    // sends data to zones and set zone color
 
     internal void UpdateLeftZone(float xPos, float yPos, float zPos)
     {
