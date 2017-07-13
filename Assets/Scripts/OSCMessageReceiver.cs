@@ -23,7 +23,7 @@ namespace UniOSC
         // private ButtonTest test;
 
         //public OSCDataMapper dataScript; // no longer using this
-        public ZoneControllerSingleCamera ZoneController;
+        public ZoneControllerSingleAny ZoneController;
         public ZoneControllerSingleAny ZoneController2;
         public GloveController GloveController;
         public FountainRSControllerVR FountainRSController;
@@ -117,7 +117,7 @@ namespace UniOSC
         {
         
             msg = (OscMessage)args.Packet;
-            Debug.Log("touch osc is working");
+           
 
            // Debug.Log (msg.Data[1]);
             LastMessageUpdate();
@@ -199,8 +199,10 @@ namespace UniOSC
 
         private void rsZones()
         {
-            foreach (int realsense in activeRealsense)
+            for (int i = 0; i < activeRealsense.Length; i++)
             {
+                int realsense = activeRealsense[i];
+                    
                 //create zone objects
            
 
@@ -221,13 +223,13 @@ namespace UniOSC
                     }
                    
                     // flip rs values for right hand
-                    if (isRealsenseLeft[realsense] == false)
-                    {
-                        xPos = -xPos;
-                        zPos = -zPos;
-                       
+                  
+                   // if (isRealsenseLeft[i] == false)
+                 //   {
+                    //    xPos = -xPos;
+                    //    zPos = -zPos;
                         
-                    }
+//}
             
                     if (msg.Address.Contains(leftCursor))
                     {
@@ -242,8 +244,18 @@ namespace UniOSC
                         GloveController.rsZoneRightXZ(xPos, zPos);
                     }
 
-                    ZoneController.UpdateLeftZone(xPos, yPos, zPos);
-                    ZoneController2.UpdateLeftZone(xPos, yPos, zPos);
+                    // choose whether to send data to left or right rs camera
+
+                    if (isRealsenseLeft[i] == false)
+                    {
+                    //    Debug.Log("right rs");
+                        ZoneController.UpdateLeftZone(xPos, yPos, zPos);
+                    }
+                    else
+                    {
+                        ZoneController2.UpdateLeftZone(xPos, yPos, zPos);
+                    }
+                   
 
                 }
 
@@ -309,7 +321,7 @@ namespace UniOSC
 
         private void touchOSCZones()
         {
-            Debug.Log("touch osc zones working");
+           
           
             if (msg.Address.Contains(rsZoneLeftXZ))
             {
@@ -369,7 +381,7 @@ namespace UniOSC
             // syncphony glove finger bends
             if (msg.Address.Contains(oscLeftHandFingers))
             {
-                // Debug.Log("left:" + msg.Data[1] + "," + msg.Data[2] + "," + msg.Data[3] + "," + msg.Data[4] + "," + msg.Data[5]);
+               // Debug.Log("left:" + msg.Data[1] + "," + msg.Data[2] + "," + msg.Data[3] + "," + msg.Data[4] + "," + msg.Data[5]);
                 for (int i = 0; i < 5; i++)
                 {
                     float fingerBendData = (float)msg.Data[i + 1];

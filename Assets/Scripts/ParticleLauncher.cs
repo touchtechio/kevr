@@ -10,7 +10,7 @@ public class ParticleLauncher : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("particle launcher");
+        //Debug.Log("particle launcher");
     }
 
     // Update is called once per frame
