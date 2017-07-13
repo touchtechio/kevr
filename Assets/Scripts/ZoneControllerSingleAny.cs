@@ -52,9 +52,8 @@ public class ZoneControllerSingleAny : MonoBehaviour
     // x range is -0.3 - 0.3
     float[] xPosLeftRange = { -0.5f, -0.13f, 0.03f, 0.50f };
 
-    // x range is -0.3 - 0.3
+    // x range is -0.3 - 0.3, 4 zones here
     float[] xPosRightRange = { -0.5f, -0.15f, -0.05f, 0.10f, 0.50f };
-
 
     // y range is 0.2 - 0.85
     float[] yPosRange = { 0.2f, 0.4f, 0.6f, 0.95f };
@@ -83,35 +82,9 @@ public class ZoneControllerSingleAny : MonoBehaviour
 
         /*
         zoneRight = new GameObject[_amount];
-
-
-
-        // instantiate slider objects
-        zone4SliderLeft = Instantiate(zone4SliderLeft, transform.position + new Vector3(-(displacementX * .45f + 3 * displacementX + 0.05f), 0.05f, -0.1f), Quaternion.identity) as GameObject;
-        zone4SliderLeft.name = "zone-left-" + 3;
-        zone4SliderLeft.transform.parent = transform;
-        zoneLeft[3] = zone4SliderLeft;
-        //zoneLeft.Add((GameObject)zone4SliderLeft);
-        zone4SliderRight = Instantiate(zone4SliderLeft, transform.position + new Vector3((displacementX * .45f + 3 * displacementX) + 0.05f, 0.05f, -0.1f), Quaternion.identity) as GameObject;
-        zone4SliderRight.name = "zone-right-" + 3;
-        zone4SliderRight.transform.parent = transform;
-        zoneRight[3] = zone4SliderRight;
-
-        waterGloveLeft = Instantiate(waterGloveLeft, transform.position + new Vector3(-(displacementX * .8f + 3 * displacementX), displacementY, 0), Quaternion.identity) as GameObject;
-        waterGloveLeft.name = "water-left-glove";
-        waterGloveLeft.transform.parent = transform;
-        waterGloveRight = Instantiate(waterGloveRight, transform.position + new Vector3((displacementX * .8f + 3 * displacementX), displacementY, 0), Quaternion.identity) as GameObject;
-        waterGloveRight.name = "water-right-glove";
-        waterGloveRight.transform.parent = transform;
-        waterGloveRight.transform.localScale = new Vector3(1, 1, 1); // mirrors 
-        droneGloveLeft = Instantiate(droneGloveLeft, transform.position + new Vector3(-(displacementX * .8f + 3 * displacementX), 2 * displacementY, 0), Quaternion.identity) as GameObject;
-        droneGloveLeft.name = "drone-left-glove";
-        droneGloveLeft.transform.parent = transform;
-        droneGloveRight = Instantiate(droneGloveRight, transform.position + new Vector3((displacementX * .8f + 3 * displacementX), 2 * displacementY, 0), Quaternion.identity) as GameObject;
-        droneGloveRight.name = "drone-right -glove";
-        droneGloveRight.transform.parent = transform;
-        droneGloveRight.transform.localScale = new Vector3(1, 1, 1);
-*/
+        InstantiateSliderObjects();
+        
+        */
     }
 
     private void Update()
@@ -144,16 +117,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
             zoneLeft[i].transform.localScale = new Vector3(1.8f, 1, 1);
 
         }
-        /*
-        for (int i = 0; i < (_amount); i++)
-        {
-          //  GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(displacementX * .45f + i * displacementX + 0.05f, 0, i * displacementZ), Quaternion.identity) as GameObject;
-            GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(displacementX + (whichSide) * i * displacementX, 0, (-whichSide) * i * displacementZ), Quaternion.identity) as GameObject;
-            zone.name = "zone-right-" + i;
-            zone.transform.parent = transform;
-            zoneRight[i] = zone;
-            zoneRight[i].transform.localScale = new Vector3(1.8f, 1, 1);
-        }*/
+
     }
 
 
@@ -283,7 +247,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
     }
 
 
-    internal void UpdateLeftZone(float xPos, float yPos, float zPos)
+    internal void UpdateLeftZone(float xPos, float yPos, float zPos, bool isRSLeft)
     {
         //   Transform waterGloveScale = waterGloveLeft.transform.GetChild(0);
         //waterGloveScale.localScale = new Vector3(1, 1, 1);
@@ -300,8 +264,16 @@ public class ZoneControllerSingleAny : MonoBehaviour
         }
 
         // left zones filled
-        selectedZone = 2 - selectedZone;
-        leftZoneColor(selectedZone);
+
+        if (isRSLeft == true)
+        {
+            selectedZone = 2 - selectedZone;
+            leftZoneColor(selectedZone);
+        } else
+        {
+            leftZoneColor(selectedZone);
+        }
+
 
         // Debug.Log("ypos: " + yPos);
 
@@ -316,7 +288,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
 
     internal void UpdateRightZone(float xPos, float yPos, float zPos)
     {
-		UpdateLeftZone (xPos, yPos, zPos);
+		UpdateLeftZone (xPos, yPos, zPos, false);
 
 		/*
 		 * 
@@ -348,9 +320,36 @@ public class ZoneControllerSingleAny : MonoBehaviour
 
         return;
     }
+    /*
+    void InstantiateSliderObjects()
+    {
+        // instantiate slider objects
+        zone4SliderLeft = Instantiate(zone4SliderLeft, transform.position + new Vector3(-(displacementX * .45f + 3 * displacementX + 0.05f), 0.05f, -0.1f), Quaternion.identity) as GameObject;
+        zone4SliderLeft.name = "zone-left-" + 3;
+        zone4SliderLeft.transform.parent = transform;
+        zoneLeft[3] = zone4SliderLeft;
+        //zoneLeft.Add((GameObject)zone4SliderLeft);
+        zone4SliderRight = Instantiate(zone4SliderLeft, transform.position + new Vector3((displacementX * .45f + 3 * displacementX) + 0.05f, 0.05f, -0.1f), Quaternion.identity) as GameObject;
+        zone4SliderRight.name = "zone-right-" + 3;
+        zone4SliderRight.transform.parent = transform;
+        zoneRight[3] = zone4SliderRight;
 
-
-
+        waterGloveLeft = Instantiate(waterGloveLeft, transform.position + new Vector3(-(displacementX * .8f + 3 * displacementX), displacementY, 0), Quaternion.identity) as GameObject;
+        waterGloveLeft.name = "water-left-glove";
+        waterGloveLeft.transform.parent = transform;
+        waterGloveRight = Instantiate(waterGloveRight, transform.position + new Vector3((displacementX * .8f + 3 * displacementX), displacementY, 0), Quaternion.identity) as GameObject;
+        waterGloveRight.name = "water-right-glove";
+        waterGloveRight.transform.parent = transform;
+        waterGloveRight.transform.localScale = new Vector3(1, 1, 1); // mirrors 
+        droneGloveLeft = Instantiate(droneGloveLeft, transform.position + new Vector3(-(displacementX * .8f + 3 * displacementX), 2 * displacementY, 0), Quaternion.identity) as GameObject;
+        droneGloveLeft.name = "drone-left-glove";
+        droneGloveLeft.transform.parent = transform;
+        droneGloveRight = Instantiate(droneGloveRight, transform.position + new Vector3((displacementX * .8f + 3 * displacementX), 2 * displacementY, 0), Quaternion.identity) as GameObject;
+        droneGloveRight.name = "drone-right -glove";
+        droneGloveRight.transform.parent = transform;
+        droneGloveRight.transform.localScale = new Vector3(1, 1, 1);
+    }
+    */
 
 }
 

@@ -68,6 +68,7 @@ public class GloveController : MonoBehaviour
 
     internal void SetWristAngle(GameObject Hand, int degrees)
     {
+        //sets positional transform of the whole hand
         Transform transform = Hand.GetComponent<Transform>();
         //  transform.rotation = Quaternion.Euler(-90, 180, 0) * Quaternion.Euler(0, -degrees - 90, 0);
         transform.GetChild(0).rotation = Quaternion.Euler(0, 0, degrees);

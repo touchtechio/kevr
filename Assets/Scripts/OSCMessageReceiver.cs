@@ -69,6 +69,8 @@ namespace UniOSC
         private const string gloveRight3 = "Kevin/gloveRight3";
         private const string gloveRight4 = "Kevin/gloveRight4";
         private const string gloveRight5 = "Kevin/gloveRight5";
+
+
         private const string rsZoneLeftXZ = "Kevin/zoneLeftXZ";
         private const string rsZoneLeftY = "Kevin/zoneLeftY";
         private const string rsZoneRightXZ = "Kevin/zoneRightXZ";
@@ -141,7 +143,6 @@ namespace UniOSC
             // handles osc data simulating hand position over realsense
             touchOSCZones();
 
-
             // handles Touch Osc data simulating notes
             touchOSCNotes();
 
@@ -149,8 +150,6 @@ namespace UniOSC
             touchOSCBEnds();
 
             touchOSCWrist();
-
-
 
             // handles rs data from single camera
             rsZones();
@@ -224,12 +223,10 @@ namespace UniOSC
                    
                     // flip rs values for right hand
                   
-                   // if (isRealsenseLeft[i] == false)
-                 //   {
-                    //    xPos = -xPos;
-                    //    zPos = -zPos;
-                        
-//}
+                    if (isRealsenseLeft[i] == false)
+                    {
+                    
+                    }
             
                     if (msg.Address.Contains(leftCursor))
                     {
@@ -249,11 +246,11 @@ namespace UniOSC
                     if (isRealsenseLeft[i] == false)
                     {
                     //    Debug.Log("right rs");
-                        ZoneController.UpdateLeftZone(xPos, yPos, zPos);
+                        ZoneController.UpdateLeftZone(xPos, yPos, zPos, isRealsenseLeft[i]);
                     }
                     else
                     {
-                        ZoneController2.UpdateLeftZone(xPos, yPos, zPos);
+                        ZoneController2.UpdateLeftZone(xPos, yPos, zPos, isRealsenseLeft[i]);
                     }
                    
 
@@ -333,8 +330,7 @@ namespace UniOSC
                 GloveController.rsZoneLeftXZ(0.35f - 0.7f * incomingTouchOscX, 0.2f * incomingTouchOscZ - 0.1f);
 
                 Vector3 position = GloveController.GetLeftPosition();
-                ZoneController.UpdateLeftZone(position.x, position.y, position.z);
-                ZoneController2.UpdateLeftZone(position.x, position.y, position.z);
+                ZoneController2.UpdateLeftZone(position.x, position.y, position.z, true);
 
             }
 
@@ -346,8 +342,8 @@ namespace UniOSC
                 GloveController.rsZoneLeftY(incomingTouchOscY * 0.5f + 0.3f); // movement of the glove asset
 
                 Vector3 position = GloveController.GetLeftPosition();
-                ZoneController.UpdateLeftZone(position.x, position.y, position.z);
-                ZoneController2.UpdateLeftZone(position.x, position.y, position.z);
+                ZoneController2.UpdateLeftZone(position.x, position.y, position.z, false);
+          
 
             }
 
@@ -361,7 +357,7 @@ namespace UniOSC
 
                 Vector3 position = GloveController.GetRightPosition();
                 ZoneController.UpdateRightZone(position.x, position.y, position.z);
-                ZoneController2.UpdateRightZone(position.x, position.y, position.z);
+ 
             }
 
             if (msg.Address.Contains(rsZoneRightY))
@@ -371,7 +367,7 @@ namespace UniOSC
 
                 Vector3 position = GloveController.GetRightPosition();
                 ZoneController.UpdateRightZone(position.x, position.y, position.z);
-                ZoneController2.UpdateRightZone(position.x, position.y, position.z);
+      
 
             }
         }
