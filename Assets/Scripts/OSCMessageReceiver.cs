@@ -168,6 +168,8 @@ namespace UniOSC
 
             touchOSCWrist();
 
+            StagePosition();
+
             // handles rs data from single camera
             rsZones();
 
@@ -252,7 +254,7 @@ namespace UniOSC
                 float zPos = (float)msg.Data[1];
                 float yPos = (float)msg.Data[2];
                 Debug.Log("stage-pos-left: " + xPos + " " + yPos + " " + zPos);
-                StageGloveController.SetLeftPosition(xPos, yPos, zPos);
+                StageGloveController.SetLeftPosition(xPos, yPos, -zPos);
             }
 
             if (msg.Address.Contains(stagePositionRight))
