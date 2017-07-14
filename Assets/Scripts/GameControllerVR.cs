@@ -43,6 +43,7 @@ public class GameControllerVR : MonoBehaviour
     private GloveController gloveController;
 
     internal static readonly KeyCode HOTKEY_GLOVE = KeyCode.G;
+    internal static readonly KeyCode HOTKEY_GLOVE_DATA = KeyCode.D;
     internal static readonly KeyCode HOTKEY_DRONE_TO_TARGET = KeyCode.T;
     internal static readonly KeyCode HOTKEY_DRONE_TO_HOME = KeyCode.H;
     internal static readonly KeyCode HOTKEY_DRONE_HIT = KeyCode.Space;

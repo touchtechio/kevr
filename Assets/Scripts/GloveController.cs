@@ -45,12 +45,24 @@ public class GloveController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown( GameControllerVR.HOTKEY_GLOVE)) {
+        if (Input.GetKeyDown(GameControllerVR.HOTKEY_GLOVE))
+        {
 
             LeftHandObject.SetActive(!LeftHandObject.activeSelf);
             RightHandObject.SetActive(!RightHandObject.activeSelf);
 
         }
+
+        if (Input.GetKeyDown(GameControllerVR.HOTKEY_GLOVE_DATA))
+        {
+            GameObject leftHud = LeftHandObject.transform.GetChild(1).gameObject;
+            leftHud.SetActive(!leftHud.activeSelf);
+            GameObject rightHud = RightHandObject.transform.GetChild(1).gameObject;
+            rightHud.SetActive(!rightHud.activeSelf);
+        }
+
+
+
     }
 
     public void fingerBendLeft(int i, float fingerBendDataLeft)

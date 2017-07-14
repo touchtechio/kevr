@@ -70,7 +70,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
     int lastLeftZoneYState = 0;
     int lastRightZoneYState = 0;
     Vector3 gloveScaleFactor = new Vector3(1.2f, 1, 1.2f);
-   // int whichSide = 1; // -1 is right, 1 is left
+    public int whichSide = 1; // -1 is right, 1 is left
 
     void Start()
     {
@@ -107,11 +107,16 @@ public class ZoneControllerSingleAny : MonoBehaviour
         
         for (int i = 0; i < (_amount); i++)
         {
-           // GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(displacementX * .45f + i * displacementX + 0.05f, 0, i * displacementZ), Quaternion.identity) as GameObject;
-           // GameObject zone = Instantiate(zoneObject, transform.position + new Vector3((-whichSide) * displacementX + (whichSide) * i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
-            GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(displacementX +  (-i) * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            // GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(displacementX * .45f + i * displacementX + 0.05f, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            // GameObject zone = Instantiate(zoneObject, transform.position + new Vector3((-whichSide) * displacementX + (whichSide) * i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            GameObject zone = null;
+            if (1 == whichSide) { // LEFT
+                zone = Instantiate(zoneObject, transform.position + new Vector3(displacementX + (-i) * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            } else {  // RIGHT
+                zone = Instantiate(zoneObject, transform.position + new Vector3(-displacementX + (i) * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            }
 
-            zone.name = "zone-left-" + i;
+        zone.name = "zone-left-" + i;
             zone.transform.parent = transform;
             zoneLeft[i] = zone;
             zoneLeft[i].transform.localScale = new Vector3(1.8f, 1, 1);
