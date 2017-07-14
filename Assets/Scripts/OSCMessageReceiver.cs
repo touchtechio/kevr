@@ -1,4 +1,5 @@
 using OSCsharp.Data;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -34,9 +35,17 @@ namespace UniOSC
         public FingerControl RightFingerController;
         public ParticleLauncher ParticleLauncherLeft;
 		public ParticleLauncher ParticleLauncherRight;
-        
+        public FingerControl IMURightFingerController;
+
+
 
         OscMessage msg;
+
+        //imu glove osc addresse
+        private const string imuGlove = "fimu/joints";
+  
+
+
 
         //Syncphony osc addresses
         private const string oscSideTap = "gesture/ring-right-hand/sidetap";
@@ -146,6 +155,8 @@ namespace UniOSC
 
             SynphonyGloveData();
 
+            ImuGloveData();
+
             // handles osc data simulating hand position over realsense
             touchOSCZones();
 
@@ -165,6 +176,37 @@ namespace UniOSC
 
         }
 
+        private void ImuGloveData()
+        {
+            // syncphony glove MIDI note hits
+            if (msg.Address.Contains(imuGlove))
+            {
+                string debugRadian = "fimu radian: ";
+                string debugDegree = "fimu degree: ";
+                float[] fingerBendDataIMUDeg;
+                fingerBendDataIMUDeg = new float[15];
+
+                List<float> fingerBendIMUList = new List<float>();
+
+                for (int i = 0; i < 15; i++)
+                {
+                    float radians = (float)msg.Data[i];
+                    debugRadian += " " + radians;
+                    debugDegree += " " + Mathf.Rad2Deg * radians;
+                    fingerBendIMUList.Add(Mathf.Rad2Deg * radians);
+                }
+
+
+                Debug.Log(debugDegree);
+                Debug.Log(debugRadian);
+                fingerBendDataIMUDeg = fingerBendIMUList.ToArray();
+                Debug.Log(fingerBendDataIMUDeg[0]);
+                IMURightFingerController.bendFingerIMU(fingerBendDataIMUDeg);
+            }
+
+        }
+
+
         private void touchOSCWrist()
         {
             // syncphony glove MIDI note hits
@@ -172,7 +214,7 @@ namespace UniOSC
             {
                 float percent = (float)msg.Data[0];
                 //Debug.Log("left-wrist:" + degrees);
-                GloveController.SetLeftWristAngle((int)(180* percent));
+                GloveController.SetLeftWristAngle((int)(180 * percent));
             }
 
             if (msg.Address.Contains(wristRight))
