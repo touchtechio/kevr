@@ -121,6 +121,22 @@ public class GloveController : MonoBehaviour
         return transformToMove.localPosition;
     }
 
+    public void SetRightPosition(float x, float y, float z)
+    {
+        Transform transformToMove = RightHandObject.GetComponent<Transform>();
+        Vector3 pos;
+        pos = new Vector3(x, y, z);
+        transformToMove.localPosition = pos;
+    }
+
+    public void SetLeftPosition(float x, float y, float z)
+    {
+        Transform transformToMove = LeftHandObject.GetComponent<Transform>();
+        Vector3 pos;
+        pos = new Vector3(x, y, z);
+        transformToMove.localPosition = pos;
+    }
+
     //atempts to scale syncphony finger bend to 0.0 - 1.0
     internal float GetFingerBend(int finger, int gloveValue)
     {

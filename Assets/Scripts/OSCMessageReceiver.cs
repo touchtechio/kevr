@@ -26,6 +26,7 @@ namespace UniOSC
         public ZoneControllerSingleAny ZoneController;
         public ZoneControllerSingleAny ZoneController2;
         public GloveController GloveController;
+        public GloveController StageGloveController;
         public FountainRSControllerVR FountainRSController;
 		public DroneController DroneController;
 		public DronePianoController DronePianoController;
@@ -90,6 +91,11 @@ namespace UniOSC
         private const string noteRight3 = "Kevin/noteRight3";
         private const string noteRight4 = "Kevin/noteRight4";
         private const string noteRight5 = "Kevin/noteRight5";
+
+
+        // position
+        private const string stagePositionLeft = "position/left-hand";
+        private const string stagePositionRight = "position/right-hand";
 
 
         private string[] LeftNoteAddresses = { noteLeft1, noteLeft2, noteLeft3, noteLeft4, noteLeft5 };
@@ -194,6 +200,28 @@ namespace UniOSC
                 ZoneController.leftZoneColor(leftZoneData);
                 ZoneController2.leftZoneColor(leftZoneData);
             }
+        }
+
+        private void StagePosition()
+        {
+            if (msg.Address.Contains(stagePositionLeft))
+            {
+                float xPos = -(float)msg.Data[0];
+                float zPos = (float)msg.Data[1];
+                float yPos = (float)msg.Data[2];
+                Debug.Log("stage-pos-left: " + xPos + " " + yPos + " " + zPos);
+                StageGloveController.SetLeftPosition(xPos, yPos, zPos);
+            }
+
+            if (msg.Address.Contains(stagePositionRight))
+            {
+                float xPos = -(float)msg.Data[0];
+                float zPos = (float)msg.Data[1];
+                float yPos = (float)msg.Data[2];
+                Debug.Log("stage-pos-right: " + xPos + " " + yPos + " " + zPos);
+                StageGloveController.SetRightPosition(xPos, yPos, zPos);
+            }
+
         }
 
         private void rsZones()
