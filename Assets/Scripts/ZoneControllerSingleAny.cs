@@ -129,7 +129,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
     // passing left and right zone information to main zone height controller
     private void ZoneHeightLeft(int zone, float yPos)
     {
-        //Debug.Log("zone-LEFT:" + zone + " scale value:" + yPos);
+        Debug.Log("zone-LEFT:" + zone + " scale value:" + yPos);
         for (int i = 0; i < _amount; i++)
         {
             ZoneHeight(zoneLeft[i], i, 0);
@@ -252,7 +252,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
     }
 
 
-    internal void UpdateLeftZone(float xPos, float yPos, float zPos, bool isRSLeft)
+    internal void UpdateZone(float xPos, float yPos, float zPos, bool isRSLeft)
     {
         //   Transform waterGloveScale = waterGloveLeft.transform.GetChild(0);
         //waterGloveScale.localScale = new Vector3(1, 1, 1);
@@ -291,41 +291,8 @@ public class ZoneControllerSingleAny : MonoBehaviour
         return;
     }
 
-    internal void UpdateRightZone(float xPos, float yPos, float zPos)
-    {
-		UpdateLeftZone (xPos, yPos, zPos, false);
-
-		/*
-		 * 
-        int selectedXZone = GetZone(xPos, xPosRightRange);
-
-        if (selectedXZone == -1)
-        {
-            Debug.Log(xPos + "," + yPos + "," + zPos + " : yielded no X zone");
-            return;
-        }
-
-        rightZoneColor(selectedXZone);
 
 
-
-       // Transform waterGloveScale = waterGloveRight.transform.GetChild(0);
-        //waterGloveScale.localScale = new Vector3(1, 1, 1);
-      //  Transform droneGloveScale = droneGloveRight.transform.GetChild(0);
-        //droneGloveScale.localScale = new Vector3(1, 1, 1);
-        int selectedYZone = GetYZone(yPos);
-        //  Debug.Log("which y zone" + selectedYZone + "last y zone state " +lastRightZoneYState);
-
-        if (selectedXZone < 3)
-        {
-            ZoneHeightRight(selectedXZone, yPos);
-
-        }
-       */
-
-        return;
-    }
-    /*
     void InstantiateSliderObjects()
     {
         // instantiate slider objects
@@ -338,7 +305,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
         zone4SliderRight.name = "zone-right-" + 3;
         zone4SliderRight.transform.parent = transform;
         zoneRight[3] = zone4SliderRight;
-
+        /*
         waterGloveLeft = Instantiate(waterGloveLeft, transform.position + new Vector3(-(displacementX * .8f + 3 * displacementX), displacementY, 0), Quaternion.identity) as GameObject;
         waterGloveLeft.name = "water-left-glove";
         waterGloveLeft.transform.parent = transform;
@@ -353,8 +320,9 @@ public class ZoneControllerSingleAny : MonoBehaviour
         droneGloveRight.name = "drone-right -glove";
         droneGloveRight.transform.parent = transform;
         droneGloveRight.transform.localScale = new Vector3(1, 1, 1);
+        */
     }
-    */
+    
 
 }
 
