@@ -318,11 +318,11 @@ namespace UniOSC
                     if (isRealsenseLeft[i] == false)
                     {
                     //    Debug.Log("right rs");
-                        ZoneController.UpdateLeftZone(xPos, yPos, zPos, isRealsenseLeft[i]);
+                        ZoneController.UpdateZone(xPos, yPos, zPos, isRealsenseLeft[i]);
                     }
                     else
                     {
-                        ZoneController2.UpdateLeftZone(xPos, yPos, zPos, isRealsenseLeft[i]);
+                        ZoneController2.UpdateZone(xPos, yPos, zPos, isRealsenseLeft[i]);
                     }
                    
 
@@ -402,7 +402,7 @@ namespace UniOSC
                 GloveController.rsZoneLeftXZ(0.35f - 0.7f * incomingTouchOscX, 0.2f * incomingTouchOscZ - 0.1f);
 
                 Vector3 position = GloveController.GetLeftPosition();
-                ZoneController2.UpdateLeftZone(position.x, position.y, position.z, true);
+                ZoneController2.UpdateZone(position.x, position.y, position.z, true);
 
             }
 
@@ -414,7 +414,7 @@ namespace UniOSC
                 GloveController.rsZoneLeftY(incomingTouchOscY * 0.5f + 0.3f); // movement of the glove asset
 
                 Vector3 position = GloveController.GetLeftPosition();
-                ZoneController2.UpdateLeftZone(position.x, position.y, position.z, false);
+                ZoneController2.UpdateZone(position.x, position.y, position.z, true);
           
 
             }
@@ -428,7 +428,7 @@ namespace UniOSC
                 GloveController.rsZoneRightXZ(0.7f * incomingTouchOscX - 0.35f, 0.2f * incomingTouchOscZ - 0.1f);
 
                 Vector3 position = GloveController.GetRightPosition();
-                ZoneController.UpdateRightZone(position.x, position.y, position.z);
+                ZoneController.UpdateZone(position.x, position.y, position.z, false);
  
             }
 
@@ -438,7 +438,7 @@ namespace UniOSC
                 GloveController.rsZoneRightY(incomingTouchOscY * 0.5f + 0.3f);
 
                 Vector3 position = GloveController.GetRightPosition();
-                ZoneController.UpdateRightZone(position.x, position.y, position.z);
+                ZoneController.UpdateZone(position.x, position.y, position.z, false);
       
 
             }
