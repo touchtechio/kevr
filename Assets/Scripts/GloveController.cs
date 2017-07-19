@@ -10,6 +10,7 @@ public class GloveController : MonoBehaviour
 
     public GameObject LeftHandObject;
     public GameObject RightHandObject;
+    public GameObject StageBoundaries;
     public Text leftRotation;
     public Text rightRotation;
     public Image leftRotDial;
@@ -135,6 +136,12 @@ public class GloveController : MonoBehaviour
         Vector3 pos;
         pos = new Vector3(x, y, z);
         transformToMove.localPosition = pos;
+
+        Transform transformToMoveCube = StageBoundaries.GetComponent<Transform>();
+        Vector3 posCube;
+        posCube = new Vector3(x, y, z);
+        transformToMoveCube.localPosition = posCube;
+
     }
 
     //atempts to scale syncphony finger bend to 0.0 - 1.0
