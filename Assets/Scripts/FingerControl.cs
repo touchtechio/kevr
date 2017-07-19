@@ -14,6 +14,7 @@ public class FingerControl : MonoBehaviour {
     public GameObject middle;
     public GameObject ring;
     public GameObject pinkie;
+  
 
 
 
@@ -38,6 +39,7 @@ public class FingerControl : MonoBehaviour {
         fingerBendData = fingerBendData * 100;
         finText[i].text = ((int)fingerBendData).ToString();
         finDial[i].fillAmount = fingerBendData / 100;
+       
         
     }
 

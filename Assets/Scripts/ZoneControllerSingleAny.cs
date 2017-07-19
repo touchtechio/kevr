@@ -36,6 +36,12 @@ public class ZoneControllerSingleAny : MonoBehaviour
     int displacementZ = 0;
 
     public GameObject zone4SliderLeft;
+
+    public Image HUDxPosLeft;
+    public Image HUDxPosRight;
+    public Image HUDyPosLeft;
+    public Image HUDyPosRight;
+
     GameObject zone4SliderRight;
     /*public GameObject waterGloveLeft;
     public GameObject waterGloveRight;
@@ -127,14 +133,19 @@ public class ZoneControllerSingleAny : MonoBehaviour
 
 
     // passing left and right zone information to main zone height controller
-    private void ZoneHeightLeft(int zone, float yPos)
+    private void ZoneHeightBlock(int zone, float yPos)
     {
         Debug.Log("zone-LEFT:" + zone + " scale value:" + yPos);
         for (int i = 0; i < _amount; i++)
         {
+            // resets each zone to zero
             ZoneHeight(zoneLeft[i], i, 0);
+
         }
+        // only change selected zone's height
         ZoneHeight(zoneLeft[zone], zone, yPos);
+
+       
 
 
 
@@ -148,7 +159,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
 
     }
     */
-
+    
     internal void ZoneHeight(GameObject ZoneObject, int zone, float yPos)
     {
 
@@ -183,6 +194,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
 
     }
 
+    /*
     public void rightZoneColor(int zoneNumber)
     {
         for (int i = 0; i < zoneRight.Length; i++)
@@ -190,14 +202,15 @@ public class ZoneControllerSingleAny : MonoBehaviour
             zoneRight[i].GetComponentInChildren<MeshRenderer>().material.color = Color.white;
         }
         zoneRight[zoneNumber].GetComponentInChildren<MeshRenderer>().material.color = zoneColors[zoneNumber];
+        HUDxPosRight.color = zoneColors[zoneNumber];
 
         //Debug.Log("color: " + zoneColors[zoneNumber]);
 
-    }
+    }*/
 
 
 
-    public void leftZoneColor(int zoneNumber)
+    public void ZoneColor(int zoneNumber, bool isRSLeft)
     {
         for (int i = 0; i < zoneLeft.Length; i++)
         //foreach (GameObject zones in zoneLeft)
@@ -209,10 +222,16 @@ public class ZoneControllerSingleAny : MonoBehaviour
 
 
         zoneLeft[zoneNumber].GetComponentInChildren<MeshRenderer>().material.color = zoneColors[zoneNumber];
+        //HUDxPosLeft.color = zoneColors[zoneNumber];
+        
+        if (isRSLeft == true)
+        {
+            HUDxPosLeft.color = zoneColors[zoneNumber];
+        } else {
 
+            HUDxPosRight.color = zoneColors[zoneNumber];
+            } 
         //  Debug.Log("color: " + zoneColors[zoneNumber]);
-
-
 
     }
 
@@ -271,12 +290,14 @@ public class ZoneControllerSingleAny : MonoBehaviour
         // left zones filled
 
         if (isRSLeft == true)
-        {
+        { 
+            // sets zone color for left hand
             selectedZone = 2 - selectedZone;
-            leftZoneColor(selectedZone);
+            ZoneColor(selectedZone, true);
         } else
         {
-            leftZoneColor(selectedZone);
+            // sets zone color for right hand
+            ZoneColor(selectedZone, false);
         }
 
 
@@ -284,7 +305,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
 
         if (selectedZone < 3)
         {
-            ZoneHeightLeft(selectedZone, yPos);
+            ZoneHeightBlock(selectedZone, yPos);
 
         }
 

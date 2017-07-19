@@ -42,10 +42,7 @@ namespace UniOSC
         OscMessage msg;
 
         //imu glove osc addresse
-        private const string imuGlove = "fimu/joints";
-  
-
-
+        private const string imuGlove = "fimu/joints"; 
 
         //Syncphony osc addresses
         private const string oscSideTap = "gesture/ring-right-hand/sidetap";
@@ -174,7 +171,7 @@ namespace UniOSC
             rsZones();
 
             // handles osc rs data from Max
-            rsZonesViaMax();
+            //rsZonesViaMax();
 
         }
 
@@ -227,6 +224,7 @@ namespace UniOSC
             }
         }
 
+        /*
         private void rsZonesViaMax()
         {
             if (msg.Address.Contains(rightZone))
@@ -245,6 +243,7 @@ namespace UniOSC
                 ZoneController2.leftZoneColor(leftZoneData);
             }
         }
+        */
 
         private void StagePosition()
         {
@@ -434,11 +433,13 @@ namespace UniOSC
 
             if (msg.Address.Contains(rsZoneRightY))
             {
+                
                 float incomingTouchOscY = (float)msg.Data[0];
+                Debug.Log("touchOSCY "+incomingTouchOscY);
                 GloveController.rsZoneRightY(incomingTouchOscY * 0.5f + 0.3f);
 
                 Vector3 position = GloveController.GetRightPosition();
-                ZoneController.UpdateZone(position.x, position.y, position.z, false);
+                ZoneController.UpdateZone(position.x, position.y, position.z, false); // separate zone controller for left and right
       
 
             }
