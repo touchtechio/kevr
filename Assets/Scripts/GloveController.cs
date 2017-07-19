@@ -137,6 +137,7 @@ public class GloveController : MonoBehaviour
         pos = new Vector3(x, y, z);
         transformToMove.localPosition = pos;
 
+        // using left glove to set boundaries of drumstage
         Transform transformToMoveCube = StageBoundaries.GetComponent<Transform>();
         Vector3 posCube;
         posCube = new Vector3(x, y, z);

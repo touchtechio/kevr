@@ -224,6 +224,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
         zoneLeft[zoneNumber].GetComponentInChildren<MeshRenderer>().material.color = zoneColors[zoneNumber];
         //HUDxPosLeft.color = zoneColors[zoneNumber];
         
+        // sets color of the HUD x position element to change colors based on zone changes
         if (isRSLeft == true)
         {
             HUDxPosLeft.color = zoneColors[zoneNumber];
@@ -290,14 +291,16 @@ public class ZoneControllerSingleAny : MonoBehaviour
         // left zones filled
 
         if (isRSLeft == true)
-        { 
-            // sets zone color for left hand
+        {
+            // sets zone color  and HUD zone height fill  for left hand
             selectedZone = 2 - selectedZone;
             ZoneColor(selectedZone, true);
+            HUDyPosLeft.fillAmount = yPos;
         } else
         {
-            // sets zone color for right hand
+            // sets zone color and HUD zone height fill for right hand
             ZoneColor(selectedZone, false);
+            HUDyPosRight.fillAmount = yPos;
         }
 
 

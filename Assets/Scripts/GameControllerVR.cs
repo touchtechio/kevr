@@ -95,6 +95,7 @@ public class GameControllerVR : MonoBehaviour
     void Update()
     {
 
+        // Uses this for HUD display
         Vector3 leftPosition = gloveController.GetLeftPosition();
         UpdateLeftZone(leftPosition.x, leftPosition.y, leftPosition.z);
 
