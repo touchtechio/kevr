@@ -35,24 +35,12 @@ public class ZoneControllerStage : MonoBehaviour
     [SerializeField]
     int displacementZ = 0;
 
-    public GameObject zone4SliderLeft;
 
-    public Image HUDxPosLeft;
-    public Image HUDxPosRight;
-    public Image HUDyPosLeft;
-    public Image HUDyPosRight;
-
-    GameObject zone4SliderRight;
-    /*public GameObject waterGloveLeft;
-    public GameObject waterGloveRight;
-    public GameObject droneGloveLeft;
-    public GameObject droneGloveRight;*/
 
    // private Color zone1Color;
     static Color ocher = new Color(255/255f, 178/255f, 69/255f, 0.2f);
     static Color fuscia = new Color(255 / 255f, 79 / 255f, 218 / 255f, 0.2f);
     static Color turquoise = new Color(30 / 255f, 219 / 255f, 232 / 255f, 0.2f);
-    //Color[] zoneColors = { Color.cyan, Color.grey, Color.magenta };
     Color[] zoneColors = { turquoise, ocher, fuscia };
 
     // x range is -0.3 - 0.3
@@ -64,15 +52,6 @@ public class ZoneControllerStage : MonoBehaviour
     // y range is 0.2 - 0.85
     float[] yPosRange = { 0.2f, 0.4f, 0.6f, 0.95f };
 
-
-    public bool isWaterGloveLeft = false;
-    public bool isWaterGloveRight = false;
-    public bool isDroneGloveLeft = false;
-    public bool isDroneGloveRight = false;
-    int waterGloveLeftStatusCount = 0;
-    int waterGloveRightStatusCount = 0;
-    int droneGloveLeftStatusCount = 0;
-    int droneGloveRightStatusCount = 0;
     int lastLeftZoneYState = 0;
     int lastRightZoneYState = 0;
     Vector3 gloveScaleFactor = new Vector3(1.2f, 1, 1.2f);
@@ -106,15 +85,9 @@ public class ZoneControllerStage : MonoBehaviour
 
     public void InstantiateZoneObjects()
     {
-       // Debug.Log("getting touchOSC");
-        // whether the realsense is on left or right
-        // left == -1, right == 1
-
         
         for (int i = 0; i < (_amount); i++)
         {
-            // GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(displacementX * .45f + i * displacementX + 0.05f, 0, i * displacementZ), Quaternion.identity) as GameObject;
-            // GameObject zone = Instantiate(zoneObject, transform.position + new Vector3((-whichSide) * displacementX + (whichSide) * i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
             GameObject zone = null;
             if (1 == whichSide) { // LEFT
                 zone = Instantiate(zoneObject, transform.position + new Vector3(displacementX + (-i) * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
@@ -145,20 +118,8 @@ public class ZoneControllerStage : MonoBehaviour
         // only change selected zone's height
         ZoneHeight(zoneLeft[zone], zone, yPos);
 
-       
-
-
-
     }
-    /*
-    private void ZoneHeightRight(int zone, float yPos)
-    {
-        // Debug.Log("zone-RIGHT:" + zone + " scale value:" + yPos);
 
-        ZoneHeight(zoneRight[zone], zone, yPos);
-
-    }
-    */
     
     internal void ZoneHeight(GameObject ZoneObject, int zone, float yPos)
     {
@@ -168,18 +129,6 @@ public class ZoneControllerStage : MonoBehaviour
        // Debug.Log("zone height" + childTransform.localScale);
     }
 
-    // passing information from left slider and right slider
-    private void SliderLeft(float zPos)
-    {
-       // SliderMotion(zone4SliderLeft, zPos);
-    }
-
-    private void SliderRight(float zPos)
-    {
-
-       // SliderMotion(zone4SliderRight, zPos);
-
-    }
 
     private void SliderMotion(GameObject selectedSlider, float zPos)
     {
@@ -193,21 +142,6 @@ public class ZoneControllerStage : MonoBehaviour
         moveSlider.localPosition = new Vector3(0, 0, 0.06f + zPos);
 
     }
-
-    /*
-    public void rightZoneColor(int zoneNumber)
-    {
-        for (int i = 0; i < zoneRight.Length; i++)
-        {
-            zoneRight[i].GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-        }
-        zoneRight[zoneNumber].GetComponentInChildren<MeshRenderer>().material.color = zoneColors[zoneNumber];
-        HUDxPosRight.color = zoneColors[zoneNumber];
-
-        //Debug.Log("color: " + zoneColors[zoneNumber]);
-
-    }*/
-
 
 
     public void ZoneColor(int zoneNumber, bool isRSLeft)
@@ -274,10 +208,6 @@ public class ZoneControllerStage : MonoBehaviour
 
     internal void UpdateZone(float xPos, float yPos, float zPos, bool isRSLeft)
     {
-        //   Transform waterGloveScale = waterGloveLeft.transform.GetChild(0);
-        //waterGloveScale.localScale = new Vector3(1, 1, 1);
-        //     Transform droneGloveScale = droneGloveLeft.transform.GetChild(0);
-        // droneGloveScale.localScale = new Vector3(1, 1, 1);
         int selectedYZone = GetYZone(yPos);
 
         int selectedZone = GetZone(xPos, xPosLeftRange);
