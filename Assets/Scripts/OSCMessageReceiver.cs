@@ -28,6 +28,7 @@ namespace UniOSC
         public ZoneControllerSingleAny ZoneController2;
         public GloveController GloveController;
         public GloveController StageGloveController;
+        public StickController StageStickController;
         public FountainRSControllerVR FountainRSController;
 		public DroneController DroneController;
 		public DronePianoController DronePianoController;
@@ -102,6 +103,7 @@ namespace UniOSC
         // position
         private const string stagePositionLeft = "position/left-hand";
         private const string stagePositionRight = "position/right-hand";
+        private const string stagePositionDrum1 = "position/drum-stick";
 
 
         private string[] LeftNoteAddresses = { noteLeft1, noteLeft2, noteLeft3, noteLeft4, noteLeft5 };
@@ -263,6 +265,15 @@ namespace UniOSC
                 float yPos = (float)msg.Data[2];
                 Debug.Log("stage-pos-right: " + xPos + " " + yPos + " " + zPos);
                 StageGloveController.SetRightPosition(xPos, yPos, zPos);
+            }
+
+            if (msg.Address.Contains(stagePositionDrum1))
+            {
+                float xPos = -(float)msg.Data[0];
+                float zPos = -(float)msg.Data[1];
+                float yPos = (float)msg.Data[2];
+                Debug.Log("stick-pos: " + xPos + " " + yPos + " " + zPos);
+                StageStickController.SetStickPosition(xPos, yPos, zPos);
             }
 
         }
