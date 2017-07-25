@@ -308,39 +308,30 @@ namespace UniOSC
                         xPos = -xPos;
                         zPos = -zPos;
                     }
-                   
-                    // flip rs values for right hand
-                  
-                    if (isRealsenseLeft[i] == false)
-                    {
-                    
-                    }
-            
-                    if (msg.Address.Contains(leftCursor))
-                    {
-                       // GloveController.enableLeft();
-                      //  GloveController.disableRight();
-                        GloveController.rsZoneLeftY(yPos);
-                        GloveController.rsZoneLeftXZ(xPos, zPos);
-                    } else  {
-                        GloveController.enableRight();
-                       // GloveController.disableLeft();
-                        GloveController.rsZoneRightY(yPos);
-                        GloveController.rsZoneRightXZ(xPos, zPos);
-                    }
+
 
                     // choose whether to send data to left or right rs camera
 
-                    if (isRealsenseLeft[i] == false)
+                    if (msg.Address.Contains(leftCursor))
                     {
-                    //    Debug.Log("right rs");
-                        ZoneController.UpdateZone(xPos, yPos, zPos, isRealsenseLeft[i]);
+                        if (isRealsenseLeft[i])
+                        {
+                            GloveController.rsZoneLeftY(yPos);
+                            GloveController.rsZoneLeftXZ(xPos, zPos);
+                            ZoneController2.UpdateZone(xPos, yPos, zPos, isRealsenseLeft[i]);
+                        }
                     }
-                    else
+                    else if (msg.Address.Contains(rightCursor))
                     {
-                        ZoneController2.UpdateZone(xPos, yPos, zPos, isRealsenseLeft[i]);
+                        if (!isRealsenseLeft[i])
+                        {
+                            GloveController.rsZoneRightY(yPos);
+                            GloveController.rsZoneRightXZ(xPos, zPos);
+                            ZoneController.UpdateZone(xPos, yPos, zPos, isRealsenseLeft[i]);
+
+                        }
                     }
-                   
+
 
                 }
 
