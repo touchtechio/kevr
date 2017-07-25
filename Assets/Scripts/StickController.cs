@@ -7,18 +7,14 @@ using UnityEngine.UI;
 public class StickController : MonoBehaviour
 {
 
-
     public GameObject stickObject1;
     public GameObject StageBoundaries;
- 
-
-
-   
+    Animator drumstickAnimator;
 
     // Use this for initialization
     void Start()
     {
-
+        drumstickAnimator = GameObject.Find("drumsticks").GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -31,6 +27,12 @@ public class StickController : MonoBehaviour
        
 
         }
+
+        if (Input.GetKeyDown(GameControllerVR.HOTKEY_STICK))
+        {
+
+            drumstickAnimator.SetTrigger("drumhit");
+        }
         /*
         if (Input.GetKeyDown(GameControllerVR.HOTKEY_GLOVE_DATA))
         {
@@ -40,9 +42,7 @@ public class StickController : MonoBehaviour
             rightHud.SetActive(!rightHud.activeSelf);
         }
         */
-
     }
-
 
 
     internal void SetWristAngle(GameObject Hand, int degrees)
@@ -91,5 +91,8 @@ public class StickController : MonoBehaviour
 
     }
 
-   
+   public void drumHit()
+    {
+        drumstickAnimator.SetTrigger("drumhit");
+    }
 }
