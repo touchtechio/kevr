@@ -26,6 +26,7 @@ namespace UniOSC
         //public OSCDataMapper dataScript; // no longer using this
         public ZoneControllerSingleAny ZoneController;
         public ZoneControllerSingleAny ZoneController2;
+        public ZoneControllerStageMess ZoneControllerStage;
         public GloveController GloveController;
         public GloveController StageGloveController;
         public StickController StageStickController;
@@ -254,7 +255,7 @@ namespace UniOSC
                 float xPos = -(float)msg.Data[0];
                 float zPos = (float)msg.Data[1];
                 float yPos = (float)msg.Data[2];
-                Debug.Log("stage-pos-left: " + xPos + " " + yPos + " " + zPos);
+               // Debug.Log("stage-pos-left: " + xPos + " " + yPos + " " + zPos);
                 StageGloveController.SetLeftPosition(xPos, yPos, -zPos);
             }
 
@@ -263,7 +264,7 @@ namespace UniOSC
                 float xPos = -(float)msg.Data[0];
                 float zPos = (float)msg.Data[1];
                 float yPos = (float)msg.Data[2];
-                Debug.Log("stage-pos-right: " + xPos + " " + yPos + " " + zPos);
+                //Debug.Log("stage-pos-right: " + xPos + " " + yPos + " " + zPos);
                 StageGloveController.SetRightPosition(xPos, yPos, zPos);
             }
 
@@ -273,9 +274,14 @@ namespace UniOSC
                 float zPos = -(float)msg.Data[1];
                 float yPos = (float)msg.Data[2];
                 Debug.Log("stick-pos: " + xPos + " " + yPos + " " + zPos);
+                // hard coding y pos
+                yPos = 1.0f;
                 StageStickController.SetStickPosition(xPos, yPos, zPos);
-            }
+                ZoneControllerStage.UpdateZone(xPos, yPos, zPos);
 
+            }
+       
+      
         }
 
         private void rsZones()

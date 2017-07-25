@@ -21,20 +21,23 @@ public class ZoneControllerStageMess : MonoBehaviour
     // List<GameObject> zoneLeft;
 
     GameObject[] stageZoneY;
-
+    float[] xPosRange;
+    float[] zPosRange;
     GameObject[] stageZones;
     // List<GameObject> zoneLeft;
     GameObject[,] stageZonesMatrix;
 
-    private float displacementX = 0;
+    // size of zone boxes
+    private float zoneXdim = 0;
+    private float zoneZdim = 0;
+  
 
     [SerializeField]
     //[Range(-0.3f,1f)]
-    float displacementY = 0.1f;
+    float stageHeightOffGround = 0;    // this value should be based on the height of stage off base of basestations
 
-    [SerializeField]
-    float displacementZ = 0;
-
+    [Range(0,10)]
+    public int displacementY = 0;
 
     public GameObject zone4SliderLeft;
     public GameObject zone4SliderRight;
@@ -60,21 +63,15 @@ public class ZoneControllerStageMess : MonoBehaviour
 
     Color[,] zoneColorMatrix;
 
-    // x range is -0.3 - 0.3
-    float[] xPosLeftRange = { -0.5f, -0.13f, 0.03f, 0.50f };
-
-    // x range is -0.3 - 0.3, 4 zones here
-    float[] xPosRightRange = { -0.5f, -0.15f, -0.05f, 0.10f, 0.50f };
-
-    // y range is 0.2 - 0.85
-    float[] yPosRange = { 0.2f, 0.4f, 0.6f, 0.95f };
-
-
     public int whichSide = 1; // -1 is right, 1 is left
 
-    float distanceX;
-    float distanceZ;
+    float distanceX; // full width of stage
+    float distanceZ; // full depth of stage
+    float zoneXoffset;
+    float zoneZoffset;
 
+    int selectedRowColor;
+    int selectedColColor;
 
 
     void Start()
@@ -82,32 +79,36 @@ public class ZoneControllerStageMess : MonoBehaviour
         stageZones = new GameObject[stageZonesRows];
         stageZonesMatrix = new GameObject[stageZonesRows, stageZonesColumns];
 
+        xPosRange = new float[stageZonesRows+1];
+        zPosRange = new float[stageZonesColumns+1];
+
         //distanceX = FrontRight.position[0] - FrontLeft.position[0];
         distanceX = FrontRight.position[0] - FrontLeft.position[0];
         distanceZ = FrontLeft.position[2] - BackLeft.position[2];
-        Debug.Log("displacement Y of stage " + distanceZ);
+        //Debug.Log("displacement Z of stage " + distanceZ);
 
         // set size of each column and row
-        displacementX = distanceX / stageZonesRows;
-        displacementZ = distanceZ / stageZonesColumns;
-        zoneColorMatrix = new Color[4, 4] { { turquoise, ocher, fuscia, blueness }, {  ocher, fuscia, blueness, turquoise }, {Color.white, Color.white, Color.white, Color.white }, { turquoise, ocher, fuscia, blueness } };
+        zoneXdim = distanceX / stageZonesRows;
+        zoneZdim = distanceZ / stageZonesColumns;
+        zoneColorMatrix = new Color[4, 4] { { turquoise, ocher, fuscia, blueness }, {  ocher, fuscia, blueness, turquoise }, { blueness, fuscia, blueness, ocher }, { turquoise, ocher, fuscia, blueness } };
     
         //new Color(255f / i, 255f / i * 0.8f, 255f / i * 0.6f, 0.2f)
         
         InstantiateZoneObjects();
 
     }
-
+    /*
     private void Update()
     {
-        /*
-        for (int i = 0; i < _amount; i++)
+        for (int i = 0; i < stageZonesRows; i++)
         {
-            ZoneHeight(zoneLeft[i], i, 0);
+            for (int j = 0; j < stageZonesColumns; j++)
+            {
+                ZoneHeight(zoneLeft[i], i, 0);
         }
-        */
         
-    }
+        
+    }*/
 
     public void InstantiateZoneObjects()
     {
@@ -126,36 +127,72 @@ public class ZoneControllerStageMess : MonoBehaviour
             stageZones[i].GetComponent<Renderer>().material.color = zoneColors[i];
         }
         */
+
+        FrontLeft.position += new Vector3(0, stageHeightOffGround, 0); // set the stage height for zone starting height;
+
         for (int i = 0; i < stageZonesRows; i++)
         {
             for (int j = 0; j < stageZonesColumns; j++)
             {
+                //Debug.Log("front left position: "+ FrontLeft.position);
+                GameObject zone = null;
+                zoneXoffset = zoneXdim / 2 + (i) * zoneXdim;
+                zoneZoffset = -zoneZdim / 2 - j * zoneZdim;
 
-                stageZonesMatrix[i,j] = Instantiate(stageZoneObject, FrontLeft.position + new Vector3(displacementX / 2 + (i) * displacementX, 0, -displacementZ / 2 - j * displacementZ), Quaternion.identity) as GameObject;
-                stageZonesMatrix[i,j].transform.localScale = new Vector3(-displacementX, 1, displacementZ);
+                zone = Instantiate(stageZoneObject, FrontLeft.position + new Vector3(zoneXoffset, 0, zoneZoffset), Quaternion.identity) as GameObject;
+                zone.name = "stage-zone-" + i +"-"+ j + " #"+(j+i*stageZonesColumns);
+                zone.transform.parent = transform;
+                zone.SetActive(false);
+
+                stageZonesMatrix[i,j] = zone;
+                stageZonesMatrix[i,j].transform.localScale = new Vector3(-zoneXdim*10, displacementY, zoneZdim*10);
                 stageZonesMatrix[i,j].GetComponent<Renderer>().material.color = zoneColorMatrix[i,j];
-                //stageZonesMatrix[i, j].GetComponent<Renderer>().material.color;
-            }
 
+                xPosRange[i] = zone.transform.localPosition[0] - 0.5f * zoneXdim;
+                zPosRange[j] = zone.transform.localPosition[2] + 0.5f * zoneZdim;
+
+            }
+           
         }
+        xPosRange[stageZonesRows] = xPosRange[stageZonesRows - 1] + 0.5f * zoneXdim;
+        zPosRange[stageZonesColumns] = zPosRange[stageZonesColumns - 1] - 0.5f * zoneZdim;
+        
+       Debug.Log(xPosRange[0] + "," + xPosRange[1]+","+ xPosRange[2] + "," + xPosRange[3] + "," + xPosRange[4]);
+        Debug.Log(zPosRange[0] + "," + zPosRange[1] + "," + zPosRange[2] + "," + zPosRange[3] + "," + zPosRange[4]);
+
     }
 
     // passing left and right zone information to main zone height controller
-    private void ZoneHeightBlock(int zone, float yPos)
+    private void ZoneHeightBlock(GameObject zone, float yPos)
     {
         Debug.Log("zone-LEFT:" + zone + " scale value:" + yPos);
         for (int i = 0; i < stageZonesRows; i++)
         {
             // resets each zone to zero
-            ZoneHeight(stageZones[i], i, 0);
+            for (int j = 0; j < stageZonesColumns; j++)
+            {
+
+                stageZonesMatrix[i, j].SetActive(false);
+                ZoneHeight(stageZonesMatrix[i, j], 0);
+            }
 
         }
+
         // only change selected zone's height
-        ZoneHeight(stageZones[zone], zone, yPos);
+        zone.SetActive(true);
+        ZoneHeight(zone, yPos);
 
     }
 
-    
+
+    internal void ZoneHeight(GameObject ZoneObject, float yPos)
+    {
+
+       // Transform childTransform = ZoneObject.transform.GetChild(0);
+        ZoneObject.transform.localScale = new Vector3(-zoneXdim * 10, yPos*10, zoneZdim * 10); // Mathf.Pow(yPos, 2) for square (pow 2)
+                                                                               // Debug.Log("zone height" + childTransform.localScale);
+    }
+    /*
     internal void ZoneHeight(GameObject ZoneObject, int zone, float yPos)
     {
 
@@ -164,36 +201,27 @@ public class ZoneControllerStageMess : MonoBehaviour
        // Debug.Log("zone height" + childTransform.localScale);
     }
 
-
-    private void SliderMotion(GameObject selectedSlider, float zPos)
-    {
-
-        // Debug.Log("slider selecting" + selectedZone);
-
-        //  Debug.Log("slider selected");
-
-        Transform moveSlider = selectedSlider.transform.GetChild(0);
-
-        moveSlider.localPosition = new Vector3(0, 0, 0.06f + zPos);
-
-    }
+    */
 
 
-    public void ZoneColor(int zoneNumber, bool isRSLeft)
+    public void ZoneColor(GameObject selectedZoneObject, bool isRSLeft)
     {
         for (int i = 0; i < stageZonesRows; i++)
         //foreach (GameObject zones in zoneLeft)
         {
+            for (int j = 0; j < stageZonesColumns; j++)
+            {
+                stageZonesMatrix[i, j].GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+                //Debug.Log(rightZones.Length);
+            }
 
-            stageZones[i].GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-            //Debug.Log(rightZones.Length);
         }
 
-
-        stageZones[zoneNumber].GetComponentInChildren<MeshRenderer>().material.color = zoneColors[zoneNumber];
+        selectedZoneObject.GetComponentInChildren<MeshRenderer>().material.color = zoneColorMatrix[selectedRowColor, selectedColColor];
         //HUDxPosLeft.color = zoneColors[zoneNumber];
         
         // sets color of the HUD x position element to change colors based on zone changes
+        /*
         if (isRSLeft == true)
         {
             HUDxPosLeft.color = zoneColors[zoneNumber];
@@ -202,25 +230,39 @@ public class ZoneControllerStageMess : MonoBehaviour
             HUDxPosRight.color = zoneColors[zoneNumber];
             } 
         //  Debug.Log("color: " + zoneColors[zoneNumber]);
-
+        */
     }
 
-    internal int GetZone(float xPos, float[] arrayXRange)
+    //internal int Get
+    internal GameObject GetStageZone(float xPos, float zPos)
     {
 
-        //// xpos values are -0.3 to 0.3
-        for (int i = 0; i < (arrayXRange.Length - 1); i++)
+        for (int i = 0; i < xPosRange.Length - 1; i++)
         {
-
-            if ((xPos > arrayXRange[i]) && (xPos < arrayXRange[i + 1]))
+            for (int j = 0; j < zPosRange.Length - 1; j++)
             {
-               // Debug.Log(xPos + ": in zone: " + i);
-                return i;
+                
+
+                if ((xPos > xPosRange[i]) && (xPos < xPosRange[i + 1]))
+                {
+                    if ((zPos < zPosRange[j]) && (zPos > zPosRange[j + 1]))
+                    {
+                        Debug.Log(xPos + ": in x zone: " + i);
+                        Debug.Log(zPos + ": in z zone: " + j);
+                        selectedRowColor = i;
+                        selectedColColor = j;
+                        return stageZonesMatrix[i, j];
+
+                    }
+                }
             }
         }
-        Debug.Log(xPos + ": did not fall into zones");
-        return -1;
+        Debug.Log(xPos + "x" + zPos +"z" +": did not fall into zones");
+        return null;
     }
+
+    /*
+    /// setting height zones
 
     internal int GetYZone(float yPos)
     {
@@ -239,36 +281,31 @@ public class ZoneControllerStageMess : MonoBehaviour
         //  Debug.Log(xPos + "did not fall into zones");
         return -1;
     }
+    */
 
-
-    internal void UpdateZone(float xPos, float yPos, float zPos, bool isRSLeft)
+    internal void UpdateZone(float xPos, float yPos, float zPos)
     {
-        int selectedYZone = GetYZone(yPos);
+        
+        GameObject selectedZoneObject = GetStageZone(xPos, zPos);
 
-        int selectedZone = GetZone(xPos, xPosLeftRange);
-
-        if (selectedZone == -1)
+        if (selectedZoneObject == null)
         {
-            Debug.Log(xPos + "," + yPos + "," + zPos + " : yielded no X zone");
+            Debug.Log(xPos + "," + yPos + "," + zPos + " : yielded no zone");
             return;
         }
 
         // left zones filled
 
-   
-            // sets zone color and HUD zone height fill for right hand
-            ZoneColor(selectedZone, false);
-            HUDyPosRight.fillAmount = yPos;
+        ZoneHeightBlock(selectedZoneObject, yPos);
+
+        // sets zone color and HUD zone height fill for right hand
+        ZoneColor(selectedZoneObject, false);
+        //HUDyPosRight.fillAmount = yPos;
         
 
 
         // Debug.Log("ypos: " + yPos);
 
-        if (selectedZone < 3)
-        {
-            ZoneHeightBlock(selectedZone, yPos);
-
-        }
 
         return;
     }
@@ -278,12 +315,12 @@ public class ZoneControllerStageMess : MonoBehaviour
     void InstantiateSliderObjects()
     {
         // instantiate slider objects
-        zone4SliderLeft = Instantiate(zone4SliderLeft, transform.position + new Vector3(-(displacementX * .45f + 3 * displacementX + 0.05f), 0.05f, -0.1f), Quaternion.identity) as GameObject;
+        zone4SliderLeft = Instantiate(zone4SliderLeft, transform.position + new Vector3(-(zoneXdim * .45f + 3 * zoneXdim + 0.05f), 0.05f, -0.1f), Quaternion.identity) as GameObject;
         zone4SliderLeft.name = "zone-left-" + 3;
         zone4SliderLeft.transform.parent = transform;
         stageZones[3] = zone4SliderLeft;
         //zoneLeft.Add((GameObject)zone4SliderLeft);
-        zone4SliderRight = Instantiate(zone4SliderLeft, transform.position + new Vector3((displacementX * .45f + 3 * displacementX) + 0.05f, 0.05f, -0.1f), Quaternion.identity) as GameObject;
+        zone4SliderRight = Instantiate(zone4SliderLeft, transform.position + new Vector3((zoneXdim * .45f + 3 * zoneXdim) + 0.05f, 0.05f, -0.1f), Quaternion.identity) as GameObject;
         zone4SliderRight.name = "zone-right-" + 3;
         zone4SliderRight.transform.parent = transform;
         

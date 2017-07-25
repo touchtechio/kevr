@@ -46,7 +46,7 @@ Material:
       second: {r: 0, g: 0, b: 0, a: 0}
     - first:
         name: _NoiseColor
-      second: {r: 0.12448343, g: 1, b: 0.9137931, a: 0}
+      second: {r: 0.12447176, g: 1, b: 0.9137931, a: 0}
     - first:
         name: _NoiseFrequency
       second: {r: 0, g: 0, b: 0, a: 0}

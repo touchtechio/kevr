@@ -21,7 +21,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
     GameObject zoneObject;
 
 
-    GameObject[] zoneLeft;
+    GameObject[] zoneArray;
     // List<GameObject> zoneLeft;
 
     GameObject[] zoneRight;
@@ -80,7 +80,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
 
     void Start()
     {
-        zoneLeft = new GameObject[_amount];
+        zoneArray = new GameObject[_amount];
 
         InstantiateZoneObjects();
 
@@ -124,8 +124,8 @@ public class ZoneControllerSingleAny : MonoBehaviour
 
         zone.name = "zone-left-" + i;
             zone.transform.parent = transform;
-            zoneLeft[i] = zone;
-            zoneLeft[i].transform.localScale = new Vector3(1.8f, 1, 1);
+            zoneArray[i] = zone;
+            zoneArray[i].transform.localScale = new Vector3(1.8f, 1, 1);
 
         }
 
@@ -135,15 +135,15 @@ public class ZoneControllerSingleAny : MonoBehaviour
     // passing left and right zone information to main zone height controller
     private void ZoneHeightBlock(int zone, float yPos)
     {
-        Debug.Log("zone-LEFT:" + zone + " scale value:" + yPos);
+        //Debug.Log("zone-LEFT:" + zone + " scale value:" + yPos);
         for (int i = 0; i < _amount; i++)
         {
             // resets each zone to zero
-            ZoneHeight(zoneLeft[i], i, 0);
+            ZoneHeight(zoneArray[i], i, 0);
 
         }
         // only change selected zone's height
-        ZoneHeight(zoneLeft[zone], zone, yPos);
+        ZoneHeight(zoneArray[zone], zone, yPos);
 
        
 
@@ -212,16 +212,16 @@ public class ZoneControllerSingleAny : MonoBehaviour
 
     public void ZoneColor(int zoneNumber, bool isRSLeft)
     {
-        for (int i = 0; i < zoneLeft.Length; i++)
+        for (int i = 0; i < zoneArray.Length; i++)
         //foreach (GameObject zones in zoneLeft)
         {
 
-            zoneLeft[i].GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+            zoneArray[i].GetComponentInChildren<MeshRenderer>().material.color = Color.white;
             //Debug.Log(rightZones.Length);
         }
 
 
-        zoneLeft[zoneNumber].GetComponentInChildren<MeshRenderer>().material.color = zoneColors[zoneNumber];
+        zoneArray[zoneNumber].GetComponentInChildren<MeshRenderer>().material.color = zoneColors[zoneNumber];
         //HUDxPosLeft.color = zoneColors[zoneNumber];
         
         // sets color of the HUD x position element to change colors based on zone changes
@@ -306,6 +306,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
 
         // Debug.Log("ypos: " + yPos);
 
+        // calls update of zone height each time new message received
         if (selectedZone < 3)
         {
             ZoneHeightBlock(selectedZone, yPos);
@@ -323,7 +324,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
         zone4SliderLeft = Instantiate(zone4SliderLeft, transform.position + new Vector3(-(displacementX * .45f + 3 * displacementX + 0.05f), 0.05f, -0.1f), Quaternion.identity) as GameObject;
         zone4SliderLeft.name = "zone-left-" + 3;
         zone4SliderLeft.transform.parent = transform;
-        zoneLeft[3] = zone4SliderLeft;
+        zoneArray[3] = zone4SliderLeft;
         //zoneLeft.Add((GameObject)zone4SliderLeft);
         zone4SliderRight = Instantiate(zone4SliderLeft, transform.position + new Vector3((displacementX * .45f + 3 * displacementX) + 0.05f, 0.05f, -0.1f), Quaternion.identity) as GameObject;
         zone4SliderRight.name = "zone-right-" + 3;
