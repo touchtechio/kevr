@@ -122,7 +122,7 @@ namespace UniOSC
         //REALSENSE DRAGONFLY OSC address
         //       int[] realsense = { 90, 91, 124 };
         int[] activeRealsense = { 90, 91, 92, 93, 124, 125 };
-        bool[] isRealsenseLeft = { true, false, true, false, true, true};
+        bool[] isRealsenseLeft = { true, false, false, true, true, true};
         private const string heartbeat = "heartbeat";
 
 
@@ -303,11 +303,10 @@ namespace UniOSC
                     float zPos = (float)msg.Data[1];
                     float yPos = (float)msg.Data[2];
 
-                    if (91 == realsense)
-                    {
+                  //  rotated the cameras for kevin
                         xPos = -xPos;
                         zPos = -zPos;
-                    }
+                 
 
 
                     // choose whether to send data to left or right rs camera
