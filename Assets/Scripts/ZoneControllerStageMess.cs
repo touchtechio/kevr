@@ -157,8 +157,8 @@ public class ZoneControllerStageMess : MonoBehaviour
         xPosRange[stageZonesRows] = xPosRange[stageZonesRows - 1] + 0.5f * zoneXdim;
         zPosRange[stageZonesColumns] = zPosRange[stageZonesColumns - 1] - 0.5f * zoneZdim;
         
-       Debug.Log(xPosRange[0] + "," + xPosRange[1]+","+ xPosRange[2] + "," + xPosRange[3] + "," + xPosRange[4]);
-        Debug.Log(zPosRange[0] + "," + zPosRange[1] + "," + zPosRange[2] + "," + zPosRange[3] + "," + zPosRange[4]);
+    //   Debug.Log(xPosRange[0] + "," + xPosRange[1]+","+ xPosRange[2] + "," + xPosRange[3] + "," + xPosRange[4]);
+    //    Debug.Log(zPosRange[0] + "," + zPosRange[1] + "," + zPosRange[2] + "," + zPosRange[3] + "," + zPosRange[4]);
 
     }
 

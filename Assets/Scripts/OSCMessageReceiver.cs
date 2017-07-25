@@ -122,7 +122,7 @@ namespace UniOSC
         //REALSENSE DRAGONFLY OSC address
         //       int[] realsense = { 90, 91, 124 };
         int[] activeRealsense = { 90, 91, 92, 93, 124, 125 };
-        bool[] isRealsenseLeft = { true, false, true, false, true, true};
+        bool[] isRealsenseLeft = { true, false, false, true, true, true};
         private const string heartbeat = "heartbeat";
 
 
@@ -303,44 +303,34 @@ namespace UniOSC
                     float zPos = (float)msg.Data[1];
                     float yPos = (float)msg.Data[2];
 
-                    if (91 == realsense)
-                    {
+                  //  rotated the cameras for kevin
                         xPos = -xPos;
                         zPos = -zPos;
-                    }
-                   
-                    // flip rs values for right hand
-                  
-                    if (isRealsenseLeft[i] == false)
-                    {
-                    
-                    }
-            
-                    if (msg.Address.Contains(leftCursor))
-                    {
-                       // GloveController.enableLeft();
-                      //  GloveController.disableRight();
-                        GloveController.rsZoneLeftY(yPos);
-                        GloveController.rsZoneLeftXZ(xPos, zPos);
-                    } else  {
-                        GloveController.enableRight();
-                       // GloveController.disableLeft();
-                        GloveController.rsZoneRightY(yPos);
-                        GloveController.rsZoneRightXZ(xPos, zPos);
-                    }
+                 
+
 
                     // choose whether to send data to left or right rs camera
 
-                    if (isRealsenseLeft[i] == false)
+                    if (msg.Address.Contains(leftCursor))
                     {
-                    //    Debug.Log("right rs");
-                        ZoneController.UpdateZone(xPos, yPos, zPos, isRealsenseLeft[i]);
+                        if (isRealsenseLeft[i])
+                        {
+                            GloveController.rsZoneLeftY(yPos);
+                            GloveController.rsZoneLeftXZ(xPos, zPos);
+                            ZoneController2.UpdateZone(xPos, yPos, zPos, isRealsenseLeft[i]);
+                        }
                     }
-                    else
+                    else if (msg.Address.Contains(rightCursor))
                     {
-                        ZoneController2.UpdateZone(xPos, yPos, zPos, isRealsenseLeft[i]);
+                        if (!isRealsenseLeft[i])
+                        {
+                            GloveController.rsZoneRightY(yPos);
+                            GloveController.rsZoneRightXZ(xPos, zPos);
+                            ZoneController.UpdateZone(xPos, yPos, zPos, isRealsenseLeft[i]);
+
+                        }
                     }
-                   
+
 
                 }
 
