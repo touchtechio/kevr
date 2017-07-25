@@ -53,6 +53,7 @@ public class GameControllerVR : MonoBehaviour
     internal static readonly KeyCode HOTKEY_PYRAMID_CLOSE = KeyCode.Period;
 
 
+    private GameObject[] HUDs;
 
 
     void Awake()
@@ -88,9 +89,11 @@ public class GameControllerVR : MonoBehaviour
         // YPosLeft.text = leftPos.ToString();
 
 
+        // save all tagged HUD game objects from the inspector
+        if (HUDs == null)
+            HUDs = GameObject.FindGameObjectsWithTag("HUD");
 
-
-    }
+     }
 
     void Update()
     {
@@ -102,6 +105,15 @@ public class GameControllerVR : MonoBehaviour
         Vector3 rightPosition = gloveController.GetRightPosition();
         UpdateRightZone(rightPosition.x, rightPosition.y, rightPosition.z);
 
+        // disable / enable HUD tagged GameObjects
+        if (Input.GetKeyDown(GameControllerVR.HOTKEY_GLOVE_DATA))
+        {
+             foreach (GameObject HUD in HUDs)
+             {
+                HUD.SetActive(!HUD.activeSelf);
+             }
+      
+        }
 
 
 

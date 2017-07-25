@@ -54,14 +54,7 @@ public class GloveController : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(GameControllerVR.HOTKEY_GLOVE_DATA))
-        {
-            GameObject leftHud = LeftHandObject.transform.GetChild(1).gameObject;
-            leftHud.SetActive(!leftHud.activeSelf);
-            GameObject rightHud = RightHandObject.transform.GetChild(1).gameObject;
-            rightHud.SetActive(!rightHud.activeSelf);
-        }
-
+ 
 
 
     }
