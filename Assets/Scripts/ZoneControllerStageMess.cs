@@ -245,8 +245,7 @@ public class ZoneControllerStageMess : MonoBehaviour
         {
             for (int j = 0; j < zPosRange.Length - 1; j++)
             {
-                
-
+ 
                 if ((xPos > xPosRange[i]) && (xPos < xPosRange[i + 1]))
                 {
                     if ((zPos < zPosRange[j]) && (zPos > zPosRange[j + 1]))

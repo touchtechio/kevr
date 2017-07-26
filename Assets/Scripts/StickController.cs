@@ -93,6 +93,7 @@ public class StickController : MonoBehaviour
         }
 
         SetStickPosition(position[0], position[1], position[2]);
+        //Debug.Log("stage-pos-right: " + position[0] + " " + position[1] + " " + position[2]);
 
         return;
 

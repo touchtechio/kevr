@@ -257,25 +257,29 @@ namespace UniOSC
             if (msg.Address.Contains(stagePositionLeft))
             {
                 float xPos = -(float)msg.Data[0];
-                float zPos = (float)msg.Data[1];
+                float zPos = -(float)msg.Data[1];
                 float yPos = (float)msg.Data[2];
-                xPos = -0.25f;
-                yPos = 1.0f;
-                zPos = 0f;
+   
                // Debug.Log("stage-pos-left: " + xPos + " " + yPos + " " + zPos);
-                StageGloveController.SetLeftPosition(xPos, yPos, -zPos);
+               // StageGloveController.SetLeftPosition(xPos, yPos, zPos);
+
+               // ZoneControllerStage.UpdateZone(xPos, yPos, zPos);
+                Vector3 currentZoneObjectPosition = ZoneControllerStage.GetZoneObjectPosition();
+                StageGloveController.SetLeftGlovePositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
             }
 
             if (msg.Address.Contains(stagePositionRight))
             {
                 float xPos = -(float)msg.Data[0];
-                float zPos = (float)msg.Data[1];
+                float zPos = -(float)msg.Data[1];
                 float yPos = (float)msg.Data[2];
-                xPos = 0.25f;
-                yPos = 1.0f;
-                zPos = 0f;
+
                 //Debug.Log("stage-pos-right: " + xPos + " " + yPos + " " + zPos);
-                StageGloveController.SetRightPosition(xPos, yPos, zPos);
+               // StageGloveController.SetRightPosition(xPos, yPos, zPos);
+                ZoneControllerStage.UpdateZone(xPos, yPos, zPos);
+                Vector3 currentZoneObjectPosition = ZoneControllerStage.GetZoneObjectPosition();
+                StageGloveController.SetRightGlovePositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
+                   
             }
 
             // syncphony glove wrist rotation

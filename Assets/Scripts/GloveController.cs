@@ -29,6 +29,8 @@ public class GloveController : MonoBehaviour
     public static int rightRing = 5500;
     public static int rightPink = 4445;
 
+    public bool stickUsingRaw = false;
+
     private int[] fingerThresholds =
     {
         leftPink, leftRing, leftMiddle, leftIndex, leftThumb,
@@ -117,6 +119,7 @@ public class GloveController : MonoBehaviour
         Vector3 pos;
         pos = new Vector3(x, y, z);
         transformToMove.localPosition = pos;
+        //Debug.Log("stage-pos-right: " + x + " " + y+ " " + z);
     }
 
     public void SetLeftPosition(float x, float y, float z)
@@ -133,6 +136,41 @@ public class GloveController : MonoBehaviour
         transformToMoveCube.localPosition = posCube;
 
     }
+    public void SetLeftGlovePositionWithZone(Vector3 rawPosition, Vector3 ZonePosition)
+    {
+
+        Vector3 position = rawPosition;
+
+        if (!stickUsingRaw)
+        {
+            position = ZonePosition;
+
+        }
+
+        SetLeftPosition(position[0], position[1], position[2]);
+
+
+        return;
+
+    }
+    public void SetRightGlovePositionWithZone(Vector3 rawPosition, Vector3 ZonePosition)
+    {
+
+        Vector3 position = rawPosition;
+
+        if (!stickUsingRaw)
+        {
+            position = ZonePosition;
+
+        }
+
+        SetRightPosition(position[0], position[1], position[2]);
+      
+
+        return;
+
+    }
+
 
     //atempts to scale syncphony finger bend to 0.0 - 1.0
     internal float GetFingerBend(int finger, int gloveValue)
