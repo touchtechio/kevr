@@ -11,6 +11,7 @@ public class StickController : MonoBehaviour
     public GameObject StageBoundaries;
     Animator drumstickAnimator;
     bool receivedHit = false;
+    public bool stickUsingRaw = false;
 
     // Use this for initialization
     void Start()
@@ -25,7 +26,7 @@ public class StickController : MonoBehaviour
         {
 
             stickObject1.SetActive(!stickObject1.activeSelf);
-       
+
 
         }
 
@@ -39,7 +40,7 @@ public class StickController : MonoBehaviour
         {
             drumstickAnimator.SetTrigger("stophit");
         }
-       // if(drumstickAnimator.)
+        // if(drumstickAnimator.)
         /*
         if (Input.GetKeyDown(GameControllerVR.HOTKEY_GLOVE_DATA))
         {
@@ -58,13 +59,13 @@ public class StickController : MonoBehaviour
         Transform transform = Hand.GetComponent<Transform>();
         //  transform.rotation = Quaternion.Euler(-90, 180, 0) * Quaternion.Euler(0, -degrees - 90, 0);
         transform.GetChild(0).rotation = Quaternion.Euler(0, 0, degrees);
-    
+
 
     }
 
     internal void SetStickAngle(int degrees)
     {
-        SetWristAngle(stickObject1, degrees+25);
+        SetWristAngle(stickObject1, degrees + 25);
         // send wrist rotation data to UI
         //leftRotation.text = ((int)degrees).ToString();
         //leftRotDial.transform.rotation = Quaternion.Euler(0,0,degrees);
@@ -80,6 +81,23 @@ public class StickController : MonoBehaviour
         Transform transformToMove = stickObject1.GetComponent<Transform>();
         return transformToMove.localPosition;
     }
+
+    public void SetStickPositionWithZone( Vector3 rawPosition, Vector3 ZonePosition) {
+
+        Vector3 position = rawPosition;
+
+        if (!stickUsingRaw)
+        {
+            position = ZonePosition;
+
+        }
+
+        SetStickPosition(position[0], position[1], position[2]);
+
+        return;
+
+    }
+
 
     // position stick in game based on position coordinates from OSC
     public void SetStickPosition(float x, float y, float z)

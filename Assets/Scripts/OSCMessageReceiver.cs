@@ -296,7 +296,7 @@ namespace UniOSC
             if (msg.Address.Contains(oscLeftWristCc))
             {
                 int degrees = (int)msg.Data[0];
-                Debug.Log("left-wrist:" + degrees);
+               // Debug.Log("left-wrist:" + degrees);
                 StageGloveController.SetLeftWristAngle(degrees - 30);
             }
 
@@ -347,10 +347,11 @@ namespace UniOSC
                 //Debug.Log("stick-pos: " + xPos + " " + yPos + " " + zPos);
                 // hard coding y pos
                 yPos = 1.0f;
-                StageStickController.SetStickPosition(xPos, yPos, zPos);
                 //yPos = 0.5f;
-                ZoneControllerStage.UpdateZone(xPos, yPos, zPos);
 
+                ZoneControllerStage.UpdateZone(xPos, yPos, zPos);
+                Vector3 currentZoneObjectPosition = ZoneControllerStage.GetZoneObjectPosition();
+                StageStickController.SetStickPositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
             }
 
             if (msg.Address.Contains(stageHit))
@@ -359,7 +360,7 @@ namespace UniOSC
                 int channel = (int)msg.Data[0];
                 //  float hitVel = (float)msg.Data[1];
 
-                Debug.Log("detected hit" + channel);
+                //Debug.Log("detected hit" + channel);
                 // hard coding y pos
                 if (channel != LastHit)
                 {

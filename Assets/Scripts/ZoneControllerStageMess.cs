@@ -35,6 +35,7 @@ public class ZoneControllerStageMess : MonoBehaviour
     [SerializeField]
     //[Range(-0.3f,1f)]
     float stageHeightOffGround = 0;    // this value should be based on the height of stage off base of basestations
+    float zoneCenterYPoint = 1.5f;
 
     [Range(0,10)]
     public int displacementY = 0;
@@ -72,6 +73,9 @@ public class ZoneControllerStageMess : MonoBehaviour
 
     int selectedRowColor;
     int selectedColColor;
+    float zoneCenterXPoint;
+    float zoneCenterZPoint;
+    
 
 
     void Start()
@@ -283,10 +287,18 @@ public class ZoneControllerStageMess : MonoBehaviour
     }
     */
 
+    /// <summary>
+    /// runs the get stage zone calculation, moved block heights then returns
+    /// 
+    /// </summary>
+    /// <param name="xPos"></param>
+    /// <param name="yPos"></param>
+    /// <param name="zPos"></param>
     internal void UpdateZone(float xPos, float yPos, float zPos)
     {
         
         GameObject selectedZoneObject = GetStageZone(xPos, zPos);
+
 
         if (selectedZoneObject == null)
         {
@@ -294,14 +306,20 @@ public class ZoneControllerStageMess : MonoBehaviour
             return;
         }
 
+
+        //todo
+        UpdateZoneObjectPosition(selectedZoneObject);
+
         // left zones filled
 
         ZoneHeightBlock(selectedZoneObject, yPos);
-
+        
         // sets zone color and HUD zone height fill for right hand
         ZoneColor(selectedZoneObject, false);
         //HUDyPosRight.fillAmount = yPos;
-        
+
+        //Vector3 zoneCenter = selectedZoneObject.GetComponent<Renderer>().bounds.center;
+        //Debug.Log("zoneCenterPont" + zoneCenter[0]);
 
 
         // Debug.Log("ypos: " + yPos);
@@ -311,6 +329,19 @@ public class ZoneControllerStageMess : MonoBehaviour
     }
 
 
+    void UpdateZoneObjectPosition(GameObject selectedZoneObject)
+    {
+        zoneCenterXPoint = selectedZoneObject.transform.localPosition[0];
+        zoneCenterZPoint = selectedZoneObject.transform.localPosition[2];
+
+
+    }
+
+    // sets up the ideal position for the zone object
+    public Vector3 GetZoneObjectPosition()
+    {
+        return new Vector3(zoneCenterXPoint, zoneCenterYPoint, zoneCenterZPoint);
+    }
 
     void InstantiateSliderObjects()
     {
