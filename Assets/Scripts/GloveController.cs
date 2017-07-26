@@ -53,10 +53,6 @@ public class GloveController : MonoBehaviour
             RightHandObject.SetActive(!RightHandObject.activeSelf);
 
         }
-
- 
-
-
     }
 
     public void fingerBendLeft(int i, float fingerBendDataLeft)
@@ -71,17 +67,6 @@ public class GloveController : MonoBehaviour
     }
 
 
-
-    internal void SetWristAngle(GameObject Hand, int degrees)
-    {
-        //sets positional transform of the whole hand
-        Transform transform = Hand.GetComponent<Transform>();
-        //  transform.rotation = Quaternion.Euler(-90, 180, 0) * Quaternion.Euler(0, -degrees - 90, 0);
-        transform.GetChild(0).rotation = Quaternion.Euler(0, 0, degrees);
-    
-
-    }
-
     internal void SetLeftWristAngle(int degrees)
     {
         SetWristAngle(LeftHandObject, degrees+25);
@@ -89,7 +74,7 @@ public class GloveController : MonoBehaviour
         leftRotation.text = ((int)degrees).ToString();
         //leftRotDial.transform.rotation = Quaternion.Euler(0,0,degrees);
         leftRotDial.fillAmount = -((float)(degrees+30) / 120.0f);
-       // Debug.Log("rotation" + degrees);
+        //Debug.Log("rotation" + degrees);
        // Debug.Log("rotation"+ leftRotDial.fillAmount);
     }
 
@@ -102,6 +87,16 @@ public class GloveController : MonoBehaviour
 
       //  Debug.Log("rotation" + degrees);
       //  Debug.Log("rotation" + rightRotDial.fillAmount);
+    }
+
+    internal void SetWristAngle(GameObject Hand, int degrees)
+    {
+        //sets positional transform of the whole hand
+        Transform transform = Hand.GetComponent<Transform>();
+        //  transform.rotation = Quaternion.Euler(-90, 180, 0) * Quaternion.Euler(0, -degrees - 90, 0);
+        transform.GetChild(0).rotation = Quaternion.Euler(0, 0, degrees);
+
+
     }
 
     public Vector3 GetRightPosition()

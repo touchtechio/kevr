@@ -95,7 +95,7 @@ public class ZoneControllerStageMess : MonoBehaviour
         //new Color(255f / i, 255f / i * 0.8f, 255f / i * 0.6f, 0.2f)
         
         InstantiateZoneObjects();
-
+        Debug.Log("drum stage data in");
     }
     /*
     private void Update()
@@ -156,16 +156,16 @@ public class ZoneControllerStageMess : MonoBehaviour
         }
         xPosRange[stageZonesRows] = xPosRange[stageZonesRows - 1] + 0.5f * zoneXdim;
         zPosRange[stageZonesColumns] = zPosRange[stageZonesColumns - 1] - 0.5f * zoneZdim;
-        
-    //   Debug.Log(xPosRange[0] + "," + xPosRange[1]+","+ xPosRange[2] + "," + xPosRange[3] + "," + xPosRange[4]);
-    //    Debug.Log(zPosRange[0] + "," + zPosRange[1] + "," + zPosRange[2] + "," + zPosRange[3] + "," + zPosRange[4]);
+
+        Debug.Log(xPosRange[0] + "," + xPosRange[1] + "," + xPosRange[2] + "," + xPosRange[3]);// + "," + xPosRange[4]);
+        Debug.Log(zPosRange[0] + "," + zPosRange[1] + "," + zPosRange[2] + "," + zPosRange[3]);// + "," + zPosRange[4]);
 
     }
 
     // passing left and right zone information to main zone height controller
     private void ZoneHeightBlock(GameObject zone, float yPos)
     {
-        Debug.Log("zone-LEFT:" + zone + " scale value:" + yPos);
+       // Debug.Log("zone-LEFT:" + zone + " scale value:" + yPos);
         for (int i = 0; i < stageZonesRows; i++)
         {
             // resets each zone to zero
@@ -189,7 +189,7 @@ public class ZoneControllerStageMess : MonoBehaviour
     {
 
        // Transform childTransform = ZoneObject.transform.GetChild(0);
-        ZoneObject.transform.localScale = new Vector3(-zoneXdim * 10, yPos*10, zoneZdim * 10); // Mathf.Pow(yPos, 2) for square (pow 2)
+        ZoneObject.transform.localScale = new Vector3(-zoneXdim * 10, yPos* 5, zoneZdim * 10); // Mathf.Pow(yPos, 2) for square (pow 2)
                                                                                // Debug.Log("zone height" + childTransform.localScale);
     }
     /*
@@ -247,8 +247,8 @@ public class ZoneControllerStageMess : MonoBehaviour
                 {
                     if ((zPos < zPosRange[j]) && (zPos > zPosRange[j + 1]))
                     {
-                        Debug.Log(xPos + ": in x zone: " + i);
-                        Debug.Log(zPos + ": in z zone: " + j);
+                       // Debug.Log(xPos + ": in x zone: " + i);
+                       // Debug.Log(zPos + ": in z zone: " + j);
                         selectedRowColor = i;
                         selectedColColor = j;
                         return stageZonesMatrix[i, j];
@@ -257,7 +257,7 @@ public class ZoneControllerStageMess : MonoBehaviour
                 }
             }
         }
-        Debug.Log(xPos + "x" + zPos +"z" +": did not fall into zones");
+        //Debug.Log(xPos + "x" + zPos +"z" +": did not fall into zones");
         return null;
     }
 
@@ -290,7 +290,7 @@ public class ZoneControllerStageMess : MonoBehaviour
 
         if (selectedZoneObject == null)
         {
-            Debug.Log(xPos + "," + yPos + "," + zPos + " : yielded no zone");
+            //Debug.Log(xPos + "," + yPos + "," + zPos + " : yielded no zone");
             return;
         }
 

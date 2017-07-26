@@ -10,6 +10,7 @@ public class StickController : MonoBehaviour
     public GameObject stickObject1;
     public GameObject StageBoundaries;
     Animator drumstickAnimator;
+    bool receivedHit = false;
 
     // Use this for initialization
     void Start()
@@ -33,6 +34,12 @@ public class StickController : MonoBehaviour
 
             drumstickAnimator.SetTrigger("drumhit");
         }
+
+        if (!receivedHit)
+        {
+            drumstickAnimator.SetTrigger("stophit");
+        }
+       // if(drumstickAnimator.)
         /*
         if (Input.GetKeyDown(GameControllerVR.HOTKEY_GLOVE_DATA))
         {
@@ -91,8 +98,9 @@ public class StickController : MonoBehaviour
 
     }
 
-   public void drumHit()
+   public void drumHit(bool isHit)
     {
         drumstickAnimator.SetTrigger("drumhit");
+        receivedHit = false;
     }
 }

@@ -182,7 +182,7 @@ public class FountainRSControllerVR : MonoBehaviour
     {
         if (zoneController.isWaterGloveRight)
         {
-            Debug.Log("finger" + i);
+           // Debug.Log("finger" + i);
 
             fountainJetParticlesRight[i].transform.GetChild(0).gameObject.SetActive(true); // single test jet
             if (fountainJetParticlesRight[i].GetComponentInChildren<ParticleSystem>().IsAlive() == false)

@@ -35,6 +35,8 @@ namespace UniOSC
 		public DronePianoController DronePianoController;
         public FingerControl LeftFingerController;
         public FingerControl RightFingerController;
+        public FingerControl StageLeftFingerController;
+        public FingerControl StageRightFingerController;
         public ParticleLauncher ParticleLauncherLeft;
 		public ParticleLauncher ParticleLauncherRight;
         public FingerControl IMURightFingerController;
@@ -105,6 +107,7 @@ namespace UniOSC
         private const string stagePositionLeft = "position/left-hand";
         private const string stagePositionRight = "position/right-hand";
         private const string stagePositionDrum1 = "position/drum-stick";
+        private const string stageHit = "gesture/drum-stick/omni/";
 
 
         private string[] LeftNoteAddresses = { noteLeft1, noteLeft2, noteLeft3, noteLeft4, noteLeft5 };
@@ -168,8 +171,9 @@ namespace UniOSC
 
             touchOSCWrist();
 
-            StagePosition();
+            StageGloveData();
 
+            StageStickData();
             // handles rs data from single camera
             rsZones();
 
@@ -248,13 +252,16 @@ namespace UniOSC
         }
         */
 
-        private void StagePosition()
+        private void StageGloveData()
         {
             if (msg.Address.Contains(stagePositionLeft))
             {
                 float xPos = -(float)msg.Data[0];
                 float zPos = (float)msg.Data[1];
                 float yPos = (float)msg.Data[2];
+                xPos = -0.25f;
+                yPos = 1.0f;
+                zPos = 0f;
                // Debug.Log("stage-pos-left: " + xPos + " " + yPos + " " + zPos);
                 StageGloveController.SetLeftPosition(xPos, yPos, -zPos);
             }
@@ -264,24 +271,104 @@ namespace UniOSC
                 float xPos = -(float)msg.Data[0];
                 float zPos = (float)msg.Data[1];
                 float yPos = (float)msg.Data[2];
+                xPos = 0.25f;
+                yPos = 1.0f;
+                zPos = 0f;
                 //Debug.Log("stage-pos-right: " + xPos + " " + yPos + " " + zPos);
                 StageGloveController.SetRightPosition(xPos, yPos, zPos);
             }
 
+            // syncphony glove wrist rotation
+            if (msg.Address.Contains(oscLeftHandWrist))
+            {
+                int degrees = (int)msg.Data[1];
+                //  Debug.Log("left-wrist:" + degrees);
+                StageGloveController.SetLeftWristAngle(degrees);
+            }
+            if (msg.Address.Contains(oscRightHandWrist))
+            {
+                int degrees = (int)msg.Data[1];
+                // Debug.Log("right-wrist:" + degrees);
+                StageGloveController.SetRightWristAngle(degrees);
+            }
+
+            // syncphony glove wrist rotation
+            if (msg.Address.Contains(oscLeftWristCc))
+            {
+                int degrees = (int)msg.Data[0];
+                Debug.Log("left-wrist:" + degrees);
+                StageGloveController.SetLeftWristAngle(degrees - 30);
+            }
+
+            if (msg.Address.Contains(oscRightWristCc))
+            {
+                int degrees = (int)msg.Data[0];
+                //Debug.Log("right-wrist:" + degrees);
+                StageGloveController.SetRightWristAngle(-degrees);
+            }
+
+            // syncphony glove MIDI note hits
+            if (msg.Address.Contains(oscLeftNote))
+            {
+                int note = (int)msg.Data[1];
+                int droneGroup = 4 - (note - leftGloveMidiStart);
+                // Debug.Log("left-note:" + note + " droneGroup:" + droneGroup);
+                //DroneController.LeftNoteHit(droneGroup); // note is a midi note
+
+                //int fountainNumber = leftGloveMidiStart - note + 4;
+                //Debug.Log("left-note:" + note + " fountainNumber:" + fountainNumber);
+
+                //FountainRSController.fountainMidiLeft(fountainNumber);
+                //ParticleLauncherLeft.launchParticle(fountainNumber);
+            }
+
+            if (msg.Address.Contains(oscRighttNote))
+            {
+                int note = (int)msg.Data[1];
+                int droneGroup = note - rightGloveMidiStart - 5;
+                //   Debug.Log("right-note:" + droneGroup);
+                /*DroneController.RightNoteHit(droneGroup);
+
+                int fountainNumber = note - rightGloveMidiStart;
+                Debug.Log("right-note:" + fountainNumber);
+                FountainRSController.fountainMidiRight(fountainNumber - 5);
+                ParticleLauncherRight.launchParticle(fountainNumber - 5);*/
+
+            }
+        }
+
+        private void StageStickData()
+        {
             if (msg.Address.Contains(stagePositionDrum1))
             {
                 float xPos = -(float)msg.Data[0];
                 float zPos = -(float)msg.Data[1];
                 float yPos = (float)msg.Data[2];
-                Debug.Log("stick-pos: " + xPos + " " + yPos + " " + zPos);
+                //Debug.Log("stick-pos: " + xPos + " " + yPos + " " + zPos);
                 // hard coding y pos
                 yPos = 1.0f;
                 StageStickController.SetStickPosition(xPos, yPos, zPos);
+                //yPos = 0.5f;
                 ZoneControllerStage.UpdateZone(xPos, yPos, zPos);
 
             }
-       
-      
+
+            if (msg.Address.Contains(stageHit))
+            {
+                int LastHit = 0; // for deduping notes
+                int channel = (int)msg.Data[0];
+                //  float hitVel = (float)msg.Data[1];
+
+                Debug.Log("detected hit" + channel);
+                // hard coding y pos
+                if (channel != LastHit)
+                {
+                    StageStickController.drumHit(true);
+                }
+
+                LastHit = channel;
+            }
+
         }
 
         private void rsZones()
@@ -348,9 +435,10 @@ namespace UniOSC
                     float fingerBendDataLeft = (float)msg.Data[0];
                     GloveController.fingerBendLeft(i, fingerBendDataLeft);
                     LeftFingerController.bendFinger(i, fingerBendDataLeft); // send finger bend data to UI
+                    StageLeftFingerController.bendFinger(i, fingerBendDataLeft);
                     //FountainRSController.fountainHeightLeft(i, fingerBendDataLeft);
-					//DronePianoController.FingerBend(4 - i, fingerBendDataLeft);
-					
+                    //DronePianoController.FingerBend(4 - i, fingerBendDataLeft);
+
 
 
                 }
@@ -361,11 +449,9 @@ namespace UniOSC
                     float fingerBendDataRight = (float)msg.Data[0];
                     GloveController.fingerBendRight(i, fingerBendDataRight);
                     RightFingerController.bendFinger(i, fingerBendDataRight); // send finger bend data to UI
+                    StageRightFingerController.bendFinger(i, fingerBendDataRight);
                     //FountainRSController.fountainHeightRight(4-i, fingerBendDataRight);
-					//DronePianoController.FingerBend(i + 5, fingerBendDataRight);
-					
-
-
+                    //DronePianoController.FingerBend(i + 5, fingerBendDataRight);
 
                 }
             }
@@ -464,8 +550,9 @@ namespace UniOSC
  //                   float fingerBendData = GloveController.GetFingerBend(4 - i, (int)msg.Data[i + 1]);
                     FountainRSController.fountainHeightLeft(i, fingerBendData);
                     LeftFingerController.bendFinger(i, fingerBendData);
+                    StageLeftFingerController.bendFinger(i, fingerBendData);
 
-                   // DronePianoController.FingerBend(4 - i, fingerBendData);
+                    // DronePianoController.FingerBend(4 - i, fingerBendData);
 
 
                 }
@@ -479,8 +566,9 @@ namespace UniOSC
                     //float fingerBendData = GloveController.GetFingerBend(i + 5, (int)msg.Data[i + 1]);
                     FountainRSController.fountainHeightRight(i, fingerBendData);
                     RightFingerController.bendFinger(i, fingerBendData);
+                    StageRightFingerController.bendFinger(i, fingerBendData);
 
-                   // DronePianoController.FingerBend(i + 5, fingerBendData);
+                    // DronePianoController.FingerBend(i + 5, fingerBendData);
 
                 }
             }
@@ -523,7 +611,7 @@ namespace UniOSC
                 DroneController.LeftNoteHit(droneGroup); // note is a midi note
 
                 int fountainNumber = leftGloveMidiStart - note + 4;
-                Debug.Log("left-note:" + note + " fountainNumber:" + fountainNumber);
+                //Debug.Log("left-note:" + note + " fountainNumber:" + fountainNumber);
 
                 FountainRSController.fountainMidiLeft(fountainNumber);
                 ParticleLauncherLeft.launchParticle(fountainNumber);
@@ -537,7 +625,7 @@ namespace UniOSC
                 DroneController.RightNoteHit(droneGroup);
 
                 int fountainNumber = note - rightGloveMidiStart;
-                Debug.Log("right-note:" + fountainNumber);
+                //Debug.Log("right-note:" + fountainNumber);
                 FountainRSController.fountainMidiRight(fountainNumber-5);
                 ParticleLauncherRight.launchParticle(fountainNumber-5);
 
