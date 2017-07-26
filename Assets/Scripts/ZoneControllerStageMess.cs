@@ -16,7 +16,6 @@ public class ZoneControllerStageMess : MonoBehaviour
     public GameObject zoneObject;
     public GameObject stageZoneObject;
 
-
     GameObject[] stageZoneX;
     // List<GameObject> zoneLeft;
 
@@ -75,8 +74,6 @@ public class ZoneControllerStageMess : MonoBehaviour
     int selectedColColor;
     float zoneCenterXPoint;
     float zoneCenterZPoint;
-    
-
 
     void Start()
     {
@@ -299,15 +296,12 @@ public class ZoneControllerStageMess : MonoBehaviour
         GameObject selectedZoneObject = GetStageZone(xPos, zPos);
 
 
+        UpdateZoneObjectPosition(selectedZoneObject);
         if (selectedZoneObject == null)
         {
             //Debug.Log(xPos + "," + yPos + "," + zPos + " : yielded no zone");
             return;
         }
-
-
-        //todo
-        UpdateZoneObjectPosition(selectedZoneObject);
 
         // left zones filled
 
@@ -319,10 +313,7 @@ public class ZoneControllerStageMess : MonoBehaviour
 
         //Vector3 zoneCenter = selectedZoneObject.GetComponent<Renderer>().bounds.center;
         //Debug.Log("zoneCenterPont" + zoneCenter[0]);
-
-
         // Debug.Log("ypos: " + yPos);
-
 
         return;
     }
@@ -330,9 +321,14 @@ public class ZoneControllerStageMess : MonoBehaviour
 
     void UpdateZoneObjectPosition(GameObject selectedZoneObject)
     {
+        if (selectedZoneObject == null)
+        {
+            //Debug.Log(xPos + "," + yPos + "," + zPos + " : yielded no zone");
+            return;
+        }
+
         zoneCenterXPoint = selectedZoneObject.transform.localPosition[0];
         zoneCenterZPoint = selectedZoneObject.transform.localPosition[2];
-
 
     }
 
