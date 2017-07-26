@@ -14,13 +14,23 @@ public class FingerControl : MonoBehaviour {
     public GameObject middle;
     public GameObject ring;
     public GameObject pinkie;
-  
 
+    public float displacementX = 0;
+    public float displacementY = 0;
+    public float displacementZ = 0;
+    GameObject[] zoneArray;
+    public int whichSide = 1; // -1 is right, 1 is left
+    public bool isGuitar = false;
 
+    public GameObject guitarZoneObject;
 
     // Use this for initialization
     void Start () {
-		
+
+        if (isGuitar)
+        {
+            InstantiateGuitarZoneObjects();
+        }
 	}
 	
 	// Update is called once per frame
@@ -75,5 +85,28 @@ public class FingerControl : MonoBehaviour {
 
     }
 
+    public void InstantiateGuitarZoneObjects()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            // GameObject zone = Instantiate(zoneObject, transform.position + new Vector3(displacementX * .45f + i * displacementX + 0.05f, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            // GameObject zone = Instantiate(zoneObject, transform.position + new Vector3((-whichSide) * displacementX + (whichSide) * i * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            GameObject zone = null;
+            if (1 == whichSide)
+            { // LEFT
+                zone = Instantiate(guitarZoneObject, transform.position + new Vector3(displacementX + (-i) * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            }
+            else
+            {  // RIGHT
+                zone = Instantiate(guitarZoneObject, transform.position + new Vector3(-displacementX + (i) * displacementX, 0, i * displacementZ), Quaternion.identity) as GameObject;
+            }
+
+            zone.name = "guitar-zone-left-" + i;
+            zone.transform.parent = transform;
+            zoneArray[i] = zone;
+            zoneArray[i].transform.localScale = new Vector3(1.8f, 1, 1);
+
+        }
+    }
 
 }
