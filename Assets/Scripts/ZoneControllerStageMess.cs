@@ -43,10 +43,22 @@ public class ZoneControllerStageMess : MonoBehaviour
     public GameObject zone4SliderRight;
     // [Header ("hello")]
     // [Space]
+    [Header("Zone UI Elements")]
     public Image HUDxPosLeft;
     public Image HUDxPosRight;
     public Image HUDyPosLeft;
     public Image HUDyPosRight;
+
+    public Text YPos;
+    public Text InstrumentName;
+    public Text ZPos;
+    public GloveController gloveController;
+    public bool fixedYHeight = true;
+
+    String[] guitarTypes = { "Strat Solo", "Strat Chords", "Strat Chords", "Other"};
+    int[] zonesUsed = { 0, 2, 6, 8 };
+
+    Hashtable guitarName = new Hashtable();
 
 
     public Transform FrontLeft;
@@ -70,13 +82,22 @@ public class ZoneControllerStageMess : MonoBehaviour
     float zoneXoffset;
     float zoneZoffset;
 
-    int selectedRowColor;
-    int selectedColColor;
+    int selectedRow;
+    int selectedCol;
     float zoneCenterXPoint;
     float zoneCenterZPoint;
 
+
     void Start()
     {
+
+        for (int i = 0; i < guitarTypes.Length; i++) {
+            guitarName.Add(zonesUsed[i], guitarTypes[i]);
+        }
+
+
+
+
         stageZones = new GameObject[stageZonesRows];
         stageZonesMatrix = new GameObject[stageZonesRows, stageZonesColumns];
 
@@ -91,7 +112,7 @@ public class ZoneControllerStageMess : MonoBehaviour
         // set size of each column and row
         zoneXdim = distanceX / stageZonesRows;
         zoneZdim = distanceZ / stageZonesColumns;
-        zoneColorMatrix = new Color[4, 4] { { turquoise, ocher, fuscia, blueness }, {  ocher, fuscia, blueness, turquoise }, { blueness, fuscia, blueness, ocher }, { turquoise, ocher, fuscia, blueness } };
+        zoneColorMatrix = new Color[4, 4] { { turquoise, Color.white, fuscia, blueness }, { Color.white, Color.white, blueness, turquoise }, { blueness, Color.white, blueness, ocher }, { turquoise, Color.white, fuscia, blueness } };
     
         //new Color(255f / i, 255f / i * 0.8f, 255f / i * 0.6f, 0.2f)
         
@@ -141,7 +162,7 @@ public class ZoneControllerStageMess : MonoBehaviour
                 zoneZoffset = -zoneZdim / 2 - j * zoneZdim;
 
                 zone = Instantiate(stageZoneObject, FrontLeft.position + new Vector3(zoneXoffset, 0, zoneZoffset), Quaternion.identity) as GameObject;
-                zone.name = "stage-zone-" + i +"-"+ j + " #"+(j+i*stageZonesColumns);
+                zone.name = "stage-zone-" + i +"-"+ j + " #"+ GetZoneNumber(i,j);
                 zone.transform.parent = transform;
                 zone.SetActive(false);
 
@@ -163,6 +184,17 @@ public class ZoneControllerStageMess : MonoBehaviour
 
     }
 
+    int GetZoneNumber(int i, int j)
+    {
+        return (j + i * stageZonesColumns);
+    }
+
+
+    int GetZoneNumber()
+    {
+        return GetZoneNumber(selectedRow, selectedCol);
+    }
+
     // passing left and right zone information to main zone height controller
     private void ZoneHeightBlock(GameObject zone, float yPos)
     {
@@ -181,6 +213,12 @@ public class ZoneControllerStageMess : MonoBehaviour
 
         // only change selected zone's height
         zone.SetActive(true);
+
+        if (fixedYHeight)
+        {
+            yPos = 1.0f;
+        } 
+
         ZoneHeight(zone, yPos);
 
     }
@@ -218,7 +256,7 @@ public class ZoneControllerStageMess : MonoBehaviour
 
         }
 
-        selectedZoneObject.GetComponentInChildren<MeshRenderer>().material.color = zoneColorMatrix[selectedRowColor, selectedColColor];
+        selectedZoneObject.GetComponentInChildren<MeshRenderer>().material.color = zoneColorMatrix[selectedRow, selectedCol];
         //HUDxPosLeft.color = zoneColors[zoneNumber];
         
         // sets color of the HUD x position element to change colors based on zone changes
@@ -249,8 +287,9 @@ public class ZoneControllerStageMess : MonoBehaviour
                     {
                        // Debug.Log(xPos + ": in x zone: " + i);
                        // Debug.Log(zPos + ": in z zone: " + j);
-                        selectedRowColor = i;
-                        selectedColColor = j;
+                        selectedRow = i;
+                        selectedCol = j;
+
                         return stageZonesMatrix[i, j];
 
                     }
@@ -294,6 +333,13 @@ public class ZoneControllerStageMess : MonoBehaviour
     {
         
         GameObject selectedZoneObject = GetStageZone(xPos, zPos);
+
+        String text = (String)guitarName[GetZoneNumber()];
+        if (text != null)
+        {
+            // update text
+            InstrumentName.text = text;
+        }
 
 
         UpdateZoneObjectPosition(selectedZoneObject);

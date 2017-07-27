@@ -35,13 +35,24 @@ public class ZoneControllerSingleAny : MonoBehaviour
     [SerializeField]
     int displacementZ = 0;
 
-    public GameObject zone4SliderLeft;
 
+
+    [Header("Zone UI Elements")]
     public Image HUDxPosLeft;
     public Image HUDxPosRight;
     public Image HUDyPosLeft;
     public Image HUDyPosRight;
 
+    public Text YPos;
+    public Text XPos;
+    public Text ZPos;
+    public GloveController gloveController;
+
+    public int whichSide = 1; // -1 is right, 1 is left
+
+
+    [Header("Slider")]
+    public GameObject zone4SliderLeft;
     GameObject zone4SliderRight;
     /*public GameObject waterGloveLeft;
     public GameObject waterGloveRight;
@@ -76,7 +87,8 @@ public class ZoneControllerSingleAny : MonoBehaviour
     int lastLeftZoneYState = 0;
     int lastRightZoneYState = 0;
     Vector3 gloveScaleFactor = new Vector3(1.2f, 1, 1.2f);
-    public int whichSide = 1; // -1 is right, 1 is left
+
+
 
     void Start()
     {
@@ -101,7 +113,18 @@ public class ZoneControllerSingleAny : MonoBehaviour
             ZoneHeight(zoneLeft[i], i, 0);
         }
         */
-        
+        // Uses this for HUD display
+        if (whichSide == 1)
+        {
+            Vector3 leftPosition = gloveController.GetLeftPosition();
+            UpdateZoneHUDText(leftPosition.x, leftPosition.y, leftPosition.z);
+        } else
+        {
+            Vector3 rightPosition = gloveController.GetRightPosition();
+            UpdateZoneHUDText(rightPosition.x, rightPosition.y, rightPosition.z);
+        }
+       
+
     }
 
     public void InstantiateZoneObjects()
@@ -318,6 +341,18 @@ public class ZoneControllerSingleAny : MonoBehaviour
 
 
 
+    private void UpdateZoneHUDText(float xpos, float ypos, float zpos)
+    {
+        ypos = (int)(ypos * 100);
+        YPos.text = ypos.ToString();
+        xpos = (int)(xpos * 100);
+        XPos.text = xpos.ToString();
+        zpos = (int)(zpos * 100);
+        ZPos.text = zpos.ToString();
+
+    }
+
+    
     void InstantiateSliderObjects()
     {
         // instantiate slider objects

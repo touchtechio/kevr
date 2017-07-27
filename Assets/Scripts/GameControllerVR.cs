@@ -31,6 +31,7 @@ public class GameControllerVR : MonoBehaviour
     private float volume = 0.6f;
     */
 
+    /*
     public Text YPosLeft;
     public Text XPosLeft;
     public Text ZPosLeft;
@@ -39,6 +40,7 @@ public class GameControllerVR : MonoBehaviour
 	public Text XPosRight;
 	public Text YPosRight;
 	public Text ZPosRight;
+    */
 
     private GloveController gloveController;
 
@@ -98,14 +100,14 @@ public class GameControllerVR : MonoBehaviour
 
     void Update()
     {
-
+        /*
         // Uses this for HUD display
         Vector3 leftPosition = gloveController.GetLeftPosition();
         UpdateLeftZone(leftPosition.x, leftPosition.y, leftPosition.z);
 
         Vector3 rightPosition = gloveController.GetRightPosition();
         UpdateRightZone(rightPosition.x, rightPosition.y, rightPosition.z);
-
+        */
         // disable / enable HUD tagged GameObjects
         if (Input.GetKeyDown(GameControllerVR.HOTKEY_GLOVE_DATA))
         {
@@ -165,7 +167,7 @@ public class GameControllerVR : MonoBehaviour
     }
     */
     }
-
+    /*
     private void UpdateLeftZone(float xpos, float ypos, float zpos)
     {
         ypos = (int)(ypos * 100);
@@ -187,6 +189,7 @@ public class GameControllerVR : MonoBehaviour
 
 
     }
+    */
 }
 
 
