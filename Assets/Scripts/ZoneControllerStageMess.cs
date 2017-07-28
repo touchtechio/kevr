@@ -36,9 +36,6 @@ public class ZoneControllerStageMess : MonoBehaviour
     float stageHeightOffGround = 0;    // this value should be based on the height of stage off base of basestations
     float zoneCenterYPoint = 1.5f;
 
-    [Range(0,10)]
-    public int displacementY = 0;
-
     public GameObject zone4SliderLeft;
     public GameObject zone4SliderRight;
     // [Header ("hello")]
@@ -90,14 +87,12 @@ public class ZoneControllerStageMess : MonoBehaviour
 
     void Start()
     {
-
+        // adds list of guitar names and corresponding zones to hashtable
         for (int i = 0; i < guitarTypes.Length; i++) {
             guitarName.Add(zonesUsed[i], guitarTypes[i]);
         }
 
-
-
-
+        // instantiate zone matrix arrays
         stageZones = new GameObject[stageZonesRows];
         stageZonesMatrix = new GameObject[stageZonesRows, stageZonesColumns];
 
@@ -134,21 +129,6 @@ public class ZoneControllerStageMess : MonoBehaviour
 
     public void InstantiateZoneObjects()
     {
-        /*
-        for (int i = 0; i < (stageZonesRows); i++)
-        {
-            GameObject zone = null;
-            
-            zone = Instantiate(stageZoneObject, FrontLeft.position + new Vector3(displacementX/2 + (i) * displacementX, 0, -displacementX/2), Quaternion.identity) as GameObject;
-
-            zone.name = "zone-left-" + i;
-            zone.transform.parent = transform;
-            
-            stageZones[i] = zone;
-            stageZones[i].transform.localScale = new Vector3(-displacementX, 1, 1);
-            stageZones[i].GetComponent<Renderer>().material.color = zoneColors[i];
-        }
-        */
 
         FrontLeft.position += new Vector3(0, stageHeightOffGround, 0); // set the stage height for zone starting height;
 
@@ -158,38 +138,44 @@ public class ZoneControllerStageMess : MonoBehaviour
             {
                 //Debug.Log("front left position: "+ FrontLeft.position);
                 GameObject zone = null;
-                zoneXoffset = zoneXdim / 2 + (i) * zoneXdim;
+                zoneXoffset = zoneXdim / 2 + (i) * zoneXdim; // compensates for the object position point being set at the center of object not corner
                 zoneZoffset = -zoneZdim / 2 - j * zoneZdim;
 
+                // using the front left corner of the stage as starting point
                 zone = Instantiate(stageZoneObject, FrontLeft.position + new Vector3(zoneXoffset, 0, zoneZoffset), Quaternion.identity) as GameObject;
                 zone.name = "stage-zone-" + i +"-"+ j + " #"+ GetZoneNumber(i,j);
                 zone.transform.parent = transform;
                 zone.SetActive(false);
 
                 stageZonesMatrix[i,j] = zone;
-                stageZonesMatrix[i,j].transform.localScale = new Vector3(-zoneXdim*10, displacementY, zoneZdim*10);
+                // scales up the size of the prefab to fit the size of zone
+                stageZonesMatrix[i,j].transform.localScale = new Vector3(-zoneXdim*10, 0, zoneZdim*10);
                 stageZonesMatrix[i,j].GetComponent<Renderer>().material.color = zoneColorMatrix[i,j];
 
+                // calculate front and side point of each zone
                 xPosRange[i] = zone.transform.localPosition[0] - 0.5f * zoneXdim;
                 zPosRange[j] = zone.transform.localPosition[2] + 0.5f * zoneZdim;
 
             }
            
         }
+        // calculate the back and end point of last zone in row + column
         xPosRange[stageZonesRows] = xPosRange[stageZonesRows - 1] + 0.5f * zoneXdim;
         zPosRange[stageZonesColumns] = zPosRange[stageZonesColumns - 1] - 0.5f * zoneZdim;
 
+        // get each point of zone
         Debug.Log(xPosRange[0] + "," + xPosRange[1] + "," + xPosRange[2] + "," + xPosRange[3]);// + "," + xPosRange[4]);
         Debug.Log(zPosRange[0] + "," + zPosRange[1] + "," + zPosRange[2] + "," + zPosRange[3]);// + "," + zPosRange[4]);
 
     }
 
+    // returns the zone number as a single int for the initial instantiation
     int GetZoneNumber(int i, int j)
     {
         return (j + i * stageZonesColumns);
     }
 
-
+    // returns the zone number based on the selected zone at the time
     int GetZoneNumber()
     {
         return GetZoneNumber(selectedRow, selectedCol);
@@ -223,25 +209,15 @@ public class ZoneControllerStageMess : MonoBehaviour
 
     }
 
-
+    // sets the selected zone height and returns rest as zero
     internal void ZoneHeight(GameObject ZoneObject, float yPos)
     {
 
        // Transform childTransform = ZoneObject.transform.GetChild(0);
-        ZoneObject.transform.localScale = new Vector3(-zoneXdim * 10, yPos* 5, zoneZdim * 10); // Mathf.Pow(yPos, 2) for square (pow 2)
-                                                                               // Debug.Log("zone height" + childTransform.localScale);
+        ZoneObject.transform.localScale = new Vector3(-zoneXdim * 10, yPos* 5, zoneZdim * 10); 
+        // Mathf.Pow(yPos, 2) for square (pow 2)
+     // Debug.Log("zone height" + childTransform.localScale);
     }
-    /*
-    internal void ZoneHeight(GameObject ZoneObject, int zone, float yPos)
-    {
-
-        Transform childTransform = ZoneObject.transform.GetChild(0);
-        childTransform.localScale = new Vector3(1, 8 * Mathf.Pow(yPos, 2), 1); // Mathf.Pow(yPos, 2) for square (pow 2)
-       // Debug.Log("zone height" + childTransform.localScale);
-    }
-
-    */
-
 
     public void ZoneColor(GameObject selectedZoneObject, bool isRSLeft)
     {
@@ -272,7 +248,7 @@ public class ZoneControllerStageMess : MonoBehaviour
         */
     }
 
-    //internal int Get
+    // returns the selected zone object and records the matrix number
     internal GameObject GetStageZone(float xPos, float zPos)
     {
 
@@ -300,31 +276,10 @@ public class ZoneControllerStageMess : MonoBehaviour
         return null;
     }
 
-    /*
-    /// setting height zones
-
-    internal int GetYZone(float yPos)
-    {
-
-        //// ypos values are 0.4 to 0.9
-        for (int i = 0; i < (yPosRange.Length - 1); i++)
-        {
-            // Debug.Log("zone" + i + "yPosRange"+ yPosRange[i]);
-            if ((yPos > yPosRange[i]) && (yPos < yPosRange[i + 1]))
-            {
-
-                // Debug.Log("ypos : " + yPos + "in zone: " + i);
-                return i;
-            }
-        }
-        //  Debug.Log(xPos + "did not fall into zones");
-        return -1;
-    }
-    */
 
     /// <summary>
     /// runs the get stage zone calculation, moved block heights then returns
-    /// 
+    /// sets instrument name on HUD
     /// </summary>
     /// <param name="xPos"></param>
     /// <param name="yPos"></param>
@@ -341,8 +296,8 @@ public class ZoneControllerStageMess : MonoBehaviour
             InstrumentName.text = text;
         }
 
-
         UpdateZoneObjectPosition(selectedZoneObject);
+
         if (selectedZoneObject == null)
         {
             //Debug.Log(xPos + "," + yPos + "," + zPos + " : yielded no zone");
@@ -364,7 +319,7 @@ public class ZoneControllerStageMess : MonoBehaviour
         return;
     }
 
-
+    // returns the objects position as the center point of activated zone
     void UpdateZoneObjectPosition(GameObject selectedZoneObject)
     {
         if (selectedZoneObject == null)
@@ -383,38 +338,7 @@ public class ZoneControllerStageMess : MonoBehaviour
     {
         return new Vector3(zoneCenterXPoint, zoneCenterYPoint, zoneCenterZPoint);
     }
-
-    void InstantiateSliderObjects()
-    {
-        // instantiate slider objects
-        zone4SliderLeft = Instantiate(zone4SliderLeft, transform.position + new Vector3(-(zoneXdim * .45f + 3 * zoneXdim + 0.05f), 0.05f, -0.1f), Quaternion.identity) as GameObject;
-        zone4SliderLeft.name = "zone-left-" + 3;
-        zone4SliderLeft.transform.parent = transform;
-        stageZones[3] = zone4SliderLeft;
-        //zoneLeft.Add((GameObject)zone4SliderLeft);
-        zone4SliderRight = Instantiate(zone4SliderLeft, transform.position + new Vector3((zoneXdim * .45f + 3 * zoneXdim) + 0.05f, 0.05f, -0.1f), Quaternion.identity) as GameObject;
-        zone4SliderRight.name = "zone-right-" + 3;
-        zone4SliderRight.transform.parent = transform;
-        
-        /*
-        waterGloveLeft = Instantiate(waterGloveLeft, transform.position + new Vector3(-(displacementX * .8f + 3 * displacementX), displacementY, 0), Quaternion.identity) as GameObject;
-        waterGloveLeft.name = "water-left-glove";
-        waterGloveLeft.transform.parent = transform;
-        waterGloveRight = Instantiate(waterGloveRight, transform.position + new Vector3((displacementX * .8f + 3 * displacementX), displacementY, 0), Quaternion.identity) as GameObject;
-        waterGloveRight.name = "water-right-glove";
-        waterGloveRight.transform.parent = transform;
-        waterGloveRight.transform.localScale = new Vector3(1, 1, 1); // mirrors 
-        droneGloveLeft = Instantiate(droneGloveLeft, transform.position + new Vector3(-(displacementX * .8f + 3 * displacementX), 2 * displacementY, 0), Quaternion.identity) as GameObject;
-        droneGloveLeft.name = "drone-left-glove";
-        droneGloveLeft.transform.parent = transform;
-        droneGloveRight = Instantiate(droneGloveRight, transform.position + new Vector3((displacementX * .8f + 3 * displacementX), 2 * displacementY, 0), Quaternion.identity) as GameObject;
-        droneGloveRight.name = "drone-right -glove";
-        droneGloveRight.transform.parent = transform;
-        droneGloveRight.transform.localScale = new Vector3(1, 1, 1);
-        */
-    }
     
-
 }
 
 //// to make 5 zones

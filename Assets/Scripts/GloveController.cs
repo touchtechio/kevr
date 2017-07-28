@@ -29,7 +29,7 @@ public class GloveController : MonoBehaviour
     public static int rightRing = 5500;
     public static int rightPink = 4445;
 
-    public bool stickUsingRaw = false;
+    public bool UsingRawPosition = false;
 
     private int[] fingerThresholds =
     {
@@ -56,18 +56,6 @@ public class GloveController : MonoBehaviour
 
         }
     }
-
-    public void fingerBendLeft(int i, float fingerBendDataLeft)
-    {
-        //Debug.Log("finger" + i + "bend value" + fingerBendDataLeft);
-    }
-
-
-    public void fingerBendRight(int i, float fingerBendDataRight)
-    {
-       // Debug.Log("finger" + i + "bend value" + fingerBendDataRight);
-    }
-
 
     internal void SetLeftWristAngle(int degrees)
     {
@@ -98,9 +86,10 @@ public class GloveController : MonoBehaviour
         //  transform.rotation = Quaternion.Euler(-90, 180, 0) * Quaternion.Euler(0, -degrees - 90, 0);
         transform.GetChild(0).rotation = Quaternion.Euler(0, 0, degrees);
 
-
     }
 
+    // TOUCH OSC
+    // returns the position of the hands for touch OSC data
     public Vector3 GetRightPosition()
     {
         Transform transformToMove = RightHandObject.GetComponent<Transform>();
@@ -113,6 +102,41 @@ public class GloveController : MonoBehaviour
         return transformToMove.localPosition;
     }
 
+    // STAGE DATA
+    // determines where to position hands on stage depending if using raw UWB data or fixing to center point of zone
+    public void SetLeftGlovePositionWithZone(Vector3 rawPosition, Vector3 ZonePosition)
+    {
+
+        Vector3 position = rawPosition;
+
+        if (!UsingRawPosition)
+        {
+            position = ZonePosition;
+
+        }
+
+        SetLeftPosition(position[0], position[1], position[2]);
+
+
+        return;
+
+    }
+    public void SetRightGlovePositionWithZone(Vector3 rawPosition, Vector3 ZonePosition)
+    {
+
+        Vector3 position = rawPosition;
+
+        if (!UsingRawPosition)
+        {
+            position = ZonePosition;
+
+        }
+
+        SetRightPosition(position[0], position[1], position[2]);
+        return;
+    }
+
+    // takes the choice made from methods above and actually positions the hand on stage
     public void SetRightPosition(float x, float y, float z)
     {
         Transform transformToMove = RightHandObject.GetComponent<Transform>();
@@ -136,43 +160,8 @@ public class GloveController : MonoBehaviour
         transformToMoveCube.localPosition = posCube;
 
     }
-    public void SetLeftGlovePositionWithZone(Vector3 rawPosition, Vector3 ZonePosition)
-    {
 
-        Vector3 position = rawPosition;
-
-        if (!stickUsingRaw)
-        {
-            position = ZonePosition;
-
-        }
-
-        SetLeftPosition(position[0], position[1], position[2]);
-
-
-        return;
-
-    }
-    public void SetRightGlovePositionWithZone(Vector3 rawPosition, Vector3 ZonePosition)
-    {
-
-        Vector3 position = rawPosition;
-
-        if (!stickUsingRaw)
-        {
-            position = ZonePosition;
-
-        }
-
-        SetRightPosition(position[0], position[1], position[2]);
-      
-
-        return;
-
-    }
-
-
-    //atempts to scale syncphony finger bend to 0.0 - 1.0
+    //attempts to scale syncphony finger bend to 0.0 - 1.0
     internal float GetFingerBend(int finger, int gloveValue)
     {
         int threshold = fingerThresholds[finger];
@@ -182,14 +171,12 @@ public class GloveController : MonoBehaviour
 
     }
 
-    //todo:  x and z transforms are flipped
-
+    // REALSENSE AND TOUCH OSC
+    // sets position of hand based on incoming positioning data from RS and touch OSC
     public void rsZoneLeftXZ(float rsZoneDataLeftX, float rsZoneDataLeftZ)
     {
         // Debug.Log("left hand is at x pos " + rsZoneDataLeftX + " y pos " + rsZoneDataLeftZ);
         Transform transformToMove = LeftHandObject.GetComponent<Transform>();
-
-
         Vector3 pos;
         pos = new Vector3(rsZoneDataLeftX, transformToMove.localPosition.y, rsZoneDataLeftZ);
         transformToMove.localPosition = pos;
@@ -198,31 +185,16 @@ public class GloveController : MonoBehaviour
         //HandObject.GetComponent<Transform>() = new Vector3(rsZoneDataLeftX, 0, rsZoneDataLeftZ);
     }
 
-    // realsense old y axis
-    //public void rsZoneLeftY(float rsZoneDataLeftY)
-    //{
-    //    // Debug.Log("left hand is at y pos " + rsZoneDataLeftY);
-    //    Transform transformToMove = LeftHandObject.GetComponent<Transform>();
-    //    Vector3 pos;
-    //    pos = new Vector3(transformToMove.position.x, rsZoneDataLeftY, transformToMove.position.z);
-    //    transformToMove.localPosition = pos;
-    //}
-
-
+   
     public void rsZoneLeftY(float rsZoneDataLeftY)
     {
         // Debug.Log("left hand is at y pos " + rsZoneDataLeftY);
 
         Transform transformToMove = LeftHandObject.GetComponent<Transform>();
-
         Vector3 pos;
         pos = new Vector3(transformToMove.localPosition.x, rsZoneDataLeftY, transformToMove.localPosition.z);
         transformToMove.localPosition = pos;
-
-
     }
-
-
 
     public void rsZoneRightXZ(float rsZoneDataRightX, float rsZoneDataRightZ)
     {
@@ -230,8 +202,6 @@ public class GloveController : MonoBehaviour
         // Debug.Log("right hand is at x pos " + rsZoneDataRightX + " y pos " + rsZoneDataRightZ);
         //  HandObject.GetComponent<Transform> = new Vector3(rsZoneLeftX, rsZoneLeftY, rsZoneLeftZ);
         Transform transformToMove = RightHandObject.GetComponent<Transform>();
-
-
         Vector3 pos;
         pos = new Vector3(rsZoneDataRightX, transformToMove.localPosition.y, rsZoneDataRightZ);
         transformToMove.localPosition = pos;
@@ -242,7 +212,6 @@ public class GloveController : MonoBehaviour
     {
         // Debug.Log("left hand is at y pos " + rsZoneDataRightY);
         Transform transformToMove = RightHandObject.GetComponent<Transform>();
-
         Vector3 pos;
         pos = new Vector3(transformToMove.localPosition.x, rsZoneDataRightY, transformToMove.localPosition.z);
         transformToMove.localPosition = pos;

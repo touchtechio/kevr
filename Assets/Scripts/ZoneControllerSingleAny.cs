@@ -168,21 +168,9 @@ public class ZoneControllerSingleAny : MonoBehaviour
         // only change selected zone's height
         ZoneHeight(zoneArray[zone], zone, yPos);
 
-       
-
-
-
     }
-    /*
-    private void ZoneHeightRight(int zone, float yPos)
-    {
-        // Debug.Log("zone-RIGHT:" + zone + " scale value:" + yPos);
 
-        ZoneHeight(zoneRight[zone], zone, yPos);
-
-    }
-    */
-    
+    // sets the zone's height by scaling it
     internal void ZoneHeight(GameObject ZoneObject, int zone, float yPos)
     {
 
@@ -217,20 +205,6 @@ public class ZoneControllerSingleAny : MonoBehaviour
 
     }
 
-    /*
-    public void rightZoneColor(int zoneNumber)
-    {
-        for (int i = 0; i < zoneRight.Length; i++)
-        {
-            zoneRight[i].GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-        }
-        zoneRight[zoneNumber].GetComponentInChildren<MeshRenderer>().material.color = zoneColors[zoneNumber];
-        HUDxPosRight.color = zoneColors[zoneNumber];
-
-        //Debug.Log("color: " + zoneColors[zoneNumber]);
-
-    }*/
-
 
 
     public void ZoneColor(int zoneNumber, bool isRSLeft)
@@ -259,6 +233,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
 
     }
 
+    // determines which zone hand is in
     internal int GetZone(float xPos, float[] arrayXRange)
     {
 
@@ -294,7 +269,7 @@ public class ZoneControllerSingleAny : MonoBehaviour
         return -1;
     }
 
-
+    // sets zone color and HUD data for activated zones
     internal void UpdateZone(float xPos, float yPos, float zPos, bool isRSLeft)
     {
         //   Transform waterGloveScale = waterGloveLeft.transform.GetChild(0);

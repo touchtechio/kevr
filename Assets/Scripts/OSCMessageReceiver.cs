@@ -152,11 +152,11 @@ namespace UniOSC
             // if no message, escape
             if (msg == null) return;
 
+            // handles finger bends and wrist rotation for the real sense
+            rsGloveData();
 
-            //
-            //  SYNCPHONY
-
-            SynphonyGloveData();
+            // handles rs data from single camera
+            rsZones();
 
             ImuGloveData();
 
@@ -171,14 +171,11 @@ namespace UniOSC
 
             touchOSCWrist();
 
+            // handles finger bends, wrist rotation as well as stage positioning
             StageGloveData();
 
+            // handles stick hits as well as stage positioning
             StageStickData();
-            // handles rs data from single camera
-            rsZones();
-
-            // handles osc rs data from Max
-            //rsZonesViaMax();
 
         }
 
@@ -201,7 +198,6 @@ namespace UniOSC
                     debugDegree += " " + Mathf.Rad2Deg * radians;
                     fingerBendIMUList.Add(Mathf.Rad2Deg * radians);
                 }
-
 
                 Debug.Log(debugDegree);
                 Debug.Log(debugRadian);
@@ -230,27 +226,6 @@ namespace UniOSC
                 GloveController.SetRightWristAngle((int)(180 * percent));
             }
         }
-
-        /*
-        private void rsZonesViaMax()
-        {
-            if (msg.Address.Contains(rightZone))
-            {
-                rightZoneData = (int)msg.Data[0];
-                //Debug.Log(rightZoneData);
-                ZoneController.rightZoneColor(rightZoneData);
-                ZoneController2.rightZoneColor(rightZoneData);
-
-
-            }
-            else if (msg.Address.Contains(leftZone))
-            {
-                leftZoneData = (int)msg.Data[0];
-                ZoneController.leftZoneColor(leftZoneData);
-                ZoneController2.leftZoneColor(leftZoneData);
-            }
-        }
-        */
 
         private void StageGloveData()
         {
@@ -376,6 +351,7 @@ namespace UniOSC
 
         }
 
+        // handles positioning from rs camera
         private void rsZones()
         {
             for (int i = 0; i < activeRealsense.Length; i++)
@@ -438,7 +414,7 @@ namespace UniOSC
                 if (msg.Address.Contains(fingerBendLeft[i]))
                 {
                     float fingerBendDataLeft = (float)msg.Data[0];
-                    GloveController.fingerBendLeft(i, fingerBendDataLeft);
+                  
                     LeftFingerController.bendFinger(i, fingerBendDataLeft); // send finger bend data to UI
                     StageLeftFingerController.bendFinger(i, fingerBendDataLeft);
                     //FountainRSController.fountainHeightLeft(i, fingerBendDataLeft);
@@ -452,7 +428,7 @@ namespace UniOSC
                 {
                  //   Debug.Log("right data");
                     float fingerBendDataRight = (float)msg.Data[0];
-                    GloveController.fingerBendRight(i, fingerBendDataRight);
+                   
                     RightFingerController.bendFinger(i, fingerBendDataRight); // send finger bend data to UI
                     StageRightFingerController.bendFinger(i, fingerBendDataRight);
                     //FountainRSController.fountainHeightRight(4-i, fingerBendDataRight);
@@ -543,7 +519,7 @@ namespace UniOSC
             }
         }
 
-        private void SynphonyGloveData()
+        private void rsGloveData()
         {
             // syncphony glove finger bends
             if (msg.Address.Contains(oscLeftHandFingers))

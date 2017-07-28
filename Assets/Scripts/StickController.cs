@@ -36,20 +36,14 @@ public class StickController : MonoBehaviour
             drumstickAnimator.SetTrigger("drumhit");
         }
 
+
+        // trigger idle stick position if not hit data received after hit
         if (!receivedHit)
         {
             drumstickAnimator.SetTrigger("stophit");
         }
-        // if(drumstickAnimator.)
-        /*
-        if (Input.GetKeyDown(GameControllerVR.HOTKEY_GLOVE_DATA))
-        {
-            GameObject leftHud = LeftHandObject.transform.GetChild(1).gameObject;
-            leftHud.SetActive(!leftHud.activeSelf);
-            GameObject rightHud = RightHandObject.transform.GetChild(1).gameObject;
-            rightHud.SetActive(!rightHud.activeSelf);
-        }
-        */
+
+        
     }
 
 
@@ -82,6 +76,7 @@ public class StickController : MonoBehaviour
         return transformToMove.localPosition;
     }
 
+    // sets position of stick either within a zone or using raw UWB
     public void SetStickPositionWithZone( Vector3 rawPosition, Vector3 ZonePosition) {
 
         Vector3 position = rawPosition;
@@ -117,6 +112,7 @@ public class StickController : MonoBehaviour
 
     }
 
+    // trigger drumhit position if received hit
    public void drumHit(bool isHit)
     {
         drumstickAnimator.SetTrigger("drumhit");
