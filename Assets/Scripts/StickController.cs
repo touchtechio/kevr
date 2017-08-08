@@ -8,7 +8,7 @@ public class StickController : MonoBehaviour
 {
 
     public GameObject stickObject1;
-    public GameObject StageBoundaries;
+   // public GameObject StageBoundaries;
     Animator drumstickAnimator;
     bool receivedHit = false;
     public bool stickUsingRaw = false;
@@ -16,7 +16,7 @@ public class StickController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        drumstickAnimator = GameObject.Find("drumsticks").GetComponent<Animator>();
+        drumstickAnimator = GameObject.Find("Drumsticks").GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -103,12 +103,12 @@ public class StickController : MonoBehaviour
         pos = new Vector3(x, y, z); // passed in floats from OSC
         transformToMove.localPosition = pos;
     
-
+        /*
         // using left glove to set boundaries of drumstage
         Transform transformToMoveCube = StageBoundaries.GetComponent<Transform>();
         Vector3 posCube;
         posCube = new Vector3(x, y, z);
-        transformToMoveCube.localPosition = posCube;
+        transformToMoveCube.localPosition = posCube;*/
 
     }
 
