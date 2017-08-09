@@ -12,6 +12,7 @@ public class StickController : MonoBehaviour
     Animator drumstickAnimator;
     bool receivedHit = false;
     public bool stickUsingRaw = false;
+    private int degrees;
 
     // Use this for initialization
     void Start()
@@ -26,6 +27,7 @@ public class StickController : MonoBehaviour
         {
 
             stickObject1.SetActive(!stickObject1.activeSelf);
+         
 
 
         }
@@ -34,6 +36,7 @@ public class StickController : MonoBehaviour
         {
 
             drumstickAnimator.SetTrigger("drumhit");
+            //SetWristAngle(stickObject1, degrees);
         }
 
 
@@ -47,26 +50,17 @@ public class StickController : MonoBehaviour
     }
 
 
-    internal void SetWristAngle(GameObject Hand, int degrees)
+    public void SetStickAngle(GameObject stickObject, int degrees)
     {
         //sets positional transform of the whole hand
-        Transform transform = Hand.GetComponent<Transform>();
+        Transform transform = stickObject.GetComponent<Transform>();
         //  transform.rotation = Quaternion.Euler(-90, 180, 0) * Quaternion.Euler(0, -degrees - 90, 0);
-        transform.GetChild(0).rotation = Quaternion.Euler(0, 0, degrees);
+        transform.rotation = Quaternion.Euler(90, degrees, 0); // add 90 to start it at same position as zone 1
+        Debug.Log("stick rotated");
 
 
     }
 
-    internal void SetStickAngle(int degrees)
-    {
-        SetWristAngle(stickObject1, degrees + 25);
-        // send wrist rotation data to UI
-        //leftRotation.text = ((int)degrees).ToString();
-        //leftRotDial.transform.rotation = Quaternion.Euler(0,0,degrees);
-        //leftRotDial.fillAmount = ((float)(degrees+30) / 120.0f);
-        //Debug.Log("rotation" + degrees);
-        //Debug.Log("rotation"+ leftRotDial.fillAmount);
-    }
 
 
     // get position of stick based on position coordinates from OSC
@@ -96,6 +90,7 @@ public class StickController : MonoBehaviour
 
 
     // position stick in game based on position coordinates from OSC
+    // to do pass in rotation!!!
     public void SetStickPosition(float x, float y, float z)
     {
         Transform transformToMove = stickObject1.GetComponent<Transform>();

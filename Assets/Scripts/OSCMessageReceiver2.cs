@@ -26,7 +26,8 @@ namespace UniOSC
         //public OSCDataMapper dataScript; // no longer using this
         public ZoneControllerSingleAny ZoneController;
         public ZoneControllerSingleAny ZoneController2;
-        public ZoneControllerStageMess ZoneControllerStage;
+        public ZoneControllerStageRadial ZoneControllerStageRadial;
+        public ZoneControllerStageMess ZoneControllerStageSquare;
         public GloveController GloveController;
         public GloveController StageGloveController;
         public StickController StageStickController;
@@ -239,7 +240,7 @@ namespace UniOSC
                // StageGloveController.SetLeftPosition(xPos, yPos, zPos);
 
                // ZoneControllerStage.UpdateZone(xPos, yPos, zPos);
-                Vector3 currentZoneObjectPosition = ZoneControllerStage.GetZoneObjectPosition();
+                Vector3 currentZoneObjectPosition = ZoneControllerStageSquare.GetZoneObjectPosition();
                 StageGloveController.SetLeftGlovePositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
             }
 
@@ -251,8 +252,8 @@ namespace UniOSC
 
                 //Debug.Log("stage-pos-right: " + xPos + " " + yPos + " " + zPos);
                // StageGloveController.SetRightPosition(xPos, yPos, zPos);
-                ZoneControllerStage.UpdateZone(xPos, yPos, zPos);
-                Vector3 currentZoneObjectPosition = ZoneControllerStage.GetZoneObjectPosition();
+                ZoneControllerStageRadial.UpdateZone(xPos, yPos, zPos);
+                Vector3 currentZoneObjectPosition = ZoneControllerStageSquare.GetZoneObjectPosition();
                 StageGloveController.SetRightGlovePositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
                    
             }
@@ -328,8 +329,8 @@ namespace UniOSC
                 yPos = 1.0f;
                 //yPos = 0.5f;
 
-                ZoneControllerStage.UpdateZone(xPos, yPos, zPos);
-                Vector3 currentZoneObjectPosition = ZoneControllerStage.GetZoneObjectPosition();
+                ZoneControllerStageRadial.UpdateZone(xPos, yPos, zPos); // sends in new stick positions
+                Vector3 currentZoneObjectPosition = ZoneControllerStageRadial.GetStickPosition(); // figures out where the stick should be on stage
                 StageStickController.SetStickPositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
             }
 
