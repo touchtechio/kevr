@@ -22,9 +22,9 @@ public class ParticleLauncher : MonoBehaviour
 
         {
 
-            ParticleSystem.MainModule psMain = particleLauncher[0].main; // calling variables from the main module
+           // ParticleSystem.MainModule psMain = particleLauncher[0].main; // calling variables from the main module
             // psMain.startColor = particleColorGradient.Evaluate(UnityEngine.Random.Range(0f, 1f));
-            particleLauncher[0].Emit(1);
+            //particleLauncher[0].Emit(1);
         }
         
 

@@ -41,8 +41,6 @@ namespace UniOSC
 		public ParticleLauncher ParticleLauncherRight;
         public FingerControl IMURightFingerController;
 
-
-
         OscMessage msg;
 
         //imu glove osc addresse
@@ -53,14 +51,14 @@ namespace UniOSC
         private const string oscTap = "gesture/ring-right-hand/tap";
         private const string oscOrientation = "motion/ring-right-hand/orientation";
         private const string oscOmni = "gesture/ring-right-hand/omni";
-        private const string oscRightHandFingers = "gesture/right-hand/fingers";
-        private const string oscLeftHandFingers = "gesture/left-hand/fingers";
+        private const string oscRightHandFingers = "gesture/right-hand/fingers"; // bend data
+        private const string oscLeftHandFingers = "gesture/left-hand/fingers"; // bend data
         private const string oscRightHandWrist = "gesture/right-hand/wrist";
         private const string oscLeftHandWrist = "gesture/left-hand/wrist";
         private const string oscLeftNote = "midi/1";
         private const string oscRighttNote = "midi/2";
-        private const string oscLeftWristCc = "midicc/1";
-        private const string oscRightWristCc = "midicc/2";
+        private const string oscLeftWristCc = "midicc/1/1";
+        private const string oscRightWristCc = "midicc/2/1";
 
 
         //Touch OSC addresses
@@ -139,7 +137,17 @@ namespace UniOSC
             msg = (OscMessage)args.Packet;
            
 
-           // Debug.Log (msg.Data[1]);
+            //Debug.Log (msg.Address + ", "+ msg.Data[0] + ", " + msg.Data[1]+ ", "+ msg.Data[2] + ", " + msg.Data[3] + ", " + msg.Data[4] );
+            string o = "";
+
+            for (int i = 0; i < msg.Data.Count; i++)
+            {
+                o = msg.Address.ToString();
+                o += " , ";
+                o += msg.Data[i].ToString();
+            }
+            Debug.LogWarning(o);
+
             LastMessageUpdate();
             if (msg.Data.Count < 1 || isLive != true) return;
 
@@ -286,7 +294,7 @@ namespace UniOSC
                 StageGloveController.SetRightWristAngle(-degrees);
             }
 
-            // syncphony glove MIDI note hits
+            // syncphony stage glove MIDI note hits
             if (msg.Address.Contains(oscLeftNote))
             {
                 int note = (int)msg.Data[1];
@@ -588,14 +596,15 @@ namespace UniOSC
             {
                 int note = (int)msg.Data[1];
                 int droneGroup = 4 - (note - leftGloveMidiStart);
-               // Debug.Log("left-note:" + note + " droneGroup:" + droneGroup);
+                Debug.Log("left-note:" + note + " droneGroup:" + droneGroup);
                 DroneController.LeftNoteHit(droneGroup); // note is a midi note
 
                 int fountainNumber = leftGloveMidiStart - note + 4;
-                //Debug.Log("left-note:" + note + " fountainNumber:" + fountainNumber);
-
+              //  Debug.Log("left-note:" + note + " fountainNumber:" + fountainNumber);
+                StageLeftFingerController.FingerZoneTrigger(fountainNumber);
                 FountainRSController.fountainMidiLeft(fountainNumber);
                 ParticleLauncherLeft.launchParticle(fountainNumber);
+                
             }
 
             if (msg.Address.Contains(oscRighttNote))
@@ -607,6 +616,7 @@ namespace UniOSC
 
                 int fountainNumber = note - rightGloveMidiStart;
                 //Debug.Log("right-note:" + fountainNumber);
+                StageRightFingerController.FingerZoneTrigger(fountainNumber-5);
                 FountainRSController.fountainMidiRight(fountainNumber-5);
                 ParticleLauncherRight.launchParticle(fountainNumber-5);
 
