@@ -10,6 +10,10 @@ public class ZoneControllerStageRadial : MonoBehaviour
 
     public StickController stickController;
     public GameObject drumstick;
+    public GameObject drumstick2;
+
+    public DrumAudio[] drumAudioAray;
+    
 
     [Range(2, 8)]
     public int stageZoneSlices = 6;
@@ -24,7 +28,7 @@ public class ZoneControllerStageRadial : MonoBehaviour
     GameObject[] stageZoneY;
     float[] xPosRange;
     float[] zPosRange;
-    GameObject[] stageZonesArray;
+    public GameObject[] stageZonesArray;
     // List<GameObject> zoneLeft;
     GameObject[,] stageZonesMatrix;
 
@@ -57,7 +61,6 @@ public class ZoneControllerStageRadial : MonoBehaviour
 
     Hashtable guitarName = new Hashtable();
 
-
     public Transform FrontLeft;
     public Transform FrontRight;
     public Transform BackLeft;
@@ -75,9 +78,10 @@ public class ZoneControllerStageRadial : MonoBehaviour
     float distanceX; // full width of stage
     float distanceZ; // full depth of stage
     public float drumRadius = 0.5f; // distance from center
+  
     float zoneZoffset;
 
-    int selectedZone;
+    public int selectedZone= 0;
     int selectedCol;
     float zoneCenterXPoint;
     float zoneCenterZPoint;
@@ -86,7 +90,7 @@ public class ZoneControllerStageRadial : MonoBehaviour
     public float[] xOffsetRadialArray;
     public float[] zOffsetRadialArray;
     private string[] keypresses = { "q", "w", "e", "r", "t", "y", "u", "i" };
-
+    
 
     void Start()
     {
@@ -103,12 +107,14 @@ public class ZoneControllerStageRadial : MonoBehaviour
         //new Color(255f / i, 255f / i * 0.8f, 255f / i * 0.6f, 0.2f)
 
         InstantiateZoneDrumObjects();
+
         Debug.Log("drum stage data in");
     }
     
     private void Update()
     {
         setZoneWithKeypress();
+       
     }
 
     public void InstantiateZoneDrumObjects()
@@ -138,10 +144,8 @@ public class ZoneControllerStageRadial : MonoBehaviour
             zone.name = "stage-zone-" + i;
             zone.transform.parent = transform;
             zone.SetActive(true);
-
+         
             stageZonesArray[i] = zone;
-
-
 
         }
 
@@ -192,52 +196,31 @@ public class ZoneControllerStageRadial : MonoBehaviour
         selectedZoneObject.GetComponentInChildren<MeshRenderer>().material.color = zoneColors[selectedZone];
     }
 
-    void setZoneWithKeypress()
+    public void setZoneWithKeypress()
     {
         for (int i = 0; i < stageZoneSlices; i++)
         {
             if (Input.GetKeyDown(keypresses[i]))
             {
                 selectedZone = i;
+                //Debug.Log(selectedZone);
                 GameObject selectedZoneObject = stageZonesArray[i];
                 RadialZoneColor(selectedZoneObject);
                 stickController.SetStickPosition(xOffsetRadialArray[i] / 2, 0, zOffsetRadialArray[i] / 2);
                 stickController.SetStickAngle(drumstick, i * 360 / stageZoneSlices);
-
                 return;
             }
 
         }
-            /*
-            if (Input.GetKeyDown("q"))
-        {
-            selectedZone = 0;
-            GameObject selectedZoneObject = stageZonesArray[0];
-            RadialZoneColor(selectedZoneObject);
-            stickController.SetStickPosition(xOffsetRadialArray[0]/2, 0, zOffsetRadialArray[0]/2);
-            stickController.SetStickAngle(drumstick, 0 * 360 / stageZoneSlices);
+         
 
-            return;
-        }
+    }
+    // returns zone to the stck controller
+    public int GetZone()
+    {
+        Debug.Log(selectedZone);
+        return selectedZone;
 
-        if (Input.GetKeyDown("w"))
-        {
-            selectedZone = 1;
-            GameObject selectedZoneObject = stageZonesArray[1];
-            RadialZoneColor(selectedZoneObject);
-            stickController.SetStickPosition(xOffsetRadialArray[1]/2, 0, zOffsetRadialArray[1]/2);
-            stickController.SetStickAngle(drumstick, 1 * 360 / stageZoneSlices);
-            return;
-        }
-
-        if (Input.GetKeyDown("e"))
-        {
-            selectedZone = 2;
-            GameObject selectedZoneObject = stageZonesArray[2];
-            RadialZoneColor(selectedZoneObject);
-            stickController.SetStickAngle(drumstick, 2 * 360 / stageZoneSlices);
-            return;
-        }*/
     }
     // figures out which zone the stick has landed in and returns that drum and zone number
     internal GameObject GetStageRadialZone(float xPos, float zPos)

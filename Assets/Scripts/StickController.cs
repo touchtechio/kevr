@@ -13,16 +13,19 @@ public class StickController : MonoBehaviour
     bool receivedHit = false;
     public bool stickUsingRaw = false;
     private int degrees;
-
+    public ZoneControllerStageRadial zoneControllerStageRadial;
     // Use this for initialization
     void Start()
     {
         drumstickAnimator = GameObject.Find("Drumsticks").GetComponent<Animator>();
+        zoneControllerStageRadial = FindObjectOfType<ZoneControllerStageRadial>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+     
         if (Input.GetKeyDown(GameControllerVR.HOTKEY_GLOVE))
         {
 
@@ -36,6 +39,8 @@ public class StickController : MonoBehaviour
         {
 
             drumstickAnimator.SetTrigger("drumhit");
+            int zoneNumber = zoneControllerStageRadial.GetZone();
+            zoneControllerStageRadial.stageZonesArray[zoneNumber].GetComponent<DrumAudio>().playDrum1();
             //SetWristAngle(stickObject1, degrees);
         }
 
@@ -45,8 +50,8 @@ public class StickController : MonoBehaviour
         {
             drumstickAnimator.SetTrigger("stophit");
         }
-
         
+
     }
 
 
@@ -57,8 +62,6 @@ public class StickController : MonoBehaviour
         //  transform.rotation = Quaternion.Euler(-90, 180, 0) * Quaternion.Euler(0, -degrees - 90, 0);
         transform.rotation = Quaternion.Euler(90, degrees, 0); // add 90 to start it at same position as zone 1
         Debug.Log("stick rotated");
-
-
     }
 
 
