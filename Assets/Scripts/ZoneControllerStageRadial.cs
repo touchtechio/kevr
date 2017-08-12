@@ -10,12 +10,12 @@ public class ZoneControllerStageRadial : MonoBehaviour
 
     public StickController stickController;
     public GameObject drumstick;
-    public GameObject drumstick2;
+
 
     public DrumAudio[] drumAudioAray;
     
 
-    [Range(2, 8)]
+    [Range(2, 10)]
     public int stageZoneSlices = 6;
 
     public GameObject drumObject;

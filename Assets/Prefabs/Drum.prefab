@@ -31,7 +31,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4167089687064288
 Transform:
   m_ObjectHideFlags: 1
@@ -189,8 +189,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c4b2d3d07110442a410400bb3c16fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  taiko1: {fileID: 8300000, guid: 2e9fb96b8ddb8ed4b994ff7e5edd9132, type: 3}
-  taiko2: {fileID: 0}
+  taiko1: {fileID: 8300000, guid: 56278d72ec31d2a4495739e5cc1a2d2b, type: 3}
+  taiko2: {fileID: 8300000, guid: 9d540af9ffc77aa48a8a78559b77f202, type: 3}
+  taiko3: {fileID: 8300000, guid: 4348df7f7e3c5324083f94ca519f75a6, type: 3}
+  taiko4: {fileID: 8300000, guid: efd690bd05a504f4ca99a50c6f2abdbb, type: 3}
+  taiko5: {fileID: 8300000, guid: 5c1150c338387da47a9607682463c6d2, type: 3}
+  taiko6: {fileID: 8300000, guid: f54758bab20022945979f07a7f2d2f26, type: 3}
+  taiko7: {fileID: 8300000, guid: 2b3098db16091254c8a4e8493c35971f, type: 3}
+  taiko8: {fileID: 8300000, guid: 2e9fb96b8ddb8ed4b994ff7e5edd9132, type: 3}
+  taiko9: {fileID: 8300000, guid: 7bc7328f121f60e45a9d32736ac90a41, type: 3}
+  drumName: {fileID: 0}
 --- !u!136 &136970027274364412
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -40,7 +40,7 @@ public class StickController : MonoBehaviour
 
             drumstickAnimator.SetTrigger("drumhit");
             int zoneNumber = zoneControllerStageRadial.GetZone();
-            zoneControllerStageRadial.stageZonesArray[zoneNumber].GetComponent<DrumAudio>().playDrum1();
+            zoneControllerStageRadial.stageZonesArray[zoneNumber].GetComponent<DrumAudio>().playDrum(zoneNumber);
             //SetWristAngle(stickObject1, degrees);
         }
 
@@ -81,12 +81,9 @@ public class StickController : MonoBehaviour
         if (!stickUsingRaw)
         {
             position = ZonePosition;
-
         }
-
         SetStickPosition(position[0], position[1], position[2]);
         //Debug.Log("stage-pos-right: " + position[0] + " " + position[1] + " " + position[2]);
-
         return;
 
     }
@@ -100,13 +97,6 @@ public class StickController : MonoBehaviour
         Vector3 pos;
         pos = new Vector3(x, y, z); // passed in floats from OSC
         transformToMove.localPosition = pos;
-    
-        /*
-        // using left glove to set boundaries of drumstage
-        Transform transformToMoveCube = StageBoundaries.GetComponent<Transform>();
-        Vector3 posCube;
-        posCube = new Vector3(x, y, z);
-        transformToMoveCube.localPosition = posCube;*/
 
     }
 

@@ -74,7 +74,7 @@ public class GloveController : MonoBehaviour
         SetWristAngle(RightHandObject, degrees);
         rightRotation.text = ((int)degrees).ToString();
        // leftRotDial.transform.rotation = Quaternion.Euler(0, 0, degrees);
-       rightRotDial.fillAmount = - (float)degrees/ 120;
+       rightRotDial.fillAmount = (float)degrees/ 120f;
 
       //  Debug.Log("rotation" + degrees);
       //  Debug.Log("rotation" + rightRotDial.fillAmount);
