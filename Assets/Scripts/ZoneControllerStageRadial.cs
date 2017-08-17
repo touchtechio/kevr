@@ -17,6 +17,9 @@ public class ZoneControllerStageRadial : MonoBehaviour
 
     [Range(2, 10)]
     public int stageZoneSlices = 6;
+    private List<int> radialStageZoneAngleList;
+    private int[] radialStageZoneAngleArray;
+    private float stickAngle;
 
     public GameObject drumObject;
     public GameObject[] stageDrums;
@@ -108,7 +111,28 @@ public class ZoneControllerStageRadial : MonoBehaviour
 
         InstantiateZoneDrumObjects();
 
-        Debug.Log("drum stage data in");
+        radialStageZoneAngleList = new List<int>();
+        for(int i = 0; i< stageZoneSlices; i++)
+        {
+            radialStageZoneAngleList.Add(360 / stageZoneSlices * i);
+            //Debug.Log("zone angle " + 360/stageZoneSlices * i);
+        }
+        
+        foreach (int elem in radialStageZoneAngleList)
+        {
+            Debug.Log(elem);
+        }
+
+        radialStageZoneAngleArray = radialStageZoneAngleList.ToArray();
+        /*
+        for (int i = 0; i < radialStageZoneAngleArray.Length; i++)
+        {
+            
+            Debug.Log("zone angle " + radialStageZoneAngleArray[i]);
+        }*/
+
+
+        Debug.Log("drum stage data in ");
     }
     
     private void Update()
@@ -119,7 +143,7 @@ public class ZoneControllerStageRadial : MonoBehaviour
 
     public void InstantiateZoneDrumObjects()
     {
-        Debug.Log("instantiating" + stageZoneSlices + "objects");
+        Debug.Log("instantiating " + stageZoneSlices + " objects");
         int radialDegrees = 360 / stageZoneSlices;
         //  FrontLeft.position += new Vector3(0, stageHeightOffGround, 0); // set the stage height for zone starting height;
 
@@ -136,6 +160,7 @@ public class ZoneControllerStageRadial : MonoBehaviour
             xOffsetRadialArray[i] = xOffsetRadial;
             zOffsetRadialArray[i] = zOffsetRadial;
             // sin(pi) is one loop
+            // tilt the drums a little
             float tiltDegreesX = Mathf.Rad2Deg * Mathf.Cos(Mathf.PI / (stageZoneSlices / 2) * i);
             float tiltDegreesZ = Mathf.Rad2Deg * Mathf.Sin(Mathf.PI / (stageZoneSlices / 2) * i);
             percentageTilt = 0.3f;
@@ -204,10 +229,10 @@ public class ZoneControllerStageRadial : MonoBehaviour
             {
                 selectedZone = i;
                 //Debug.Log(selectedZone);
-                GameObject selectedZoneObject = stageZonesArray[i];
+                GameObject selectedZoneObject = stageZonesArray[selectedZone];
                 RadialZoneColor(selectedZoneObject);
                 stickController.SetStickPosition(xOffsetRadialArray[i] / 2, 0, zOffsetRadialArray[i] / 2);
-                stickController.SetStickAngle(drumstick, i * 360 / stageZoneSlices);
+                stickController.SetStickAngle(drumstick, selectedZone * 360 / stageZoneSlices);
                 return;
             }
 
@@ -229,21 +254,26 @@ public class ZoneControllerStageRadial : MonoBehaviour
         // check input x,z position from syncphony and calculate the angle, compare againsts angles above
         // if mathf.arctan() < angle etc
         // return zone
-
-        for (int i = 0; i < xPosRange.Length - 1; i++)
+        stickAngle = (Mathf.Rad2Deg * Mathf.Atan2(-(zPos + 0.8128f), xPos))+180;
+       // Debug.Log(stickAngle + "stick angle, " + xPos + " x, " + (zPos+0.8) + " z ");
+        //Debug.Log(stickAngle);
+        for (int i = 0; i < stageZoneSlices; i++)
         {
-
-            if ((xPos > xPosRange[i]) && (xPos < xPosRange[i + 1]))
+            //  Debug.Log("zone angles " + radialStageZoneAngleArray[i]);
+            if ( stickAngle < radialStageZoneAngleArray[i])
             {
-                // Debug.Log(xPos + ": in x zone: " + i);
-                // Debug.Log(zPos + ": in z zone: " + j);
+                
+                 Debug.Log("stick in x zone: " + i);
+ 
+                // shifting zones by -1, as zone 0 is actually last zone
                 selectedZone = i;
-                return stageZonesArray[i];
-            }
+                return stageZonesArray[selectedZone];
+            } 
         }
 
-        //Debug.Log(xPos + "x" + zPos +"z" +": did not fall into zones");
-        return null;
+        Debug.LogError(stickAngle + "stick angle " + xPos + "x" + zPos +"z" +": did not fall into zones");
+        selectedZone = 0;
+        return stageZonesArray[selectedZone];
     }
 
 
@@ -270,17 +300,15 @@ public class ZoneControllerStageRadial : MonoBehaviour
             return;
         }
 
-        // left zones filled
 
-        ZoneHeightBlock(selectedZoneObject, yPos);
+        //// changes zone height
+       // ZoneHeightBlock(selectedZoneObject, yPos);
 
         // sets zone color and HUD zone height fill for right hand
         RadialZoneColor(selectedZoneObject);
         //HUDyPosRight.fillAmount = yPos;
 
-        //Vector3 zoneCenter = selectedZoneObject.GetComponent<Renderer>().bounds.center;
-        //Debug.Log("zoneCenterPont" + zoneCenter[0]);
-        // Debug.Log("ypos: " + yPos);
+         Debug.Log("ypos: " + yPos);
 
         return;
     }
@@ -297,6 +325,9 @@ public class ZoneControllerStageRadial : MonoBehaviour
     // sets up the ideal position for the zone object using the positions from above
     public Vector3 GetStickPosition()
     {
+        zoneCenterYPoint = 0f;
+        zoneCenterXPoint = xOffsetRadialArray[selectedZone] *0.7f;
+        zoneCenterZPoint = zOffsetRadialArray[selectedZone] * 0.7f;
         return new Vector3(zoneCenterXPoint, zoneCenterYPoint, zoneCenterZPoint);
     }
 

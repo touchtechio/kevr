@@ -138,9 +138,21 @@ namespace UniOSC
         {
         
             msg = (OscMessage)args.Packet;
-           
 
-           // Debug.Log (msg.Data[1]);
+            string o = "";
+
+            for (int i = 0; i < msg.Data.Count; i++)
+            {
+                o = msg.Address.ToString();
+                o += " , ";
+                o += msg.Data[i].ToString();
+            }
+            Debug.LogWarning(o);
+
+            LastMessageUpdate();
+            if (msg.Data.Count < 1 || isLive != true) return;
+
+            // Debug.Log (msg.Data[1]);
             LastMessageUpdate();
             if (msg.Data.Count < 1 || isLive != true) return;
 
@@ -236,7 +248,7 @@ namespace UniOSC
                 float zPos = -(float)msg.Data[1];
                 float yPos = (float)msg.Data[2];
    
-               // Debug.Log("stage-pos-left: " + xPos + " " + yPos + " " + zPos);
+                Debug.Log("stage-pos-left: " + xPos + " " + yPos + " " + zPos);
                // StageGloveController.SetLeftPosition(xPos, yPos, zPos);
 
                // ZoneControllerStage.UpdateZone(xPos, yPos, zPos);
@@ -324,14 +336,20 @@ namespace UniOSC
                 float xPos = -(float)msg.Data[0];
                 float zPos = -(float)msg.Data[1];
                 float yPos = (float)msg.Data[2];
-                //Debug.Log("stick-pos: " + xPos + " " + yPos + " " + zPos);
+               // Debug.Log("stick-pos: " + xPos + " " + yPos + " " + zPos);
                 // hard coding y pos
-                yPos = 1.0f;
+                yPos = 0f;
                 //yPos = 0.5f;
 
                 ZoneControllerStageRadial.UpdateZone(xPos, yPos, zPos); // sends in new stick positions
                 Vector3 currentZoneObjectPosition = ZoneControllerStageRadial.GetStickPosition(); // figures out where the stick should be on stage
                 StageStickController.SetStickPositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
+                GameObject drumstick = ZoneControllerStageRadial.drumstick;
+                int selectedZone = ZoneControllerStageRadial.selectedZone;
+                int stageZoneSlices = ZoneControllerStageRadial.stageZoneSlices;
+                StageStickController.SetStickAngle(drumstick, selectedZone * 360 / stageZoneSlices);
+                // for radial zone calc
+
             }
 
             if (msg.Address.Contains(stageHit))
@@ -340,7 +358,7 @@ namespace UniOSC
                 int channel = (int)msg.Data[0];
                 //  float hitVel = (float)msg.Data[1];
 
-                //Debug.Log("detected hit" + channel);
+                Debug.Log("detected hit " + channel);
                 // hard coding y pos
                 if (channel != LastHit)
                 {

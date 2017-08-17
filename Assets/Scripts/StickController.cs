@@ -39,18 +39,20 @@ public class StickController : MonoBehaviour
         {
 
             drumstickAnimator.SetTrigger("drumhit");
+            Debug.Log("drumhit");
+           // receivedHit = false;
             int zoneNumber = zoneControllerStageRadial.GetZone();
             zoneControllerStageRadial.stageZonesArray[zoneNumber].GetComponent<DrumAudio>().playDrum(zoneNumber);
             //SetWristAngle(stickObject1, degrees);
         }
 
-
+        /*
         // trigger idle stick position if not hit data received after hit
-        if (!receivedHit)
+        if (Input.GetKeyUp(GameControllerVR.HOTKEY_STICK) | !receivedHit)
         {
             drumstickAnimator.SetTrigger("stophit");
         }
-        
+        */
 
     }
 
@@ -103,7 +105,8 @@ public class StickController : MonoBehaviour
     // trigger drumhit position if received hit
    public void drumHit(bool isHit)
     {
-        drumstickAnimator.SetTrigger("drumhit");
-        receivedHit = false;
+         drumstickAnimator.SetTrigger("drumhit");
+       // transform.rotation =  Quaternion.Euler( 30 * Time.deltaTime , 0, 0);
+        //receivedHit = false;
     }
 }
