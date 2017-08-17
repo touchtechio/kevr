@@ -46,13 +46,13 @@ public class StickController : MonoBehaviour
             //SetWristAngle(stickObject1, degrees);
         }
 
-        /*
+        
         // trigger idle stick position if not hit data received after hit
         if (Input.GetKeyUp(GameControllerVR.HOTKEY_STICK) | !receivedHit)
         {
             drumstickAnimator.SetTrigger("stophit");
         }
-        */
+        
 
     }
 
@@ -63,7 +63,7 @@ public class StickController : MonoBehaviour
         Transform transform = stickObject.GetComponent<Transform>();
         //  transform.rotation = Quaternion.Euler(-90, 180, 0) * Quaternion.Euler(0, -degrees - 90, 0);
         transform.rotation = Quaternion.Euler(90, degrees, 0); // add 90 to start it at same position as zone 1
-        Debug.Log("stick rotated");
+     //   Debug.Log("stick rotated");
     }
 
 
@@ -107,6 +107,6 @@ public class StickController : MonoBehaviour
     {
          drumstickAnimator.SetTrigger("drumhit");
        // transform.rotation =  Quaternion.Euler( 30 * Time.deltaTime , 0, 0);
-        //receivedHit = false;
+        receivedHit = false;
     }
 }

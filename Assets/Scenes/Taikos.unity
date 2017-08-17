@@ -218,7 +218,8 @@ MonoBehaviour:
   _useExplicitConnection: 1
   _explicitConnection: {fileID: 219182282}
   _drawDefaultInspector: 1
-  _myOSCConnections: []
+  _myOSCConnections:
+  - {fileID: 219182282}
   downOSCDataValue: 1
   upOSCDataValue: 0
   showGUI: 0
@@ -280,7 +281,7 @@ MonoBehaviour:
   _transmissionTypeIn: 0
   _transmissionTypeOut: 0
   autoConnectOSCIn: 1
-  _oscPort: 8005
+  _oscPort: 8000
   _isValidOscIPAddress: 1
   _isValidOscMulticastIPAddress: 1
   _oscMulticastIPAddress: 224.220.51.51
@@ -530,23 +531,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _oscAddress: /
   _oscAddresses:
-  - 
-  _receiveAllAddresses: 0
+  - /
+  _receiveAllAddresses: 1
   _useExplicitConnection: 0
   _explicitConnection: {fileID: 0}
-  _oscPort: 8005
-  _receiveAllPorts: 0
+  _oscPort: 0
+  _receiveAllPorts: 1
   _redrawFlag: 0
   _foldoutList: []
-  address: 
+  address: /10.10.10.70
   POS: 0
   ZoneController: {fileID: 0}
   ZoneController2: {fileID: 0}
-  ZoneControllerStageRadial: {fileID: 0}
+  ZoneControllerStageRadial: {fileID: 2045811016}
   ZoneControllerStageSquare: {fileID: 0}
   GloveController: {fileID: 0}
   StageGloveController: {fileID: 0}
-  StageStickController: {fileID: 0}
+  StageStickController: {fileID: 2045811014}
   FountainRSController: {fileID: 0}
   DroneController: {fileID: 0}
   DronePianoController: {fileID: 0}

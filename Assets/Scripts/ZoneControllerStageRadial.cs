@@ -250,12 +250,10 @@ public class ZoneControllerStageRadial : MonoBehaviour
     // figures out which zone the stick has landed in and returns that drum and zone number
     internal GameObject GetStageRadialZone(float xPos, float zPos)
     {
-        // TO DO!!!
-        // check input x,z position from syncphony and calculate the angle, compare againsts angles above
-        // if mathf.arctan() < angle etc
-        // return zone
+ 
         stickAngle = (Mathf.Rad2Deg * Mathf.Atan2(-(zPos + 0.8128f), xPos))+180;
-       // Debug.Log(stickAngle + "stick angle, " + xPos + " x, " + (zPos+0.8) + " z ");
+       // stickAngle = UnityEngine.Random.Range(90, 360);
+        Debug.Log(stickAngle + "stick angle, " + xPos + " x, " + (zPos+0.8) + " z ");
         //Debug.Log(stickAngle);
         for (int i = 0; i < stageZoneSlices; i++)
         {
@@ -308,7 +306,7 @@ public class ZoneControllerStageRadial : MonoBehaviour
         RadialZoneColor(selectedZoneObject);
         //HUDyPosRight.fillAmount = yPos;
 
-         Debug.Log("ypos: " + yPos);
+      //   Debug.Log("ypos: " + yPos);
 
         return;
     }
