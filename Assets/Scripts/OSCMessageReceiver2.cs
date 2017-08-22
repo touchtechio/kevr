@@ -108,7 +108,7 @@ namespace UniOSC
         private const string stagePositionLeft = "position/left-hand";
         private const string stagePositionRight = "position/right-hand";
         private const string stagePositionDrum1 = "position/drum-stick";
-        private const string stageHit = "gesture/drum-stick/omni/";
+        private const string stageHit = "gesture/drum-stick/tap/";
 
 
         private string[] LeftNoteAddresses = { noteLeft1, noteLeft2, noteLeft3, noteLeft4, noteLeft5 };
@@ -264,7 +264,7 @@ namespace UniOSC
 
                 //Debug.Log("stage-pos-right: " + xPos + " " + yPos + " " + zPos);
                // StageGloveController.SetRightPosition(xPos, yPos, zPos);
-                ZoneControllerStageRadial.UpdateZone(xPos, yPos, zPos);
+                //ZoneControllerStageRadial.UpdateZone(xPos, yPos, zPos);
                 Vector3 currentZoneObjectPosition = ZoneControllerStageSquare.GetZoneObjectPosition();
                 StageGloveController.SetRightGlovePositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
                    
@@ -356,13 +356,13 @@ namespace UniOSC
             {
                 int LastHit = 0; // for deduping notes
                 int channel = (int)msg.Data[0];
-                //  float hitVel = (float)msg.Data[1];
+                int hitVel = (int)msg.Data[1];
 
                 Debug.Log("detected hit " + channel);
                 // hard coding y pos
                 if (channel != LastHit)
                 {
-                    StageStickController.drumHit(true);
+                    StageStickController.drumHit(true, hitVel);
                 }
 
                 LastHit = channel;

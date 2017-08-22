@@ -16,14 +16,15 @@ public class DrumAudio : MonoBehaviour {
     public AudioClip taiko8;
     public AudioClip taiko9;
     private AudioClip[] taikoSoundArray;
-    public Text drumName;
+
 
 
     // Use this for initialization
     void Start () {
         drumSource = GetComponent<AudioSource>();
         taikoSoundArray = new AudioClip[9] { taiko1, taiko2, taiko3, taiko4, taiko5, taiko6, taiko7, taiko8, taiko9 };
-        drumName = (Text)FindObjectOfType<Text>();
+      //  drumName = (Text)FindObjectOfType<Text>();
+       
 	}
 	
 	// Update is called once per frame
@@ -36,6 +37,7 @@ public class DrumAudio : MonoBehaviour {
         Debug.Log("play sound" + taiko1);
         drumSource.clip = taikoSoundArray[drumNumber];
         drumSource.Play();
-        drumName.text = drumSource.clip.name.ToString();
+        ZoneControllerStageRadial ZoneController = FindObjectOfType<ZoneControllerStageRadial>();
+        ZoneController.drumName.text = drumSource.clip.name.ToString();
     }
 }

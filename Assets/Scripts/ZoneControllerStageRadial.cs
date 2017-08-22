@@ -11,7 +11,6 @@ public class ZoneControllerStageRadial : MonoBehaviour
     public StickController stickController;
     public GameObject drumstick;
 
-
     public DrumAudio[] drumAudioAray;
     
 
@@ -47,28 +46,35 @@ public class ZoneControllerStageRadial : MonoBehaviour
 
     // [Header ("hello")]
     // [Space]
-    [Header("Zone UI Elements")]
-    public Image HUDxPosLeft;
-    public Image HUDxPosRight;
-    public Image HUDyPosLeft;
-    public Image HUDyPosRight;
 
-    public Text YPos;
-    public Text InstrumentName;
-    public Text ZPos;
-    public GloveController gloveController;
+    [Header("Zone UI Elements")]
+    public Text ZoneText;
+    public Text drumName;
+    /*
+public Image HUDxPosLeft;
+public Image HUDxPosRight;
+public Image HUDyPosLeft;
+public Image HUDyPosRight;
+
+public Text YPos;
+public Text InstrumentName;
+public Text ZPos;
+public GloveController gloveController;
+       */
+
     public bool fixedYHeight = true;
+ 
 
     String[] guitarTypes = { "Strat Solo", "Strat Chords", "Strat Chords", "Other" };
     int[] zonesUsed = { 0, 2, 6, 8 };
 
     Hashtable guitarName = new Hashtable();
-
+    /*
     public Transform FrontLeft;
     public Transform FrontRight;
     public Transform BackLeft;
     public Transform BackRight;
-
+    */
     // private Color zone1Color;
     static Color ocher = new Color(255 / 255f, 178 / 255f, 69 / 255f, 0.2f);
     static Color fuscia = new Color(255 / 255f, 79 / 255f, 218 / 255f, 0.2f);
@@ -110,6 +116,7 @@ public class ZoneControllerStageRadial : MonoBehaviour
         //new Color(255f / i, 255f / i * 0.8f, 255f / i * 0.6f, 0.2f)
 
         InstantiateZoneDrumObjects();
+        ZoneText.text = "0";
 
         radialStageZoneAngleList = new List<int>();
         for(int i = 0; i< stageZoneSlices; i++)
@@ -233,6 +240,7 @@ public class ZoneControllerStageRadial : MonoBehaviour
                 RadialZoneColor(selectedZoneObject);
                 stickController.SetStickPosition(xOffsetRadialArray[i] / 2, 0, zOffsetRadialArray[i] / 2);
                 stickController.SetStickAngle(drumstick, selectedZone * 360 / stageZoneSlices);
+                ZoneText.text = selectedZone.ToString();
                 return;
             }
 
@@ -265,6 +273,7 @@ public class ZoneControllerStageRadial : MonoBehaviour
  
                 // shifting zones by -1, as zone 0 is actually last zone
                 selectedZone = i;
+                ZoneText.text = selectedZone.ToString();
                 return stageZonesArray[selectedZone];
             } 
         }
