@@ -12,7 +12,7 @@ public class ZoneControllerStageRadial : MonoBehaviour
     public GameObject drumstick;
 
     public DrumAudio[] drumAudioAray;
-    
+
 
     [Range(2, 10)]
     public int stageZoneSlices = 6;
@@ -63,7 +63,7 @@ public GloveController gloveController;
        */
 
     public bool fixedYHeight = true;
- 
+
 
     String[] guitarTypes = { "Strat Solo", "Strat Chords", "Strat Chords", "Other" };
     int[] zonesUsed = { 0, 2, 6, 8 };
@@ -87,10 +87,10 @@ public GloveController gloveController;
     float distanceX; // full width of stage
     float distanceZ; // full depth of stage
     public float drumRadius = 0.5f; // distance from center
-  
+
     float zoneZoffset;
 
-    public int selectedZone= 0;
+    public int selectedZone = 0;
     int selectedCol;
     float zoneCenterXPoint;
     float zoneCenterZPoint;
@@ -99,12 +99,13 @@ public GloveController gloveController;
     public float[] xOffsetRadialArray;
     public float[] zOffsetRadialArray;
     private string[] keypresses = { "q", "w", "e", "r", "t", "y", "u", "i" };
-    
+
 
     void Start()
     {
         // adds list of guitar names and corresponding zones to hashtable
-        for (int i = 0; i < guitarTypes.Length; i++) {
+        for (int i = 0; i < guitarTypes.Length; i++)
+        {
             guitarName.Add(zonesUsed[i], guitarTypes[i]);
         }
 
@@ -119,12 +120,12 @@ public GloveController gloveController;
         ZoneText.text = "0";
 
         radialStageZoneAngleList = new List<int>();
-        for(int i = 0; i< stageZoneSlices; i++)
+        for (int i = 0; i < stageZoneSlices; i++)
         {
             radialStageZoneAngleList.Add(360 / stageZoneSlices * i);
             //Debug.Log("zone angle " + 360/stageZoneSlices * i);
         }
-        
+
         foreach (int elem in radialStageZoneAngleList)
         {
             Debug.Log(elem);
@@ -141,11 +142,11 @@ public GloveController gloveController;
 
         Debug.Log("drum stage data in ");
     }
-    
+
     private void Update()
     {
         setZoneWithKeypress();
-       
+
     }
 
     public void InstantiateZoneDrumObjects()
@@ -176,7 +177,7 @@ public GloveController gloveController;
             zone.name = "stage-zone-" + i;
             zone.transform.parent = transform;
             zone.SetActive(true);
-         
+
             stageZonesArray[i] = zone;
 
         }
@@ -194,15 +195,15 @@ public GloveController gloveController;
             stageZonesArray[i].SetActive(false);
             //  ZoneHeight(stageZonesMatrix[i, j], 0);
         }
-            // only change selected zone's height
-            zone.SetActive(true);
+        // only change selected zone's height
+        zone.SetActive(true);
 
-            if (fixedYHeight)
-            {
-                yPos = 1.0f;
-            }
+        if (fixedYHeight)
+        {
+            yPos = 1.0f;
+        }
 
-            ZoneHeight(zone, yPos);  
+        ZoneHeight(zone, yPos);
     }
 
     // sets the selected zone height and returns rest as zero
@@ -245,7 +246,7 @@ public GloveController gloveController;
             }
 
         }
-         
+
 
     }
     // returns zone to the stck controller
@@ -258,27 +259,27 @@ public GloveController gloveController;
     // figures out which zone the stick has landed in and returns that drum and zone number
     internal GameObject GetStageRadialZone(float xPos, float zPos)
     {
- 
-        stickAngle = (Mathf.Rad2Deg * Mathf.Atan2(-(zPos + 0.8128f), xPos))+180;
-       // stickAngle = UnityEngine.Random.Range(90, 360);
-        Debug.Log(stickAngle + "stick angle, " + xPos + " x, " + (zPos+0.8) + " z ");
+
+        stickAngle = (Mathf.Rad2Deg * Mathf.Atan2(-(zPos + 0.8128f), xPos)) + 180;
+        // stickAngle = UnityEngine.Random.Range(90, 360);
+        Debug.Log(stickAngle + "stick angle, " + xPos + " x, " + (zPos + 0.8) + " z ");
         //Debug.Log(stickAngle);
         for (int i = 0; i < stageZoneSlices; i++)
         {
             //  Debug.Log("zone angles " + radialStageZoneAngleArray[i]);
-            if ( stickAngle < radialStageZoneAngleArray[i])
+            if (stickAngle < radialStageZoneAngleArray[i])
             {
-                
-                 Debug.Log("stick in x zone: " + i);
- 
+
+                Debug.Log("stick in x zone: " + i);
+
                 // shifting zones by -1, as zone 0 is actually last zone
                 selectedZone = i;
                 ZoneText.text = selectedZone.ToString();
                 return stageZonesArray[selectedZone];
-            } 
+            }
         }
 
-        Debug.LogError(stickAngle + "stick angle " + xPos + "x" + zPos +"z" +": did not fall into zones");
+        Debug.LogError(stickAngle + "stick angle " + xPos + "x" + zPos + "z" + ": did not fall into zones");
         selectedZone = 0;
         return stageZonesArray[selectedZone];
     }
@@ -309,13 +310,13 @@ public GloveController gloveController;
 
 
         //// changes zone height
-       // ZoneHeightBlock(selectedZoneObject, yPos);
+        // ZoneHeightBlock(selectedZoneObject, yPos);
 
         // sets zone color and HUD zone height fill for right hand
         RadialZoneColor(selectedZoneObject);
         //HUDyPosRight.fillAmount = yPos;
 
-      //   Debug.Log("ypos: " + yPos);
+        //   Debug.Log("ypos: " + yPos);
 
         return;
     }
@@ -333,7 +334,7 @@ public GloveController gloveController;
     public Vector3 GetStickPosition()
     {
         zoneCenterYPoint = 0f;
-        zoneCenterXPoint = xOffsetRadialArray[selectedZone] *0.7f;
+        zoneCenterXPoint = xOffsetRadialArray[selectedZone] * 0.7f;
         zoneCenterZPoint = zOffsetRadialArray[selectedZone] * 0.7f;
         return new Vector3(zoneCenterXPoint, zoneCenterYPoint, zoneCenterZPoint);
     }

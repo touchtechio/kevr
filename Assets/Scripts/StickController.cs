@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UniOSC;
 
 public class StickController : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class StickController : MonoBehaviour
     private int degrees;
     public ZoneControllerStageRadial zoneControllerStageRadial;
     public Text hitVelocity;
+    public OSCSenderMidi oscSenderObject;
+    int[] midiNote = { 60, 61, 62, 63, 64, 65, 66, 67, 68, 69 };
+
     // Use this for initialization
     void Start()
     {
@@ -105,6 +109,7 @@ public class StickController : MonoBehaviour
         // receivedHit = false;
         int zoneNumber = zoneControllerStageRadial.GetZone();
         zoneControllerStageRadial.stageZonesArray[zoneNumber].GetComponent<DrumAudio>().playDrum(zoneNumber);
+        oscSenderObject.SendOSCTaikoMidi("midi/1", midiNote[zoneNumber], hitVel);
         // transform.rotation =  Quaternion.Euler( 30 * Time.deltaTime , 0, 0);
         receivedHit = false;
     }
