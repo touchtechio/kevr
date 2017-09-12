@@ -37,9 +37,12 @@ namespace UniOSC{
 
 		#region private
 		private bool _btnDown;
-		private GUIStyle _gs; 
+		private GUIStyle _gs;
 
-		#endregion
+        #endregion
+
+        int pitch = 0;
+        int velocity = 0;
 
 		public override void Awake()
 		{
@@ -49,9 +52,14 @@ namespace UniOSC{
         
 		public override void OnEnable ()
 		{
-			base.OnEnable ();
+            Debug.Log("ENABLE");
+
+            base.OnEnable ();
+            
             ClearData();
-           // AppendData(0f);
+            AppendData(pitch);
+            AppendData(velocity);
+          
 
 		}
         
@@ -111,12 +119,17 @@ namespace UniOSC{
 		public void SendOSCTaikoMidi(string address, int note, int velocity){
 
 			//_SetupOSCMessage (false);
+
 			if(_OSCeArg.Packet is OscMessage)
 			{
-				ClearData ();
-				AppendData (note);
-			    AppendData (velocity);
-                //((OscMessage)_OSCeArg.Packet).Append(duration);
+                OscMessage msg = ((OscMessage)_OSCeArg.Packet);
+
+              updateOscMidiData(msg, note, velocity); // set values to append to data
+             /*   	ClearData ();
+                    AppendData (note);
+                    AppendData (velocity);*/
+             //   ((OscMessage)_OSCeArg.Packet).UpdateDataAt(0, note);
+             //   ((OscMessage)_OSCeArg.Packet).UpdateDataAt(1, velocity);
                 Debug.Log("drum midi message: " + note);
 
             }
@@ -128,9 +141,17 @@ namespace UniOSC{
 			}
 
 			this.oscOutAddress = address;
-
 			_SendOSCMessage(_OSCeArg);
 		}
+
+        private void updateOscMidiData(OscMessage msg, int note, int velocity)
+        {
+            this.pitch = note;
+            this.velocity = velocity;
+            msg.UpdateDataAt(0, note);
+            msg.UpdateDataAt(1, velocity);
+
+        }
 
         /// <summary>
         /// Sends the OSC message with the downOSCDataValue.
