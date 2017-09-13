@@ -43,6 +43,7 @@ namespace UniOSC{
 
         int pitch = 0;
         int velocity = 0;
+        int channel = 0;
 
 		public override void Awake()
 		{
@@ -57,6 +58,7 @@ namespace UniOSC{
             base.OnEnable ();
             
             ClearData();
+            AppendData(channel);
             AppendData(pitch);
             AppendData(velocity);
           
@@ -116,7 +118,7 @@ namespace UniOSC{
 		}
 
 
-		public void SendOSCTaikoMidi(string address, int note, int velocity){
+		public void SendOSCTaikoMidi(string address, int note, int velocity, int channel){
 
 			//_SetupOSCMessage (false);
 
@@ -124,7 +126,7 @@ namespace UniOSC{
 			{
                 OscMessage msg = ((OscMessage)_OSCeArg.Packet);
 
-              updateOscMidiData(msg, note, velocity); // set values to append to data
+              updateOscMidiData(msg, note, velocity, channel); // set values to append to data
              /*   	ClearData ();
                     AppendData (note);
                     AppendData (velocity);*/
@@ -144,12 +146,13 @@ namespace UniOSC{
 			_SendOSCMessage(_OSCeArg);
 		}
 
-        private void updateOscMidiData(OscMessage msg, int note, int velocity)
+        private void updateOscMidiData(OscMessage msg, int note, int velocity, int channel)
         {
             this.pitch = note;
             this.velocity = velocity;
-            msg.UpdateDataAt(0, note);
-            msg.UpdateDataAt(1, velocity);
+            msg.UpdateDataAt(0, channel);
+            msg.UpdateDataAt(1, note);
+            msg.UpdateDataAt(2, velocity);
 
         }
 

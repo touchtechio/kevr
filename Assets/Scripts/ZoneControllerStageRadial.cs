@@ -8,8 +8,11 @@ using UnityEngine.UI;
 public class ZoneControllerStageRadial : MonoBehaviour
 {
 
-    public StickController stickController;
-    public GameObject drumstick;
+    public StickController stickControllerLeft;
+    public StickController stickControllerRight;
+    public GameObject drumstickLeft;
+    public GameObject drumstickRight;
+
 
     public DrumAudio[] drumAudioAray;
 
@@ -239,8 +242,8 @@ public GloveController gloveController;
                 //Debug.Log(selectedZone);
                 GameObject selectedZoneObject = stageZonesArray[selectedZone];
                 RadialZoneColor(selectedZoneObject);
-                stickController.SetStickPosition(xOffsetRadialArray[i] / 2, 0, zOffsetRadialArray[i] / 2);
-                stickController.SetStickAngle(drumstick, selectedZone * 360 / stageZoneSlices);
+                stickControllerLeft.SetLeftStickPosition(xOffsetRadialArray[i] / 2, 0, zOffsetRadialArray[i] / 2);
+                stickControllerLeft.SetLeftStickAngle(drumstickLeft, selectedZone * 360 / stageZoneSlices);
                 ZoneText.text = selectedZone.ToString();
                 return;
             }
@@ -300,7 +303,7 @@ public GloveController gloveController;
         GameObject selectedZoneObject = GetStageRadialZone(xPos, zPos);
 
         // do the calculation of where the stick should be located based on the selected zone
-        UpdateStickPosition(selectedZone);
+        UpdateLeftStickPosition(selectedZone);
 
         if (selectedZoneObject == null)
         {
@@ -322,7 +325,7 @@ public GloveController gloveController;
     }
 
     // returns the objects position with a radial offset
-    void UpdateStickPosition(int selectedZone)
+    void UpdateLeftStickPosition(int selectedZone)
     {
 
         zoneCenterXPoint = xOffsetRadialArray[selectedZone];
@@ -331,7 +334,7 @@ public GloveController gloveController;
     }
 
     // sets up the ideal position for the zone object using the positions from above
-    public Vector3 GetStickPosition()
+    public Vector3 GetLeftStickPosition()
     {
         zoneCenterYPoint = 0f;
         zoneCenterXPoint = xOffsetRadialArray[selectedZone] * 0.7f;

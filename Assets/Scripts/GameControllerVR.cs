@@ -53,8 +53,9 @@ public class GameControllerVR : MonoBehaviour
     internal static readonly KeyCode HOTKEY_SKYBOX_NEXT = KeyCode.RightBracket;
     internal static readonly KeyCode HOTKEY_PYRAMID_OPEN = KeyCode.Comma;
     internal static readonly KeyCode HOTKEY_PYRAMID_CLOSE = KeyCode.Period;
-    internal static readonly KeyCode HOTKEY_STICK = KeyCode.S;
- 
+    internal static readonly KeyCode HOTKEY_STICK_LEFT = KeyCode.A;
+    internal static readonly KeyCode HOTKEY_STICK_RIGHT = KeyCode.S;
+
     private GameObject[] HUDs;
 
 

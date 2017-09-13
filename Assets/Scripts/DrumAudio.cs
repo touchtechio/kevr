@@ -36,6 +36,7 @@ public class DrumAudio : MonoBehaviour {
     {
         Debug.Log("play sound" + taiko1);
         drumSource.clip = taikoSoundArray[drumNumber];
+        drumSource.volume = 0.2f;
         drumSource.Play();
         ZoneControllerStageRadial ZoneController = FindObjectOfType<ZoneControllerStageRadial>();
         ZoneController.drumName.text = drumSource.clip.name.ToString();

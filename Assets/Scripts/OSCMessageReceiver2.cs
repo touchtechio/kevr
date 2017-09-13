@@ -30,7 +30,8 @@ namespace UniOSC
         public ZoneControllerStageMess ZoneControllerStageSquare;
         public GloveController GloveController;
         public GloveController StageGloveController;
-        public StickController StageStickController;
+        public StickController StageStickControllerLeft;
+        public StickController StageStickControllerRight;
         public FountainRSControllerVR FountainRSController;
 		public DroneController DroneController;
 		public DronePianoController DronePianoController;
@@ -41,7 +42,6 @@ namespace UniOSC
         public ParticleLauncher ParticleLauncherLeft;
 		public ParticleLauncher ParticleLauncherRight;
         public FingerControl IMURightFingerController;
-
 
 
         OscMessage msg;
@@ -107,9 +107,10 @@ namespace UniOSC
         // position
         private const string stagePositionLeft = "position/left-hand";
         private const string stagePositionRight = "position/right-hand";
-        private const string stagePositionDrum1 = "position/drum-stick";
-        private const string stageHit = "gesture/drum-stick/tap/";
-
+        private const string stagePositionDrumLeft = "position/drum-left";
+        private const string stagePositionDrumRight = "position/drum-right";
+        private const string stageHitLeft = "gesture/drum-left/tap/";
+        private const string stageHitRight = "gesture/drum-right/tap/";
 
         private string[] LeftNoteAddresses = { noteLeft1, noteLeft2, noteLeft3, noteLeft4, noteLeft5 };
         private string[] RightNoteAddresses = { noteRight1, noteRight2, noteRight3, noteRight4, noteRight5 };
@@ -132,6 +133,9 @@ namespace UniOSC
 
         private int rightZoneData;
         private int leftZoneData;
+
+        private int LastHit = 0; // for deduping notes
+
 
         // upon message received from OSC, call LastMessageUpdate()
         public override void OnOSCMessageReceived(UniOSCEventArgs args)
@@ -331,7 +335,7 @@ namespace UniOSC
 
         private void StageStickData()
         {
-            if (msg.Address.Contains(stagePositionDrum1))
+            if (msg.Address.Contains(stagePositionDrumLeft))
             {
                 float xPos = -(float)msg.Data[0];
                 float zPos = -(float)msg.Data[1];
@@ -342,19 +346,39 @@ namespace UniOSC
                 //yPos = 0.5f;
 
                 ZoneControllerStageRadial.UpdateZone(xPos, yPos, zPos); // sends in new stick positions
-                Vector3 currentZoneObjectPosition = ZoneControllerStageRadial.GetStickPosition(); // figures out where the stick should be on stage
-                StageStickController.SetStickPositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
-                GameObject drumstick = ZoneControllerStageRadial.drumstick;
+                Vector3 currentZoneObjectPosition = ZoneControllerStageRadial.GetLeftStickPosition(); // figures out where the stick should be on stage
+                StageStickControllerLeft.SetLeftStickPositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
+                GameObject drumstick = ZoneControllerStageRadial.drumstickLeft;
                 int selectedZone = ZoneControllerStageRadial.selectedZone;
                 int stageZoneSlices = ZoneControllerStageRadial.stageZoneSlices;
-                StageStickController.SetStickAngle(drumstick, selectedZone * 360 / stageZoneSlices);
+                StageStickControllerLeft.SetLeftStickAngle(drumstick, selectedZone * 360 / stageZoneSlices);
                 // for radial zone calc
 
             }
 
-            if (msg.Address.Contains(stageHit))
+            if (msg.Address.Contains(stagePositionDrumRight))
             {
-                int LastHit = 0; // for deduping notes
+                float xPos = -(float)msg.Data[0];
+                float zPos = -(float)msg.Data[1];
+                float yPos = (float)msg.Data[2];
+                // Debug.Log("stick-pos: " + xPos + " " + yPos + " " + zPos);
+                // hard coding y pos
+                yPos = 0f;
+                //yPos = 0.5f;
+
+                ZoneControllerStageRadial.UpdateZone(xPos, yPos, zPos); // sends in new stick positions
+                Vector3 currentZoneObjectPosition = ZoneControllerStageRadial.GetLeftStickPosition(); // figures out where the stick should be on stage
+                StageStickControllerRight.SetRightStickPositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
+                GameObject drumstick = ZoneControllerStageRadial.drumstickRight;
+                int selectedZone = ZoneControllerStageRadial.selectedZone;
+                int stageZoneSlices = ZoneControllerStageRadial.stageZoneSlices;
+                StageStickControllerRight.SetRightStickAngle(drumstick, selectedZone * 360 / stageZoneSlices);
+                // for radial zone calc
+
+            }
+
+            if (msg.Address.Contains(stageHitLeft))
+            {
                 int channel = (int)msg.Data[0];
                 int hitVel = (int)msg.Data[1];
 
@@ -362,7 +386,26 @@ namespace UniOSC
                 // hard coding y pos
                 if (channel != LastHit)
                 {
-                    StageStickController.drumHit(true, hitVel);
+                    Debug.Log("detected NEW hit w seq " + channel);
+
+                    StageStickControllerLeft.drumHitLeft(true, hitVel, channel);
+                }
+
+                LastHit = channel;
+            }
+
+            if (msg.Address.Contains(stageHitRight))
+            {
+                int channel = (int)msg.Data[0];
+                int hitVel = (int)msg.Data[1];
+
+                Debug.Log("detected hit " + channel);
+                // hard coding y pos
+                if (channel != LastHit)
+                {
+                    Debug.Log("detected NEW hit w seq " + channel);
+
+                    StageStickControllerRight.drumHitRight(true, hitVel, channel);
                 }
 
                 LastHit = channel;
@@ -370,18 +413,19 @@ namespace UniOSC
 
         }
 
+
         // handles positioning from rs camera
         private void rsZones()
         {
             for (int i = 0; i < activeRealsense.Length; i++)
             {
-                int realsense = activeRealsense[i];
+ 
                     
                 //create zone objects
            
 
-                string leftCursor = "/cursor/s" + realsense + "/left";
-                string rightCursor = "/cursor/s" + realsense + "/right";
+                string leftCursor = "/cursor/s" + activeRealsense + "/left";
+                string rightCursor = "/cursor/s" + activeRealsense + "/right";
 
                 if (msg.Address.Contains(leftCursor) || msg.Address.Contains(rightCursor))
                 {

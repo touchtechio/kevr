@@ -183,7 +183,7 @@ namespace UniOSC
             StageGloveData();
 
             // handles stick hits as well as stage positioning
-            StageStickData();
+           // StageStickData();
 
         }
 
@@ -338,7 +338,7 @@ namespace UniOSC
 
                 ZoneControllerStage.UpdateZone(xPos, yPos, zPos);
                 Vector3 currentZoneObjectPosition = ZoneControllerStage.GetZoneObjectPosition();
-                StageStickController.SetStickPositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
+                StageStickController.SetLeftStickPositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
             }
 
             if (msg.Address.Contains(stageHit))
@@ -351,7 +351,7 @@ namespace UniOSC
                 // hard coding y pos
                 if (channel != LastHit)
                 {
-                    StageStickController.drumHit(true, hitVel);
+                    StageStickController.drumHitLeft(true, hitVel, channel);
                 }
 
                 LastHit = channel;
