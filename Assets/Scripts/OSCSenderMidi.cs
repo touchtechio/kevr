@@ -141,7 +141,7 @@ namespace UniOSC{
                 {
                 }
 			}
-
+            Debug.Log("midi channel is " + address);
 			this.oscOutAddress = address;
 			_SendOSCMessage(_OSCeArg);
 		}
@@ -150,6 +150,7 @@ namespace UniOSC{
         {
             this.pitch = note;
             this.velocity = velocity;
+            this.channel = channel;
             msg.UpdateDataAt(0, channel);
             msg.UpdateDataAt(1, note);
             msg.UpdateDataAt(2, velocity);

@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraDisplay : MonoBehaviour {
 
     bool extendedScreen = false;
+
 	// Use this for initialization
 	void Start () {
 

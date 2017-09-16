@@ -30,8 +30,8 @@ namespace UniOSC
         public ZoneControllerStageMess ZoneControllerStageSquare;
         public GloveController GloveController;
         public GloveController StageGloveController;
-        public StickController StageStickControllerLeft;
-        public StickController StageStickControllerRight;
+        public StickController StageStickController;
+     //   public StickController StageStickControllerRight;
         public FountainRSControllerVR FountainRSController;
 		public DroneController DroneController;
 		public DronePianoController DronePianoController;
@@ -345,13 +345,13 @@ namespace UniOSC
                 yPos = 0f;
                 //yPos = 0.5f;
 
-                ZoneControllerStageRadial.UpdateZone(xPos, yPos, zPos); // sends in new stick positions
+                ZoneControllerStageRadial.UpdateLeftZone(xPos, yPos, zPos); // sends in new stick positions
                 Vector3 currentZoneObjectPosition = ZoneControllerStageRadial.GetLeftStickPosition(); // figures out where the stick should be on stage
-                StageStickControllerLeft.SetLeftStickPositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
+                StageStickController.SetLeftStickPositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
                 GameObject drumstick = ZoneControllerStageRadial.drumstickLeft;
-                int selectedZone = ZoneControllerStageRadial.selectedZone;
+                int selectedZone = ZoneControllerStageRadial.selectedLeftZone;
                 int stageZoneSlices = ZoneControllerStageRadial.stageZoneSlices;
-                StageStickControllerLeft.SetLeftStickAngle(drumstick, selectedZone * 360 / stageZoneSlices);
+                StageStickController.SetLeftStickAngle(drumstick, selectedZone * 360 / stageZoneSlices);
                 // for radial zone calc
 
             }
@@ -366,13 +366,13 @@ namespace UniOSC
                 yPos = 0f;
                 //yPos = 0.5f;
 
-                ZoneControllerStageRadial.UpdateZone(xPos, yPos, zPos); // sends in new stick positions
-                Vector3 currentZoneObjectPosition = ZoneControllerStageRadial.GetLeftStickPosition(); // figures out where the stick should be on stage
-                StageStickControllerRight.SetRightStickPositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
+                ZoneControllerStageRadial.UpdateRightZone(xPos, yPos, zPos); // sends in new stick positions
+                Vector3 currentZoneObjectPosition = ZoneControllerStageRadial.GetRightStickPosition(); // figures out where the stick should be on stage
+                StageStickController.SetRightStickPositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
                 GameObject drumstick = ZoneControllerStageRadial.drumstickRight;
-                int selectedZone = ZoneControllerStageRadial.selectedZone;
+                int selectedZone = ZoneControllerStageRadial.selectedRightZone;
                 int stageZoneSlices = ZoneControllerStageRadial.stageZoneSlices;
-                StageStickControllerRight.SetRightStickAngle(drumstick, selectedZone * 360 / stageZoneSlices);
+                StageStickController.SetRightStickAngle(drumstick, selectedZone * 360 / stageZoneSlices);
                 // for radial zone calc
 
             }
@@ -388,7 +388,7 @@ namespace UniOSC
                 {
                     Debug.Log("detected NEW hit w seq " + channel);
 
-                    StageStickControllerLeft.drumHitLeft(true, hitVel, channel);
+                    StageStickController.drumHitLeft(true, hitVel, channel);
                 }
 
                 LastHit = channel;
@@ -405,7 +405,7 @@ namespace UniOSC
                 {
                     Debug.Log("detected NEW hit w seq " + channel);
 
-                    StageStickControllerRight.drumHitRight(true, hitVel, channel);
+                    StageStickController.drumHitRight(true, hitVel, channel);
                 }
 
                 LastHit = channel;
