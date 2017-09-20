@@ -170,7 +170,7 @@ namespace UniOSC
             if (msg == null) return;
 
             // handles finger bends and wrist rotation for the real sense
-            rsGloveData();
+           // rsGloveData();
 
             // handles rs data from single camera
             rsZones();
@@ -399,7 +399,7 @@ namespace UniOSC
                 int channel = (int)msg.Data[0];
                 int hitVel = (int)msg.Data[1];
 
-                Debug.Log("detected hit " + channel);
+               // Debug.Log("detected hit " + channel);
                 // hard coding y pos
                 if (channel != LastHit)
                 {

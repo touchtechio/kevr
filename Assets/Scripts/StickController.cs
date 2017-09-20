@@ -18,7 +18,8 @@ public class StickController : MonoBehaviour
     public bool stickUsingRaw = false;
     private int degrees;
     public ZoneControllerStageRadial zoneControllerStageRadial;
-    public Text hitVelocity;
+    public Text leftHitVelocity;
+    public Text rightHitVelocity;
     public OSCSenderMidi oscSenderObject;
     int[] midiNote = { 60, 61, 62, 63, 64, 65, 66, 67, 68, 69 };
     string[] midiChannels = { "midi/1", "midi/2", "midi/3", "midi/4", "midi/5", "midi/6", "midi/7", "midi/8" };
@@ -166,6 +167,7 @@ public class StickController : MonoBehaviour
         int zoneNumber = zoneControllerStageRadial.selectedLeftZone;
         Animator drumstickAnimator = drumstickAnimatorLeft;
         drumHit(isHit, hitVel, channel, drumstickAnimator, zoneNumber);
+        leftHitVelocity.text = hitVel.ToString();
     }
 
     public void drumHitRight(bool isHit, int hitVel, int channel)
@@ -173,6 +175,8 @@ public class StickController : MonoBehaviour
         int zoneNumber = zoneControllerStageRadial.selectedRightZone;
         Animator drumstickAnimator = drumstickAnimatorRight;
         drumHit(isHit, hitVel, channel, drumstickAnimator, zoneNumber);
+        rightHitVelocity.text = hitVel.ToString();
+        
     }
 
     ///
@@ -183,7 +187,7 @@ public class StickController : MonoBehaviour
         drumstickAnimator.SetTrigger("drumhit");
 
         Debug.Log("drumhit");
-        hitVelocity.text = hitVel.ToString();
+  
         // receivedHit = false;
 
          zoneControllerStageRadial.stageZonesArray[zoneNumber].GetComponent<DrumAudio>().playDrum(zoneNumber);

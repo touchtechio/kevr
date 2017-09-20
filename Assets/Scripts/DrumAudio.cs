@@ -39,6 +39,6 @@ public class DrumAudio : MonoBehaviour {
         Debug.Log("stick volume" + audioManager.volumeSlider.value);
         drumSource.Play();
         ZoneControllerStageRadial ZoneController = FindObjectOfType<ZoneControllerStageRadial>();
-        ZoneController.drumName.text = drumSource.clip.name.ToString();
+        ZoneController.leftDrumName.text = drumSource.clip.name.ToString();
     }
 }

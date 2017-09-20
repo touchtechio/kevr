@@ -17,8 +17,8 @@ public class ZoneControllerStageRadial : MonoBehaviour
 
     [Range(2, 10)]
     public int stageZoneSlices = 6;
-    private List<int> radialStageZoneAngleList;
-    private int[] radialStageZoneAngleArray;
+    private List<float> radialStageZoneAngleList;
+    private float[] radialStageZoneAngleArray;
     private float stickAngle;
 
     public GameObject drumObject;
@@ -48,8 +48,10 @@ public class ZoneControllerStageRadial : MonoBehaviour
     // [Space]
 
     [Header("Zone UI Elements")]
-    public Text ZoneText;
-    public Text drumName;
+    public Text rightZoneText;
+    public Text leftZoneText;
+    public Text rightDrumName;
+    public Text leftDrumName;
     /*
 public Image HUDxPosLeft;
 public Image HUDxPosRight;
@@ -116,13 +118,16 @@ public GloveController gloveController;
         //new Color(255f / i, 255f / i * 0.8f, 255f / i * 0.6f, 0.2f)
 
         InstantiateZoneDrumObjects();
-        ZoneText.text = "0";
+        rightZoneText.text = "0";
+        leftZoneText.text = "0";
 
-        radialStageZoneAngleList = new List<int>();
+        radialStageZoneAngleList = new List<float>();
         for(int i = 0; i< stageZoneSlices; i++)
         {
-            radialStageZoneAngleList.Add(360 / stageZoneSlices * i);
-            //Debug.Log("zone angle " + 360/stageZoneSlices * i);
+            int zoneSlice = 360 / stageZoneSlices * i;
+            float zoneSliceWithCenterOffet = (float)(zoneSlice + 180/stageZoneSlices);
+            radialStageZoneAngleList.Add(zoneSliceWithCenterOffet);
+            Debug.Log("zone angle " + zoneSliceWithCenterOffet);
         }
         
         foreach (int elem in radialStageZoneAngleList)
@@ -162,6 +167,7 @@ public GloveController gloveController;
             float rad = radialDegrees * Mathf.Deg2Rad;
 
             // transform in a radial array
+            drumRadius = 0.5f * 8 / stageZoneSlices;
             xOffsetRadial = drumObject.transform.position[0] + Mathf.Sin(rad * i) * drumRadius;
             zOffsetRadial = drumObject.transform.position[2] + Mathf.Cos(rad * i) * drumRadius;
             xOffsetRadialArray[i] = xOffsetRadial;
@@ -170,7 +176,7 @@ public GloveController gloveController;
             // tilt the drums a little
             float tiltDegreesX = Mathf.Rad2Deg * Mathf.Cos(Mathf.PI / (stageZoneSlices / 2) * i);
             float tiltDegreesZ = Mathf.Rad2Deg * Mathf.Sin(Mathf.PI / (stageZoneSlices / 2) * i);
-            percentageTilt = 0.3f;
+            percentageTilt = 0.4f;
             // using the front left corner of the stage as starting point
             zone = Instantiate(drumObject, new Vector3(xOffsetRadial, 0, zOffsetRadial), Quaternion.Euler(-percentageTilt * tiltDegreesX, 0, percentageTilt * tiltDegreesZ)) as GameObject;
             zone.name = "stage-zone-" + i;
@@ -218,11 +224,13 @@ public GloveController gloveController;
         {
             //foreach (GameObject zones in zoneLeft)
 
-            stageZonesArray[i].GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+            stageZonesArray[i].transform.GetChild(0).GetChild(2).GetChild(0).GetComponentInChildren<MeshRenderer>().material.color = Color.white;
             //Debug.Log(rightZones.Length);
         }
 
-        selectedZoneObject.GetComponentInChildren<MeshRenderer>().material.color = zoneColors[selectedLeftZone];
+       // selectedZoneObject.GetComponentInChildren<MeshRenderer>().material.color = zoneColors[selectedLeftZone];
+        selectedZoneObject.transform.GetChild(0).GetChild(2).GetChild(0).GetComponentInChildren<MeshRenderer>().material.color = zoneColors[selectedLeftZone];
+        
     }
 
     public void RadialRightZoneColor(GameObject selectedZoneObject)
@@ -231,11 +239,11 @@ public GloveController gloveController;
         {
             //foreach (GameObject zones in zoneLeft)
 
-            stageZonesArray[i].GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+            stageZonesArray[i].transform.GetChild(0).GetChild(2).GetChild(0).GetComponentInChildren<MeshRenderer>().material.color = Color.white;
             //Debug.Log(rightZones.Length);
         }
 
-        selectedZoneObject.GetComponentInChildren<MeshRenderer>().material.color = zoneColors[selectedRightZone];
+        selectedZoneObject.transform.GetChild(0).GetChild(2).GetChild(0).GetComponentInChildren<MeshRenderer>().material.color = zoneColors[selectedRightZone];
     }
 
     public void setZoneWithKeypress()
@@ -250,7 +258,9 @@ public GloveController gloveController;
                 RadialLeftZoneColor(selectedZoneObject);
                 stickController.SetLeftStickPosition(xOffsetRadialArray[i] / 2, 0, zOffsetRadialArray[i] / 2);
                 stickController.SetLeftStickAngle(drumstickLeft, selectedLeftZone * 360 / stageZoneSlices);
-                ZoneText.text = selectedLeftZone.ToString();
+              
+                leftZoneText.text = selectedLeftZone.ToString();
+
                 return;
             }
 
@@ -263,9 +273,10 @@ public GloveController gloveController;
     internal GameObject UpdateLeftStageRadialZone(float xPos, float zPos)
     {
 
-        stickAngle = (Mathf.Rad2Deg * Mathf.Atan2(-(zPos + 0.8128f), xPos)) + 180;
+        //stickAngle = (Mathf.Rad2Deg * Mathf.Atan2(-(zPos + 0.8128f), xPos)) + 180;
+        stickAngle = (Mathf.Rad2Deg * Mathf.Atan2(xPos,(zPos + 0.8128f))) + 180;
         // stickAngle = UnityEngine.Random.Range(90, 360);
-        Debug.Log(stickAngle + "stick angle, " + xPos + " x, " + (zPos + 0.8) + " z ");
+        Debug.Log(stickAngle + "degrees, x:" + xPos + " z: " + (zPos + 0.8));
         //Debug.Log(stickAngle);
         for (int i = 0; i < stageZoneSlices; i++)
         {
@@ -277,12 +288,12 @@ public GloveController gloveController;
 
                 // shifting zones by -1, as zone 0 is actually last zone
                 selectedLeftZone = i;
-                ZoneText.text = selectedLeftZone.ToString();
+                leftZoneText.text = selectedLeftZone.ToString();
                 return stageZonesArray[selectedLeftZone];
             }
         }
 
-        Debug.LogError(stickAngle + "stick angle " + xPos + "x" + zPos + "z" + ": did not fall into zones");
+        //Debug.LogError(stickAngle + "stick angle " + xPos + "x" + zPos + "z" + ": did not fall into zones");
         selectedLeftZone = 0;
         return stageZonesArray[selectedLeftZone];
     }
@@ -291,9 +302,9 @@ public GloveController gloveController;
     internal GameObject UpdateRightStageRadialZone(float xPos, float zPos)
     {
 
-        stickAngle = (Mathf.Rad2Deg * Mathf.Atan2(-(zPos + 0.8128f), xPos)) + 180;
+        stickAngle = (Mathf.Rad2Deg * Mathf.Atan2(xPos, (zPos + 0.8128f))) + 180;
         // stickAngle = UnityEngine.Random.Range(90, 360);
-        Debug.Log(stickAngle + "stick angle, " + xPos + " x, " + (zPos + 0.8) + " z ");
+        Debug.Log(stickAngle + "degrees, x:" + xPos + " z: " + (zPos + 0.8));
         //Debug.Log(stickAngle);
         for (int i = 0; i < stageZoneSlices; i++)
         {
@@ -305,7 +316,7 @@ public GloveController gloveController;
 
                 // shifting zones by -1, as zone 0 is actually last zone
                 selectedRightZone = i;
-                ZoneText.text = selectedRightZone.ToString();
+                rightZoneText.text = selectedRightZone.ToString();
                 return stageZonesArray[selectedRightZone];
             }
         }
@@ -344,7 +355,7 @@ public GloveController gloveController;
 
         // sets zone color and HUD zone height fill for right hand
         RadialLeftZoneColor(selectedZoneObject);
-        //HUDyPosRight.fillAmount = yPos;
+    
 
       //   Debug.Log("ypos: " + yPos);
 
@@ -371,7 +382,7 @@ public GloveController gloveController;
 
         // sets zone color and HUD zone height fill for right hand
         RadialRightZoneColor(selectedZoneObject);
-        //HUDyPosRight.fillAmount = yPos;
+    
 
         //   Debug.Log("ypos: " + yPos);
 
@@ -394,6 +405,8 @@ public GloveController gloveController;
         float zoneCenterZPoint = zOffsetRadialArray[selectedRightZone] * 0.7f;
         return new Vector3(zoneCenterXPoint, zoneCenterYPoint, zoneCenterZPoint);
     }
+
+    
 
 }
 
