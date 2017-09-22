@@ -13,7 +13,7 @@ public class ZoneControllerStageRadial : MonoBehaviour
     public GameObject drumstickRight;
 
     public DrumAudio[] drumAudioAray;
-    
+
 
     [Range(2, 10)]
     public int stageZoneSlices = 6;
@@ -22,6 +22,8 @@ public class ZoneControllerStageRadial : MonoBehaviour
     private float stickAngle;
 
     public GameObject drumObject;
+    public GameObject taikoObject;
+    public GameObject clackObject;
     public GameObject[] stageDrums;
     public float percentageTilt;
 
@@ -52,6 +54,9 @@ public class ZoneControllerStageRadial : MonoBehaviour
     public Text leftZoneText;
     public Text rightDrumName;
     public Text leftDrumName;
+    public Image stickAngleRightImage;
+    public Image stickAngleLeftImage;
+
     /*
 public Image HUDxPosLeft;
 public Image HUDxPosRight;
@@ -65,7 +70,7 @@ public GloveController gloveController;
        */
 
     public bool fixedYHeight = true;
- 
+
 
     String[] guitarTypes = { "Strat Solo", "Strat Chords", "Strat Chords", "Other" };
     int[] zonesUsed = { 0, 2, 6, 8 };
@@ -89,7 +94,7 @@ public GloveController gloveController;
     float distanceX; // full width of stage
     float distanceZ; // full depth of stage
     public float drumRadius = 0.5f; // distance from center
-  
+
     float zoneZoffset;
 
     public int selectedLeftZone = 0;
@@ -101,12 +106,13 @@ public GloveController gloveController;
     public float[] xOffsetRadialArray;
     public float[] zOffsetRadialArray;
     private string[] keypresses = { "q", "w", "e", "r", "t", "y", "u", "i" };
-    
+
 
     void Start()
     {
         // adds list of guitar names and corresponding zones to hashtable
-        for (int i = 0; i < guitarTypes.Length; i++) {
+        for (int i = 0; i < guitarTypes.Length; i++)
+        {
             guitarName.Add(zonesUsed[i], guitarTypes[i]);
         }
 
@@ -122,14 +128,14 @@ public GloveController gloveController;
         leftZoneText.text = "0";
 
         radialStageZoneAngleList = new List<float>();
-        for(int i = 0; i< stageZoneSlices; i++)
+        for (int i = 0; i < stageZoneSlices; i++)
         {
             int zoneSlice = 360 / stageZoneSlices * i;
-            float zoneSliceWithCenterOffet = (float)(zoneSlice + 180/stageZoneSlices);
+            float zoneSliceWithCenterOffet = (float)(zoneSlice + 180 / stageZoneSlices);
             radialStageZoneAngleList.Add(zoneSliceWithCenterOffet);
             Debug.Log("zone angle " + zoneSliceWithCenterOffet);
         }
-        
+
         foreach (int elem in radialStageZoneAngleList)
         {
             Debug.Log(elem);
@@ -146,11 +152,11 @@ public GloveController gloveController;
 
         Debug.Log("drum stage data in ");
     }
-    
+
     private void Update()
     {
         setZoneWithKeypress();
-       
+
     }
 
     public void InstantiateZoneDrumObjects()
@@ -167,7 +173,7 @@ public GloveController gloveController;
             float rad = radialDegrees * Mathf.Deg2Rad;
 
             // transform in a radial array
-            drumRadius = 0.5f * 8 / stageZoneSlices;
+            drumRadius = 0.8f * 8 / stageZoneSlices;
             xOffsetRadial = drumObject.transform.position[0] + Mathf.Sin(rad * i) * drumRadius;
             zOffsetRadial = drumObject.transform.position[2] + Mathf.Cos(rad * i) * drumRadius;
             xOffsetRadialArray[i] = xOffsetRadial;
@@ -177,12 +183,22 @@ public GloveController gloveController;
             float tiltDegreesX = Mathf.Rad2Deg * Mathf.Cos(Mathf.PI / (stageZoneSlices / 2) * i);
             float tiltDegreesZ = Mathf.Rad2Deg * Mathf.Sin(Mathf.PI / (stageZoneSlices / 2) * i);
             percentageTilt = 0.4f;
+
+            
             // using the front left corner of the stage as starting point
+            if (i == 2 || i == 6)
+            {
+                drumObject = clackObject;
+            } else
+            {
+                drumObject = taikoObject;
+            }
             zone = Instantiate(drumObject, new Vector3(xOffsetRadial, 0, zOffsetRadial), Quaternion.Euler(-percentageTilt * tiltDegreesX, 0, percentageTilt * tiltDegreesZ)) as GameObject;
+
             zone.name = "stage-zone-" + i;
             zone.transform.parent = transform;
             zone.SetActive(true);
-         
+
             stageZonesArray[i] = zone;
 
         }
@@ -197,15 +213,15 @@ public GloveController gloveController;
             stageZonesArray[i].SetActive(false);
             //  ZoneHeight(stageZonesMatrix[i, j], 0);
         }
-            // only change selected zone's height
-            zone.SetActive(true);
+        // only change selected zone's height
+        zone.SetActive(true);
 
-            if (fixedYHeight)
-            {
-                yPos = 1.0f;
-            }
+        if (fixedYHeight)
+        {
+            yPos = 1.0f;
+        }
 
-            ZoneHeight(zone, yPos);  
+        ZoneHeight(zone, yPos);
     }
 
     // sets the selected zone height and returns rest as zero
@@ -224,13 +240,13 @@ public GloveController gloveController;
         {
             //foreach (GameObject zones in zoneLeft)
 
-            stageZonesArray[i].transform.GetChild(0).GetChild(2).GetChild(0).GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+            stageZonesArray[i].transform.GetChild(0).GetChild(1).GetChild(0).GetComponentInChildren<MeshRenderer>().material.color = Color.white;
             //Debug.Log(rightZones.Length);
         }
 
-       // selectedZoneObject.GetComponentInChildren<MeshRenderer>().material.color = zoneColors[selectedLeftZone];
-        selectedZoneObject.transform.GetChild(0).GetChild(2).GetChild(0).GetComponentInChildren<MeshRenderer>().material.color = zoneColors[selectedLeftZone];
-        
+        // selectedZoneObject.GetComponentInChildren<MeshRenderer>().material.color = zoneColors[selectedLeftZone];
+        selectedZoneObject.transform.GetChild(0).GetChild(1).GetChild(0).GetComponentInChildren<MeshRenderer>().material.color = zoneColors[selectedLeftZone];
+
     }
 
     public void RadialRightZoneColor(GameObject selectedZoneObject)
@@ -239,11 +255,11 @@ public GloveController gloveController;
         {
             //foreach (GameObject zones in zoneLeft)
 
-            stageZonesArray[i].transform.GetChild(0).GetChild(2).GetChild(0).GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+            stageZonesArray[i].transform.GetChild(0).GetChild(1).GetChild(0).GetComponentInChildren<MeshRenderer>().material.color = Color.white;
             //Debug.Log(rightZones.Length);
         }
 
-        selectedZoneObject.transform.GetChild(0).GetChild(2).GetChild(0).GetComponentInChildren<MeshRenderer>().material.color = zoneColors[selectedRightZone];
+        selectedZoneObject.transform.GetChild(0).GetChild(1).GetChild(0).GetComponentInChildren<MeshRenderer>().material.color = zoneColors[selectedRightZone];
     }
 
     public void setZoneWithKeypress()
@@ -258,14 +274,14 @@ public GloveController gloveController;
                 RadialLeftZoneColor(selectedZoneObject);
                 stickController.SetLeftStickPosition(xOffsetRadialArray[i] / 2, 0, zOffsetRadialArray[i] / 2);
                 stickController.SetLeftStickAngle(drumstickLeft, selectedLeftZone * 360 / stageZoneSlices);
-              
+
                 leftZoneText.text = selectedLeftZone.ToString();
 
                 return;
             }
 
         }
-         
+
 
     }
 
@@ -274,7 +290,9 @@ public GloveController gloveController;
     {
 
         //stickAngle = (Mathf.Rad2Deg * Mathf.Atan2(-(zPos + 0.8128f), xPos)) + 180;
-        stickAngle = (Mathf.Rad2Deg * Mathf.Atan2(xPos,(zPos + 0.8128f))) + 180;
+        stickAngle = (Mathf.Rad2Deg * Mathf.Atan2(xPos, (zPos + 0.8128f))) + 180;
+        stickAngleLeftImage.fillAmount = stickAngle / 360;
+
         // stickAngle = UnityEngine.Random.Range(90, 360);
         Debug.Log(stickAngle + "degrees, x:" + xPos + " z: " + (zPos + 0.8));
         //Debug.Log(stickAngle);
@@ -303,6 +321,7 @@ public GloveController gloveController;
     {
 
         stickAngle = (Mathf.Rad2Deg * Mathf.Atan2(xPos, (zPos + 0.8128f))) + 180;
+        stickAngleRightImage.fillAmount = stickAngle / 360;
         // stickAngle = UnityEngine.Random.Range(90, 360);
         Debug.Log(stickAngle + "degrees, x:" + xPos + " z: " + (zPos + 0.8));
         //Debug.Log(stickAngle);
@@ -351,13 +370,13 @@ public GloveController gloveController;
         }
 
         //// changes zone height
-       // ZoneHeightBlock(selectedZoneObject, yPos);
+        // ZoneHeightBlock(selectedZoneObject, yPos);
 
         // sets zone color and HUD zone height fill for right hand
         RadialLeftZoneColor(selectedZoneObject);
-    
 
-      //   Debug.Log("ypos: " + yPos);
+
+        //   Debug.Log("ypos: " + yPos);
 
         return;
     }
@@ -382,31 +401,32 @@ public GloveController gloveController;
 
         // sets zone color and HUD zone height fill for right hand
         RadialRightZoneColor(selectedZoneObject);
-    
+
 
         //   Debug.Log("ypos: " + yPos);
 
         return;
     }
 
-     // sets up the ideal position for the zone object using the positions from above
+    float stickPositionOffsetFactor = 0.4f;
+    // sets up the ideal position for the zone object using the positions from above
     public Vector3 GetLeftStickPosition()
     {
         float zoneCenterYPoint = 0f;
-        float zoneCenterXPoint = xOffsetRadialArray[selectedLeftZone] *0.7f;
-        float zoneCenterZPoint = zOffsetRadialArray[selectedLeftZone] * 0.7f;
+        float zoneCenterXPoint = xOffsetRadialArray[selectedLeftZone] * stickPositionOffsetFactor;
+        float zoneCenterZPoint = zOffsetRadialArray[selectedLeftZone] * stickPositionOffsetFactor;
         return new Vector3(zoneCenterXPoint, zoneCenterYPoint, zoneCenterZPoint);
     }
 
     public Vector3 GetRightStickPosition()
     {
         float zoneCenterYPoint = 0f;
-        float zoneCenterXPoint = xOffsetRadialArray[selectedRightZone] * 0.7f;
-        float zoneCenterZPoint = zOffsetRadialArray[selectedRightZone] * 0.7f;
+        float zoneCenterXPoint = xOffsetRadialArray[selectedRightZone] * stickPositionOffsetFactor;
+        float zoneCenterZPoint = zOffsetRadialArray[selectedRightZone] * stickPositionOffsetFactor;
         return new Vector3(zoneCenterXPoint, zoneCenterYPoint, zoneCenterZPoint);
     }
 
-    
+
 
 }
 

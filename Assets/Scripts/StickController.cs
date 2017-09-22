@@ -20,8 +20,11 @@ public class StickController : MonoBehaviour
     public ZoneControllerStageRadial zoneControllerStageRadial;
     public Text leftHitVelocity;
     public Text rightHitVelocity;
+    public Image rightVelocityImage;
+    public Image leftVelocityImage;
     public OSCSenderMidi oscSenderObject;
     int[] midiNote = { 60, 61, 62, 63, 64, 65, 66, 67, 68, 69 };
+   // int[] midiNote = { 60, 60, 60, 60, 60, 60, 66, 67, 68, 69 };
     string[] midiChannels = { "midi/1", "midi/2", "midi/3", "midi/4", "midi/5", "midi/6", "midi/7", "midi/8" };
 
     // Use this for initialization
@@ -168,6 +171,7 @@ public class StickController : MonoBehaviour
         Animator drumstickAnimator = drumstickAnimatorLeft;
         drumHit(isHit, hitVel, channel, drumstickAnimator, zoneNumber);
         leftHitVelocity.text = hitVel.ToString();
+        leftVelocityImage.fillAmount = hitVel / 127f;
     }
 
     public void drumHitRight(bool isHit, int hitVel, int channel)
@@ -176,6 +180,7 @@ public class StickController : MonoBehaviour
         Animator drumstickAnimator = drumstickAnimatorRight;
         drumHit(isHit, hitVel, channel, drumstickAnimator, zoneNumber);
         rightHitVelocity.text = hitVel.ToString();
+        rightVelocityImage.fillAmount = hitVel / 127f;
         
     }
 
