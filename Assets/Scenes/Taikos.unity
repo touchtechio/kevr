@@ -2698,7 +2698,7 @@ RectTransform:
   m_GameObject: {fileID: 298737696}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.033403}
-  m_LocalScale: {x: 0.004379289, y: 0.004379289, z: 0.004379289}
+  m_LocalScale: {x: 0.007, y: 0.007, z: 0.007}
   m_Children:
   - {fileID: 1036092695}
   - {fileID: 1162608753}
@@ -2716,7 +2716,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2, y: 0.80599}
+  m_AnchoredPosition: {x: 2.2, y: 0.80599}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &306465444
@@ -3503,7 +3503,7 @@ RectTransform:
   m_GameObject: {fileID: 390510984}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.033403}
-  m_LocalScale: {x: 0.004379289, y: 0.004379289, z: 0.004379289}
+  m_LocalScale: {x: 0.007, y: 0.007, z: 0.007}
   m_Children:
   - {fileID: 1066483480}
   - {fileID: 1670791798}
@@ -3521,7 +3521,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.8, y: 0.80599}
+  m_AnchoredPosition: {x: -2.2, y: 0.80599}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &396112205
@@ -24263,6 +24263,8 @@ MonoBehaviour:
   leftDrumName: {fileID: 84820842}
   stickAngleRightImage: {fileID: 2100767894}
   stickAngleLeftImage: {fileID: 1121194601}
+  fixedLeftYPos: 0
+  fixedRightYPos: 0
   fixedYHeight: 1
   whichSide: 1
   drumRadius: 1

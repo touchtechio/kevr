@@ -24,8 +24,8 @@ public class StickController : MonoBehaviour
     public Image leftVelocityImage;
     public OSCSenderMidi oscSenderObject;
     int[] midiNote = { 60, 61, 62, 63, 64, 65, 66, 67, 68, 69 };
-   // int[] midiNote = { 60, 60, 60, 60, 60, 60, 66, 67, 68, 69 };
-    string[] midiChannels = { "midi/1", "midi/2", "midi/3", "midi/4", "midi/5", "midi/6", "midi/7", "midi/8" };
+   // int[] midiNote = { 60, 60, 60, 60, 60, 60, 66, 67, 68, 69, 70 };
+    string[] midiOSCAddress = { "midi/1", "midi/2", "midi/3", "midi/4", "midi/5", "midi/6", "midi/7", "midi/8", "midi/9" };
 
     // Use this for initialization
     void Start()
@@ -165,39 +165,69 @@ public class StickController : MonoBehaviour
 
     // trigger drumhit position if received hit
 
-    public void drumHitLeft(bool isHit, int hitVel, int channel)
+    public void drumHitLeft(bool isHit, int hitVel, int sequence)
     {
         int zoneNumber = zoneControllerStageRadial.selectedLeftZone;
         Animator drumstickAnimator = drumstickAnimatorLeft;
-        drumHit(isHit, hitVel, channel, drumstickAnimator, zoneNumber);
+        int zoneNumberHit;
+      
+        if (zoneControllerStageRadial.fixedLeftYPos == 2f)
+        {
+            zoneNumberHit = 8;
+           
+        }
+        else
+        {
+            zoneNumberHit = zoneNumber;
+           
+        }
+        Debug.Log("zoneleft Number is high?" + zoneNumberHit);
+        drumHit(isHit, hitVel, sequence, drumstickAnimator, zoneNumberHit);
+  
         leftHitVelocity.text = hitVel.ToString();
         leftVelocityImage.fillAmount = hitVel / 127f;
     }
 
-    public void drumHitRight(bool isHit, int hitVel, int channel)
+    public void drumHitRight(bool isHit, int hitVel, int sequence)
     {
         int zoneNumber = zoneControllerStageRadial.selectedRightZone;
         Animator drumstickAnimator = drumstickAnimatorRight;
-        drumHit(isHit, hitVel, channel, drumstickAnimator, zoneNumber);
+        int zoneNumberHit;
+       
+        if (zoneControllerStageRadial.fixedRightYPos == 2f)
+        {
+            zoneNumberHit = 8;
+       
+        } else
+        {
+            zoneNumberHit = zoneNumber;
+        
+        }
+        Debug.Log("zone right Number is high?" + zoneNumberHit);
+        drumHit(isHit, hitVel, sequence, drumstickAnimator, zoneNumberHit);
         rightHitVelocity.text = hitVel.ToString();
         rightVelocityImage.fillAmount = hitVel / 127f;
         
     }
 
     ///
-    public void drumHit(bool isHit, int hitVel, int channel, Animator drumstickAnimator, int zoneNumber)
+    public void drumHit(bool isHit, int hitVel, int sequence, Animator drumstickAnimator, int zoneNumber)
     {
         Debug.Log("animation speed " + drumstickAnimator.speed);
         drumstickAnimator.speed = Map(hitVel, 0, 127, 3f, 5f);
         drumstickAnimator.SetTrigger("drumhit");
 
         Debug.Log("drumhit");
-  
-        // receivedHit = false;
 
-         zoneControllerStageRadial.stageZonesArray[zoneNumber].GetComponent<DrumAudio>().playDrum(zoneNumber);
+        // receivedHit = false;
+        oscSenderObject.SendOSCTaikoMidi(midiOSCAddress[zoneNumber], midiNote[zoneNumber], hitVel, sequence);
+        if (zoneControllerStageRadial.fixedRightYPos == 2f)
+            Debug.LogWarning("note for highzone" + midiNote[zoneNumber] + "zone number " + zoneNumber);
+    
+      //  zoneControllerStageRadial.stageZonesArray[zoneNumber].GetComponent<DrumAudio>().playDrum(zoneNumber);
+      
         // oscSenderObject.SendOSCTaikoMidi("midi/1", midiNote[zoneNumber], hitVel, channel);
-        oscSenderObject.SendOSCTaikoMidi(midiChannels[zoneNumber], midiNote[zoneNumber], hitVel, channel);
+   
         // transform.rotation =  Quaternion.Euler( 30 * Time.deltaTime , 0, 0);
         receivedHit = false;
     }

@@ -151,7 +151,7 @@ namespace UniOSC
                 o += " , ";
                 o += msg.Data[i].ToString();
             }
-            Debug.LogWarning(o);
+           // Debug.LogWarning(o);
 
             LastMessageUpdate();
             if (msg.Data.Count < 1 || isLive != true) return;
@@ -189,7 +189,7 @@ namespace UniOSC
             touchOSCWrist();
 
             // handles finger bends, wrist rotation as well as stage positioning
-            StageGloveData();
+            //StageGloveData();
 
             // handles stick hits as well as stage positioning
             StageStickData();
@@ -339,12 +339,20 @@ namespace UniOSC
             {
                 float xPos = -(float)msg.Data[0];
                 float zPos = -(float)msg.Data[1];
-                float yPos = (float)msg.Data[2];
-               // Debug.Log("stick-pos: " + xPos + " " + yPos + " " + zPos);
+                float yPosRaw = (float)msg.Data[2];
+                float yPos = 0f;
+                // Debug.Log("stick-pos: " + xPos + " " + yPos + " " + zPos);
                 // hard coding y pos
-                yPos = 0f;
-                //yPos = 0.5f;
-
+              /*
+                if (yPosRaw > 2f)
+                {
+                    yPos = 2f;
+                  //  Debug.Log("left stick high" + yPosRaw);
+                } else
+                {
+                    yPos = 0f;
+                }
+                */
                 ZoneControllerStageRadial.UpdateLeftZone(xPos, yPos, zPos); // sends in new stick positions
                 Vector3 currentZoneObjectPosition = ZoneControllerStageRadial.GetLeftStickPosition(); // figures out where the stick should be on stage
                 StageStickController.SetLeftStickPositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
@@ -360,12 +368,21 @@ namespace UniOSC
             {
                 float xPos = -(float)msg.Data[0];
                 float zPos = -(float)msg.Data[1];
-                float yPos = (float)msg.Data[2];
-                // Debug.Log("stick-pos: " + xPos + " " + yPos + " " + zPos);
+                float yPosRaw = (float)msg.Data[2];
+                float yPos;
+  
                 // hard coding y pos
-                yPos = 0f;
-                //yPos = 0.5f;
-
+                
+                if (yPosRaw > 2f)
+                {
+                    yPos = 2f;
+                    Debug.Log("right stick high" + yPosRaw);
+                }
+                else
+                {
+                    yPos = 0f;
+                }
+                Debug.Log("stick-pos: " + xPos + " " + yPosRaw + " " + zPos);
                 ZoneControllerStageRadial.UpdateRightZone(xPos, yPos, zPos); // sends in new stick positions
                 Vector3 currentZoneObjectPosition = ZoneControllerStageRadial.GetRightStickPosition(); // figures out where the stick should be on stage
                 StageStickController.SetRightStickPositionWithZone(new Vector3(xPos, yPos, zPos), currentZoneObjectPosition);
@@ -382,7 +399,7 @@ namespace UniOSC
                 int channel = (int)msg.Data[0];
                 int hitVel = (int)msg.Data[1];
 
-                Debug.Log("detected hit " + channel);
+             //   Debug.Log("detected hit " + channel);
                 // hard coding y pos
                 if (channel != LastHit)
                 {

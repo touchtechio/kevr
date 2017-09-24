@@ -57,6 +57,10 @@ public class ZoneControllerStageRadial : MonoBehaviour
     public Image stickAngleRightImage;
     public Image stickAngleLeftImage;
 
+    float stickPositionOffsetFactor = 0.4f;
+    public float fixedLeftYPos;
+    public float fixedRightYPos;
+
     /*
 public Image HUDxPosLeft;
 public Image HUDxPosRight;
@@ -184,12 +188,13 @@ public GloveController gloveController;
             float tiltDegreesZ = Mathf.Rad2Deg * Mathf.Sin(Mathf.PI / (stageZoneSlices / 2) * i);
             percentageTilt = 0.4f;
 
-            
+
             // using the front left corner of the stage as starting point
             if (i == 2 || i == 6)
             {
                 drumObject = clackObject;
-            } else
+            }
+            else
             {
                 drumObject = taikoObject;
             }
@@ -286,15 +291,15 @@ public GloveController gloveController;
     }
 
     // figures out which zone the stick has landed in and returns that drum and zone number
-    internal GameObject UpdateLeftStageRadialZone(float xPos, float zPos)
+    internal GameObject UpdateLeftStageRadialZone(float xPos, float yPos, float zPos)
     {
-
+        // Debug.Log("where the y is" + yPos);
         //stickAngle = (Mathf.Rad2Deg * Mathf.Atan2(-(zPos + 0.8128f), xPos)) + 180;
         stickAngle = (Mathf.Rad2Deg * Mathf.Atan2(xPos, (zPos + 0.8128f))) + 180;
         stickAngleLeftImage.fillAmount = stickAngle / 360;
 
         // stickAngle = UnityEngine.Random.Range(90, 360);
-        Debug.Log(stickAngle + "degrees, x:" + xPos + " z: " + (zPos + 0.8));
+        //   Debug.Log(stickAngle + "degrees, x:" + xPos + " z: " + (zPos + 0.8));
         //Debug.Log(stickAngle);
         for (int i = 0; i < stageZoneSlices; i++)
         {
@@ -302,7 +307,7 @@ public GloveController gloveController;
             if (stickAngle < radialStageZoneAngleArray[i])
             {
 
-                Debug.Log("stick in x zone: " + i);
+                //  Debug.Log("stick in x zone: " + i);
 
                 // shifting zones by -1, as zone 0 is actually last zone
                 selectedLeftZone = i;
@@ -317,13 +322,13 @@ public GloveController gloveController;
     }
 
     // figures out which zone the stick has landed in and returns that drum and zone number
-    internal GameObject UpdateRightStageRadialZone(float xPos, float zPos)
+    internal GameObject UpdateRightStageRadialZone(float xPos, float yPos, float zPos)
     {
 
         stickAngle = (Mathf.Rad2Deg * Mathf.Atan2(xPos, (zPos + 0.8128f))) + 180;
         stickAngleRightImage.fillAmount = stickAngle / 360;
         // stickAngle = UnityEngine.Random.Range(90, 360);
-        Debug.Log(stickAngle + "degrees, x:" + xPos + " z: " + (zPos + 0.8));
+        //  Debug.Log(stickAngle + "degrees, x:" + xPos + " z: " + (zPos + 0.8));
         //Debug.Log(stickAngle);
         for (int i = 0; i < stageZoneSlices; i++)
         {
@@ -340,7 +345,7 @@ public GloveController gloveController;
             }
         }
 
-        Debug.LogError(stickAngle + "stick angle " + xPos + "x" + zPos + "z" + ": did not fall into zones");
+        //  Debug.LogError(stickAngle + "stick angle " + xPos + "x" + zPos + "z" + ": did not fall into zones");
         selectedRightZone = 0;
         return stageZonesArray[selectedRightZone];
     }
@@ -357,8 +362,11 @@ public GloveController gloveController;
     /// <param name="zPos"></param>
     internal void UpdateLeftZone(float xPos, float yPos, float zPos)
     {
+        fixedLeftYPos = yPos; // sets stick height below
+
+        // Debug.Log("fixed left y pos" + fixedLeftYPos);
         // work out which zone is affected and get the new stick position
-        GameObject selectedZoneObject = UpdateLeftStageRadialZone(xPos, zPos);
+        GameObject selectedZoneObject = UpdateLeftStageRadialZone(xPos, yPos, zPos);
 
         // do the calculation of where the stick should be located based on the selected zone
         //UpdateStickPosition(selectedLeftZone);
@@ -384,8 +392,10 @@ public GloveController gloveController;
 
     internal void UpdateRightZone(float xPos, float yPos, float zPos)
     {
+        fixedRightYPos = yPos; // sets stick height below
+
         // work out which zone is affected and get the new stick position
-        GameObject selectedZoneObject = UpdateRightStageRadialZone(xPos, zPos);
+        GameObject selectedZoneObject = UpdateRightStageRadialZone(xPos, yPos, zPos);
 
         // do the calculation of where the stick should be located based on the selected zone
         //UpdateStickPosition(selectedLeftZone);
@@ -403,16 +413,17 @@ public GloveController gloveController;
         RadialRightZoneColor(selectedZoneObject);
 
 
-        //   Debug.Log("ypos: " + yPos);
+        Debug.Log("ypos: " + yPos);
 
         return;
     }
 
-    float stickPositionOffsetFactor = 0.4f;
+
+
     // sets up the ideal position for the zone object using the positions from above
     public Vector3 GetLeftStickPosition()
     {
-        float zoneCenterYPoint = 0f;
+        float zoneCenterYPoint = fixedLeftYPos * 0.4f;
         float zoneCenterXPoint = xOffsetRadialArray[selectedLeftZone] * stickPositionOffsetFactor;
         float zoneCenterZPoint = zOffsetRadialArray[selectedLeftZone] * stickPositionOffsetFactor;
         return new Vector3(zoneCenterXPoint, zoneCenterYPoint, zoneCenterZPoint);
@@ -420,7 +431,7 @@ public GloveController gloveController;
 
     public Vector3 GetRightStickPosition()
     {
-        float zoneCenterYPoint = 0f;
+        float zoneCenterYPoint = fixedRightYPos * 0.4f;
         float zoneCenterXPoint = xOffsetRadialArray[selectedRightZone] * stickPositionOffsetFactor;
         float zoneCenterZPoint = zOffsetRadialArray[selectedRightZone] * stickPositionOffsetFactor;
         return new Vector3(zoneCenterXPoint, zoneCenterYPoint, zoneCenterZPoint);
